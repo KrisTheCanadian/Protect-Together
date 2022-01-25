@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://kristhecanadian.github.io/soen-390",
   "dependencies": {
+    "node-fetch": ">=2.6.7",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.0",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "node-fetch": ">=2.6.7",
     "@testing-library/jest-dom": "^5.16.1",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
