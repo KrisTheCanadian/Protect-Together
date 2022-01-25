@@ -34,8 +34,8 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         
-    - name: GitHub Pages
+    - name: GitHub Pages action
       # You may pin to the exact commit or the version.
-      # uses: crazy-max/ghaction-github-pages@a117e4aa1fb4854d021546d2abdfac95be568a3a
-      uses: crazy-max/ghaction-github-pages@v2.6.0
+      # uses: peaceiris/actions-gh-pages@bbdfb200618d235585ad98e965f4aafc39b4c501
+      uses: peaceiris/actions-gh-pages@v3.7.3
 
