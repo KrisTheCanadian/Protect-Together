@@ -385,3 +385,5 @@ dist
 ./vscode
 ./vscode/*
 src/test/__snapshots__/
+
+.firebase/
