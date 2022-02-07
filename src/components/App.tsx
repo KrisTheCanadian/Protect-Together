@@ -1,47 +1,33 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import '../utils/styles/App.css';
-
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyD0r8VtI_bEtw0h92MwWdSpOPw37SpoVMY',
-  authDomain: 'soen-390-ba781.firebaseapp.com',
-  projectId: 'soen-390-ba781',
-  storageBucket: 'soen-390-ba781.appspot.com',
-  messagingSenderId: '524325710222',
-  appId: '1:524325710222:web:6e38b0f6e3a5bf50371cdf',
-  measurementId: 'G-FBCJFVK0VQ',
-};
-
-// Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
-
-const analytics = getAnalytics(app);
+import '../static/style/App.css';
+import { ThemeProvider } from '@mui/material/styles';
+import {
+  Route,
+  Routes,
+} from 'react-router-dom';
+import RegisterPage from '../pages/auth/register';
+import LoginPage from '../pages/auth/login';
+import theme from '../static/style/theme';
+import StyleGuide from './StyleGuide';
+import AuthRequired from './auth';
+import Dashboard from '../pages/auth/dashboard';
+import ChangePassword from '../pages/auth/change';
+import ForgotPassword from '../pages/auth/forgot';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/Register" element={<RegisterPage />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/dashboard" element={<AuthRequired component={<Dashboard />} />} />
+          <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
+          <Route path="/styleguide" element={<StyleGuide />} />
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
 }
 

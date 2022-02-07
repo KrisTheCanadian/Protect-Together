@@ -5,7 +5,7 @@ import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
-import App from '../components/App';
+import LogoutPage from '../pages/auth/logout';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
@@ -23,10 +23,10 @@ jest.mock('firebase/compat/app', () => {
   };
 });
 
-test('App Renders', () => {
+test('Logout Renders', () => {
   const component = renderer.create(
     <BrowserRouter>
-      <App />
+      <LogoutPage />
     </BrowserRouter>,
   );
 });
