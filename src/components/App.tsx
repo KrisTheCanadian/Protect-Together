@@ -19,12 +19,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <div>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/Register" element={<RegisterPage />} />
-          <Route path="/forgot" element={<ForgotPassword />} />
-          <Route path="/dashboard" element={<AuthRequired component={<Dashboard />} />} />
-          <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
-          <Route path="/styleguide" element={<StyleGuide />} />
+          <Route path="/" element={<LoginPage />}>
+            <Route path="/Register" element={<RegisterPage />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/dashboard" element={<AuthRequired component={<Dashboard />} />} />
+            <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
+            <Route path="/styleguide" element={<StyleGuide />} />
+          </Route>
         </Routes>
       </div>
     </ThemeProvider>
