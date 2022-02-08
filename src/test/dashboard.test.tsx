@@ -30,7 +30,7 @@ afterEach(cleanup);
 
 test('Dashboard is rendering correctly', () => {
   const { getByText } = render(<BrowserRouter><Dashboard /></BrowserRouter>);
-  expect(getByText('Dashboard Page.')).toBeTruthy();
+  expect(getByText('Welcome Dr. Who')).toBeTruthy();
 });
 
 test('Dashboard is rendering correctly', () => {
