@@ -1,32 +1,32 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
-import { fireEvent } from '@testing-library/react';
 import firebase from 'firebase/compat';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
-import App from '../components/App';
+import LoginPage from '../pages/auth/login';
 
-jest.mock('firebase/compat/app', () => {
-  const app = jest.requireActual('firebase/compat/app');
+// jest.mock('firebase/compat/auth');
+jest.mock('firebase/compat', () => {
+  const auth = jest.fn().mockImplementation(() => ({
+    GoogleAuthProvider: jest.fn(),
+  }));
 
-  const auth = () => null;
-  auth.GoogleAuthProvider = jest.fn();
+  // const mAuth = { signInWithRedirect: jest.fn() };
 
+  // @ts-ignore
+  // auth.GoogleAuthProvider = jest.fn();
+  // @ts-ignore
+
+  // auth.Auth = jest.fn(() => mAuth);
   return {
-    __esModule: true,
-    ...app,
-    default: {
-      auth,
-      initializeApp: jest.fn(),
-    },
+    __esModule: true, // this property makes it work
+    default: 'firebase',
+    auth,
   };
 });
 
-test('App Renders', () => {
-  const component = renderer.create(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
+test('Link changes the class when hovered', () => {
+  const component = renderer.create(<LoginPage />);
+  const tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });

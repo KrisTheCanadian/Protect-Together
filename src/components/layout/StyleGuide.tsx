@@ -4,7 +4,7 @@ import {
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
-import codeTheme from '../static/codeTheme';
+import codeTheme from '../../static/codeTheme';
 
 function StyleGuide() {
   const theme = useTheme();
@@ -64,7 +64,7 @@ function StyleGuide() {
         <Box sx={boxStyle}>
           <Button variant="contained" color="warning">Warning Button</Button>
           <SyntaxHighlighter language="jsx" style={codeTheme}>
-            {'<Button variant="contained" color="info">Info Button</Button>'}
+            {'<Button variant="contained" color="warning">Warning Button</Button>'}
           </SyntaxHighlighter>
 
         </Box>
@@ -200,7 +200,7 @@ function StyleGuide() {
             </Grid>
             <Grid item xs={12}>
               <SyntaxHighlighter language="jsx" style={codeTheme}>
-                const theme = useTheme(); `\nsecond`
+                const theme = useTheme();
               </SyntaxHighlighter>
               <SyntaxHighlighter language="jsx" style={codeTheme}>
                 theme.palette.warning.contrastText

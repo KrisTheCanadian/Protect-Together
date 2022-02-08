@@ -22,7 +22,6 @@ function LoginPage() {
     if (error !== '') setError('');
 
     setAuthenticating(true);
-
     auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         navigate('/dashboard');

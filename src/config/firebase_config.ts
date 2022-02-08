@@ -22,4 +22,5 @@ export const Providers = {
 };
 
 export const auth = firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 export default Firebase;
