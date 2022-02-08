@@ -10,7 +10,9 @@ import Dashboard from '../pages/auth/dashboard';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
-  const auth = () => jest.fn();
+  const auth = () => ({
+    onAuthStateChanged: () => new Promise<void>((resolve) => resolve()),
+  });
   auth.GoogleAuthProvider = jest.fn();
   auth.signInWithEmailAndPassword = jest.fn();
 
