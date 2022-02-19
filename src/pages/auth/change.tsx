@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { auth } from '../../config/firebase_config';
 
 function ChangePassword() {
@@ -32,9 +32,11 @@ function ChangePassword() {
       });
   };
 
-  if (auth.currentUser?.providerData[0]?.providerId !== 'password') {
-    navigate('/');
-  }
+  useEffect(() => {
+    if (auth.currentUser?.providerData[0]?.providerId !== 'password') {
+      navigate('/');
+    }
+  });
 
   return (
     <Grid

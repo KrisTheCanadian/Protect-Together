@@ -12,7 +12,6 @@ const theme = createTheme({
       textTransform: 'none',
     },
   },
-  shadows: Array(25).fill('none') as Shadows,
 
   palette: {
     primary: {

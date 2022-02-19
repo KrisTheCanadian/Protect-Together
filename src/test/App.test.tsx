@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
 import { fireEvent } from '@testing-library/react';
@@ -10,7 +11,10 @@ import App from '../components/App';
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
 
-  const auth = () => null;
+  const auth = () => ({
+    onAuthStateChanged: jest.fn(),
+    signInWithEmailAndPassword: (args : any) => new Promise<void>((resolve) => resolve()),
+  });
   auth.GoogleAuthProvider = jest.fn();
 
   return {
