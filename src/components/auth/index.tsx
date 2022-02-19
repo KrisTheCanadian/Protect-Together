@@ -18,7 +18,8 @@ function onAuthStateChange(callback : any) {
 }
 
 const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
-  const [user, setUser] = useState({ loggedIn: false }); useEffect(() => {
+  const [user, setUser] = useState({ loggedIn: false });
+  useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
     return () => {
       unsubscribe();

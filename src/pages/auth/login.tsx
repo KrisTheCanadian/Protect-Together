@@ -3,7 +3,7 @@ import {
   Avatar,
   Box,
   Button,
-  Grid, Link, TextField, Typography,
+  Grid, Link, TextField, Typography, ButtonGroup,
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,8 @@ function LoginPage() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [patientTab, setPatientTab] = useState<boolean>(true);
+  const [staffTab, setStaffTab] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -31,6 +33,13 @@ function LoginPage() {
         setError('Login Failed: Your email or password is incorrect');
       });
   };
+
+  auth.onAuthStateChanged((user: any) => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  });
+
   return (
     <Grid
       container
@@ -41,18 +50,43 @@ function LoginPage() {
       style={{ minHeight: '100vh' }}
     >
       <Box
-        boxShadow={6}
         p={3}
         sx={{
+          bgcolor: 'secondary.main',
+          borderRadius: 2,
+          boxShadow: 6,
           marginTop: 8,
+          paddingTop: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+        <ButtonGroup
+          orientation="horizontal"
+          fullWidth
+          size="large"
+          sx={{ mb: 3 }}
+        >
+          <Button
+            variant="text"
+            color="primary"
+            sx={{ borderTop: patientTab ? 1 : 0, bgcolor: patientTab ? 'secondary.main' : '#f5f7fa' }}
+            onClick={() => { setStaffTab(false); setPatientTab(true); }}
+          >
+            Patient Login
+          </Button>
+          <Button
+            variant="text"
+            color="primary"
+            sx={{ borderTop: staffTab ? 1 : 0, bgcolor: staffTab ? 'secondary.main' : '#f5f7fa' }}
+            onClick={() => { setStaffTab(true); setPatientTab(false); }}
+          >
+            Staff Login
+          </Button>
+        </ButtonGroup>
         <Typography component="h1" variant="h5">
-          Sign in
+          Welcome
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
