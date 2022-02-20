@@ -11,6 +11,7 @@ import RegisterPage from '../pages/auth/register';
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
   const auth = () => jest.fn();
+  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
   auth.GoogleAuthProvider = jest.fn();
   auth.signInWithEmailAndPassword = jest.fn();
 
@@ -20,6 +21,7 @@ jest.mock('firebase/compat/app', () => {
     default: {
       auth,
       initializeApp: jest.fn(),
+      firestore,
     },
   };
 });
@@ -28,7 +30,8 @@ afterEach(cleanup);
 
 test('Dashboard is not shown when user is not logged in', () => {
   const { getByText } = render(<BrowserRouter><RegisterPage /></BrowserRouter>);
-  expect(getByText('Sign Up')).toBeTruthy();
+  expect(getByText('Getting Started')).toBeTruthy();
+  expect(getByText('Already have an account? Sign in')).toBeTruthy();
   expect(getByText('First Name')).toBeTruthy();
   expect(getByText('Last Name')).toBeTruthy();
   expect(getByText('Email Address')).toBeTruthy();

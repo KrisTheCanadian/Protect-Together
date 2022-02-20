@@ -1,0 +1,7 @@
+# configuration related to pull request comments
+coverage:
+  range: 40..90 # coverage lower than 50 is red, higher than 90 green, between color code
+
+  status:
+    project: off
+    patch: off

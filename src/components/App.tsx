@@ -25,7 +25,7 @@ function App() {
         <LayoutContext.Provider value={{ open, setOpen }}>
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/Register" element={<RegisterPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/dashboard" element={<AuthRequired component={<Dashboard />} />} />
             <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />

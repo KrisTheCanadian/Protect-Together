@@ -9,6 +9,7 @@ import LogoutPage from '../pages/auth/logout';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
+  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
 
   const auth = () => null;
   auth.GoogleAuthProvider = jest.fn();
@@ -19,6 +20,7 @@ jest.mock('firebase/compat/app', () => {
     default: {
       auth,
       initializeApp: jest.fn(),
+      firestore,
     },
   };
 });
