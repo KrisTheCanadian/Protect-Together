@@ -14,6 +14,7 @@ jest.mock('firebase/compat/app', () => {
   const auth = () => jest.fn();
   auth.GoogleAuthProvider = jest.fn();
   auth.currentUser = jest.fn();
+  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
 
   return {
     __esModule: true,
@@ -21,6 +22,7 @@ jest.mock('firebase/compat/app', () => {
     default: {
       auth,
       initializeApp: jest.fn(),
+      firestore,
     },
   };
 });
