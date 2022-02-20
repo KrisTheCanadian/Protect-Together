@@ -11,3 +11,4 @@ coverage:
     # do not run coverage on patch nor changes
     patch: no
     changes: no
+    
