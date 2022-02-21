@@ -11,7 +11,6 @@ import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { auth, firestore } from '../../config/firebase_config';
-import NotFound from '../NotFound';
 import Login from './login';
 
 function RegisterPage() {

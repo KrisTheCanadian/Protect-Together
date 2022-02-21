@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Navigate, Route, useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase_config';
 import NotFound from '../../pages/NotFound';
 
@@ -27,9 +27,7 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
   }, []);
 
   if (!user.loggedIn) {
-    return (
-      <NotFound />
-    );
+    return <NotFound />;
   }
 
   return (

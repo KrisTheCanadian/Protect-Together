@@ -4,7 +4,10 @@ import Drawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 import { useLayoutContext } from './LayoutContext';
+import { auth } from '../../config/firebase_config';
 
 const drawerWidth = 240;
 type Props = {
@@ -12,6 +15,7 @@ type Props = {
 };
 export default function SideBar({ children }: Props) {
   const { open, setOpen } = useLayoutContext();
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -35,8 +39,11 @@ export default function SideBar({ children }: Props) {
     </div>
   );
 
-  return (
+  const logout = () => {
+    auth.signOut().then(() => navigate('/'));
+  };
 
+  return (
     <Box
       component="nav"
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -66,6 +73,7 @@ export default function SideBar({ children }: Props) {
         open
       >
         {drawer}
+        <Button onClick={logout}>Logout</Button>
       </Drawer>
     </Box>
 
