@@ -369,7 +369,14 @@ function RegisterPage() {
                       color="primary"
                     />
                   )}
-                  label="I agree with the terms and condition."
+                  label={
+                    (
+                      <div>
+                        <span>I accept the </span>
+                        <a href="https://docs.google.com/document/d/1XHzcxyaniaQsB0SlbwQxKiL1x-9D-5CkZJhnhTO3b0E/edit?usp=sharing">terms of use and privacy policy</a>
+                      </div>
+                    )
+                    }
                 />
               </Grid>
             </Grid>
