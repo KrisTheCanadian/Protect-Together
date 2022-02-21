@@ -16,6 +16,7 @@ import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
 import Layout from './layout/Layout';
 import { LayoutContext } from './layout/LayoutContext';
+import AdminCreateAccount from '../pages/auth/admincreateaccount';
 
 function App() {
   const [open, setOpen] = React.useState(false);
@@ -31,6 +32,7 @@ function App() {
             <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
             <Route path="/styleguide" element={<StyleGuide />} />
             <Route path="/layout" element={<Layout />} />
+            <Route path="/admincreateaccount" element={<AdminCreateAccount />} />
           </Routes>
         </LayoutContext.Provider>
       </div>
