@@ -373,7 +373,7 @@ function RegisterPage() {
                     (
                       <div>
                         <span>I accept the </span>
-                        <a href="https://docs.google.com/document/d/1XHzcxyaniaQsB0SlbwQxKiL1x-9D-5CkZJhnhTO3b0E/edit?usp=sharing">terms of use and privacy policy</a>
+                        <a href="shorturl.at/csP36">terms of use and privacy policy</a>
                       </div>
                     )
                     }
