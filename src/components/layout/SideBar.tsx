@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { useLayoutContext } from './LayoutContext';
 import { auth } from '../../config/firebase_config';
+import { useLayoutContext } from '../../context/LayoutContext';
 
 const drawerWidth = 240;
 type Props = {
-  children: JSX.Element[] | JSX.Element,
+  children: JSX.Element[] | JSX.Element;
 };
 export default function SideBar({ children }: Props) {
   const { open, setOpen } = useLayoutContext();
@@ -29,11 +29,13 @@ export default function SideBar({ children }: Props) {
           display: 'flex',
         }}
       >
-        <SentimentSatisfiedAltIcon color="primary" style={{ marginRight: '5px', fontSize: '30px' }} />
+        <SentimentSatisfiedAltIcon
+          color="primary"
+          style={{ marginRight: '5px', fontSize: '30px' }}
+        />
         <Typography variant="h6" noWrap component="div">
           Protect Together
         </Typography>
-
       </Toolbar>
       {children}
     </div>
@@ -76,6 +78,5 @@ export default function SideBar({ children }: Props) {
         <Button onClick={logout}>Logout</Button>
       </Drawer>
     </Box>
-
   );
 }

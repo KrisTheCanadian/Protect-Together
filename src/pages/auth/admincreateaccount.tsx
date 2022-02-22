@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import {
-  Alert, Avatar, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select,
-  TextField, Typography,
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from '@mui/material';
 
 function AdminCreateAccount() {
@@ -40,9 +49,13 @@ function AdminCreateAccount() {
             width: '25%',
           }}
         >
-          <Avatar sx={{
-            m: 1, bgcolor: 'primary.main', width: 48, height: 48,
-          }}
+          <Avatar
+            sx={{
+              m: 1,
+              bgcolor: 'primary.main',
+              width: 48,
+              height: 48,
+            }}
           />
           <Typography component="h1" variant="h4">
             Create Account

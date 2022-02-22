@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useLayoutContext } from './LayoutContext';
+import { useLayoutContext } from '../../context/LayoutContext';
 
 const drawerWidth = 240;
 type Props = {
