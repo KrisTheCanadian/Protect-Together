@@ -18,6 +18,8 @@
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
+    "no-console": "off",
+    "react/jsx-no-constructed-context-values": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",   
     "@typescript-eslint/no-use-before-define": ["error"],
@@ -44,7 +46,8 @@
     "@typescript-eslint/no-empty-interface": "off",
     "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/no-unstable-nested-components": "off"
+    "react/no-unstable-nested-components": "off",
+    "react/destructuring-assignment": "off"
   },
   "settings": {
     "import/resolver": {
