@@ -31,7 +31,7 @@ const style = {
   p: 4,
 };
 
-function AdminDashboard() {
+function MedicalDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -41,9 +41,9 @@ function AdminDashboard() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Header title={`Welcome ${state.firstName}`} subtitle="Track and manage staff">
+      <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
         <Button variant="contained" color="info" onClick={handleOpen}>
-          Add Account
+          View Apointments
         </Button>
       </Header>
       <SideBar>
@@ -68,10 +68,10 @@ function AdminDashboard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AdminCreateAccount />
+          apointments
         </Box>
       </Modal>
     </Box>
   );
 }
-export default AdminDashboard;
+export default MedicalDashboard;

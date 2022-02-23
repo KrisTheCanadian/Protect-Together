@@ -8,6 +8,10 @@ const theme = createTheme({
     button: {
       textTransform: 'none',
     },
+    subtitle1: {
+      color: 'grey',
+      fontWeight: 400,
+    },
   },
 
   palette: {

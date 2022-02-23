@@ -19,6 +19,7 @@
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
     "no-console": "off",
+    "react/require-default-props": "off",
     "react/jsx-no-constructed-context-values": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",   
