@@ -8,7 +8,8 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { auth } from '../../config/firebase_config';
+import { doc } from 'firebase/firestore';
+import { auth, firestore } from '../../config/firebase_config';
 
 function LoginPage() {
   const [authenticating, setAuthenticating] = useState<boolean>(false);
@@ -26,7 +27,11 @@ function LoginPage() {
     setAuthenticating(true);
 
     auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(async (data) => {
+        const user = (await firestore.collection('users').doc(data.user?.uid).get()).data();
+        console.log('current user');
+        console.log(user);
+
         navigate('/dashboard');
       }).catch(() => {
         setAuthenticating(false);
