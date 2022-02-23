@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
 import { cleanup, fireEvent, render } from '@testing-library/react';
@@ -5,7 +6,6 @@ import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../components/auth';
-import { auth } from '../config/firebase_config';
 import Dashboard from '../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
@@ -29,11 +29,6 @@ jest.mock('firebase/compat/app', () => {
 });
 
 afterEach(cleanup);
-
-test('Dashboard is rendering correctly', () => {
-  const { getByText } = render(<BrowserRouter><Dashboard /></BrowserRouter>);
-  expect(getByText('Welcome Dr. Who')).toBeTruthy();
-});
 
 test('Dashboard is rendering correctly', () => {
   const { getByText } = render(
