@@ -370,12 +370,11 @@ function RegisterPage() {
                     />
                   )}
                   label={
-                    (
-                      <div>
-                        <span>I accept the </span>
-                        <a href="shorturl.at/csP36">terms of use and privacy policy</a>
-                      </div>
-                    )
+                  (
+                    <Box>
+                      <Link href="https://shorturl.at/ghltJ" target="_blank">I accept the privacy policy</Link>
+                    </Box>
+                  )
                     }
                 />
               </Grid>
