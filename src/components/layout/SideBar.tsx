@@ -1,11 +1,9 @@
+import {
+  Button, Typography, Toolbar, Drawer, Box,
+} from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
 import { auth } from '../../config/firebase_config';
 import { useLayoutContext } from '../../context/LayoutContext';
 

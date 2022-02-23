@@ -1,14 +1,8 @@
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import { Button } from '@mui/material';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
+import {
+  Button, Box, CssBaseline, Divider, List, ListItem, ListItemIcon, ListItemText, Typography,
+} from '@mui/material';
 import * as React from 'react';
 import Header from './Header';
 import MainContent from './MainContent';

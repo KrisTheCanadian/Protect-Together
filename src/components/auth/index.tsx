@@ -23,7 +23,7 @@ function onAuthStateChange(callback: any) {
 function getUserId() {
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged((user: any) => {
-      resolve(user.uid);
+      if (user) resolve(user.uid);
     });
   });
 }
@@ -31,18 +31,20 @@ function getUserId() {
 const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
   const [user, setUser] = useState({ loggedIn: false });
   const { state, update } = React.useContext(UserContext);
-  console.log('im in the component, chilling here');
+
   useEffect(() => {
-    console.log('im chilling in the useeffect');
     const unsubscribe = onAuthStateChange(setUser);
 
     // retrieve user data when we have id
     getUserId().then((id) => {
       const unsub = onSnapshot(doc(firestore, 'users', `${id}`), (docu) => {
-        console.log('Current data: ', docu.data());
         const data = docu.data();
         if (data) {
-          update({ firstName: data.firstName });
+          update({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            role: data.role,
+          });
         }
       });
     });

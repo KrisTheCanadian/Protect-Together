@@ -1,16 +1,15 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import AppBar from '@mui/material/AppBar';
-import IconButton from '@mui/material/IconButton';
-import { useTheme } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import {
+  AppBar, IconButton, Toolbar, Typography,
+} from '@mui/material';
 import * as React from 'react';
+import { useTheme } from '@mui/material/styles';
 import { useLayoutContext } from '../../context/LayoutContext';
 
 const drawerWidth = 240;
 type Props = {
-  title: string,
-  children: JSX.Element[] | JSX.Element,
+  title: string;
+  children: JSX.Element[] | JSX.Element;
 };
 export default function Header({ title, children }: Props) {
   const theme = useTheme();
@@ -21,7 +20,6 @@ export default function Header({ title, children }: Props) {
   };
 
   return (
-
     <AppBar
       position="fixed"
       sx={{
@@ -30,9 +28,12 @@ export default function Header({ title, children }: Props) {
         minHeight: '88px',
         display: 'flex',
         justifyContent: 'center',
-
+        boxShadow: 'none',
       }}
-      style={{ background: theme.palette.background.default, color: theme.palette.common.black }}
+      style={{
+        background: theme.palette.background.default,
+        color: theme.palette.common.black,
+      }}
     >
       <Toolbar>
         <IconButton
@@ -47,11 +48,8 @@ export default function Header({ title, children }: Props) {
         <Typography variant="h6" noWrap component="div">
           {title}
         </Typography>
-        <div style={{ marginLeft: 'auto' }}>
-          {children}
-        </div>
+        <div style={{ marginLeft: 'auto' }}>{children}</div>
       </Toolbar>
     </AppBar>
-
   );
 }
