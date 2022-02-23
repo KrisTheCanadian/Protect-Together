@@ -51,7 +51,6 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
     return () => {
       unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!user.loggedIn) {

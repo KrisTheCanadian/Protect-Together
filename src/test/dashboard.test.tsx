@@ -1,8 +1,7 @@
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
-import { cleanup, fireEvent, render } from '@testing-library/react';
-import firebase from 'firebase/compat';
+import { cleanup, render } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../components/auth';
@@ -16,7 +15,6 @@ jest.mock('firebase/compat/app', () => {
   });
   auth.GoogleAuthProvider = jest.fn();
   auth.signInWithEmailAndPassword = jest.fn();
-
   return {
     __esModule: true,
     ...app,
@@ -29,6 +27,12 @@ jest.mock('firebase/compat/app', () => {
 });
 
 afterEach(cleanup);
+/*
+test('Dashboard is rendering correctly', () => {
+  const { getByText } = render(<BrowserRouter><Dashboard /></BrowserRouter>);
+  expect(getByText('Welcome Dr. Who')).toBeTruthy();
+});
+*/
 
 test('Dashboard is rendering correctly', () => {
   const { getByText } = render(
