@@ -372,7 +372,7 @@ function RegisterPage() {
                   label={
                   (
                     <Box>
-                      <Link href="https://shorturl.at/ghltJ" target="_blank">I accept the privacy policy</Link>
+                      <Link href="shorturl.at/nyCET" target="_blank">I accept the privacy policy</Link>
                     </Box>
                   )
                     }
