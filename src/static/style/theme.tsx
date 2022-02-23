@@ -4,10 +4,7 @@ import { Shadows } from '@mui/material/styles/shadows';
 //  Theme for material UI
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Roboto',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['Roboto', 'sans-serif'].join(','),
     button: {
       textTransform: 'none',
     },
@@ -18,9 +15,9 @@ const theme = createTheme({
       main: '#434ce7',
     },
     info: {
-      main: '#e4fff3',
-      contrastText: '#0c9259',
-      dark: '#c4ffe5',
+      main: '#24ca80',
+      contrastText: 'white',
+      dark: '#22b573',
     },
     secondary: {
       main: '#ebeefd',
@@ -36,7 +33,21 @@ const theme = createTheme({
       default: '#f5f7fa',
     },
   },
-
+  // buttons
+  components: {
+    // Name of the component
+    MuiButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;
