@@ -12,7 +12,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { auth, firestore } from '../../config/firebase_config';
+import generatePassword from '../../utils/generatePassword.js';
 
+// form state objects
 function AdminCreateAccount() {
   const [role, setRole] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -20,6 +23,41 @@ function AdminCreateAccount() {
   const [lastName, setLastName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  // save user to database
+  const addUserInfo = async (userCreds: any) => {
+    const uid = userCreds?.user?.uid;
+    const users = firestore.collection('users');
+    if (uid === undefined) {
+      setError('An error has occured. Please try again later.');
+    }
+    await users.doc(uid).set({
+      UID: uid,
+      firstName,
+      lastName,
+      email,
+      phone: phoneNumber,
+      role,
+    }).then(() => {
+      auth.sendPasswordResetEmail(email);
+    });
+  };
+
+  const signUpWithEmailAndPassword = () => {
+    const password = generatePassword();
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCreds) => {
+        addUserInfo(userCreds);
+      }).catch((err: { code: string | string[]; }) => {
+        if (err.code.includes('auth/weak-password')) {
+          setError('Please enter a stronger password.');
+        } else if (err.code.includes('auth/email-already-in-use')) {
+          setError('Email already in use.');
+        } else {
+          setError('Unable to register. Please try again later.');
+        }
+      });
+  };
 
   return (
     <Box
@@ -34,19 +72,20 @@ function AdminCreateAccount() {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: '100vh' }}
+
       >
         <Box
-          p={3}
+          p={16}
           sx={{
             bgcolor: 'primary.contrastText',
             borderRadius: 2,
             boxShadow: 6,
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            width: '25%',
+            padding: 10,
+
           }}
         >
           <Avatar
@@ -74,9 +113,9 @@ function AdminCreateAccount() {
                   onChange={(event) => setRole(event.target.value)}
                   autoFocus
                 >
-                  <MenuItem>Admin</MenuItem>
-                  <MenuItem>Medical Professional</MenuItem>
-                  <MenuItem>Third Party</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="medical">Medical Professional</MenuItem>
+                  <MenuItem value="thirdParty"> Third Party</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -128,7 +167,7 @@ function AdminCreateAccount() {
           </Grid>
           <Button
             type="button"
-            // onClick={() => signUpWithEmailAndPassword()}
+            onClick={() => signUpWithEmailAndPassword()}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -141,4 +180,5 @@ function AdminCreateAccount() {
     </Box>
   );
 }
+
 export default AdminCreateAccount;

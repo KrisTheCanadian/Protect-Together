@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../components/auth';
 import { auth } from '../config/firebase_config';
-import Dashboard from '../pages/auth/dashboard';
+import Dashboard from '../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
