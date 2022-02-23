@@ -31,9 +31,9 @@ const style = {
   p: 4,
 };
 
-function AdminDashboard() {
+function PatientDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
-  const handleOpen = () => setModalOpen(true);
+  const handleOpenQuiz = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
   const { state, update } = React.useContext(UserContext);
@@ -41,9 +41,9 @@ function AdminDashboard() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Header title={`Welcome ${state.firstName}`} subtitle="Track and manage staff">
-        <Button variant="contained" color="info" onClick={handleOpen}>
-          Add Account
+      <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
+        <Button variant="contained" color="primary" onClick={handleOpenQuiz}>
+          Ask for Help
         </Button>
       </Header>
       <SideBar>
@@ -68,10 +68,10 @@ function AdminDashboard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AdminCreateAccount />
+          quiz
         </Box>
       </Modal>
     </Box>
   );
 }
-export default AdminDashboard;
+export default PatientDashboard;

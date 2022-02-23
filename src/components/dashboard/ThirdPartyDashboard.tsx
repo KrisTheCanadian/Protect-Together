@@ -31,7 +31,7 @@ const style = {
   p: 4,
 };
 
-function AdminDashboard() {
+function ThirdPartyDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -41,11 +41,7 @@ function AdminDashboard() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Header title={`Welcome ${state.firstName}`} subtitle="Track and manage staff">
-        <Button variant="contained" color="info" onClick={handleOpen}>
-          Add Account
-        </Button>
-      </Header>
+      <Header title={`Welcome ${state.lastName}`} subtitle="Track covid cases around Canada" />
       <SideBar>
         <List>
           <ListItem button key="Dashboard">
@@ -74,4 +70,4 @@ function AdminDashboard() {
     </Box>
   );
 }
-export default AdminDashboard;
+export default ThirdPartyDashboard;

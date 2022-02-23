@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import {
-  AppBar, IconButton, Toolbar, Typography,
+  AppBar, Box, IconButton, Toolbar, Typography,
 } from '@mui/material';
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -9,9 +9,11 @@ import { useLayoutContext } from '../../context/LayoutContext';
 const drawerWidth = 240;
 type Props = {
   title: string;
-  children: JSX.Element[] | JSX.Element;
+  subtitle?: string;
+  children?: JSX.Element[] | JSX.Element;
 };
-export default function Header({ title, children }: Props) {
+
+export default function Header({ title, subtitle, children }: Props) {
   const theme = useTheme();
   const { open, setOpen } = useLayoutContext();
 
@@ -35,7 +37,7 @@ export default function Header({ title, children }: Props) {
         color: theme.palette.common.black,
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ alignItems: 'flex-start', paddingTop: '26px' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -45,9 +47,18 @@ export default function Header({ title, children }: Props) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          {title}
-        </Typography>
+        <Box>
+          <Box>
+            <Typography variant="h6" noWrap component="div">
+              {title}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" noWrap component="div">
+              {subtitle || ''}
+            </Typography>
+          </Box>
+        </Box>
         <div style={{ marginLeft: 'auto' }}>{children}</div>
       </Toolbar>
     </AppBar>
