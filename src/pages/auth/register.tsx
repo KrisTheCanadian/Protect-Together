@@ -369,7 +369,13 @@ function RegisterPage() {
                       color="primary"
                     />
                   )}
-                  label="I agree with the terms and condition."
+                  label={
+                  (
+                    <Box>
+                      <Link href="shorturl.at/nyCET" target="_blank">I accept the privacy policy</Link>
+                    </Box>
+                  )
+                    }
                 />
               </Grid>
             </Grid>
