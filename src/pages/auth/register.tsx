@@ -220,7 +220,7 @@ function RegisterPage() {
                 </Button>
               )}
               nextButton={(
-                <Button size="small" onClick={handleNext}>
+                <Button size="small" id="next-1" onClick={handleNext}>
                   Next
                   <KeyboardArrowRight />
                 </Button>
@@ -391,7 +391,7 @@ function RegisterPage() {
                 </Button>
               )}
               nextButton={(
-                <Button size="small" onClick={signUpWithEmailAndPassword}>
+                <Button size="small" id="next-1" onClick={signUpWithEmailAndPassword}>
                   Next
                   <KeyboardArrowRight />
                 </Button>

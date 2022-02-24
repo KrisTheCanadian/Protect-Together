@@ -4,7 +4,7 @@ import HeaderSymptoms from '../../components/formLayout/HeaderSymptoms';
 import DrawerSymptoms from '../../components/formLayout/DrawerSymptoms';
 import ResponseLayout from '../../components/formLayout/ResponseLayout';
 
-export default function SymptomsForm() {
+export default function ResponseForm() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('md'));
   const matches1 = useMediaQuery(theme.breakpoints.down('sm'));

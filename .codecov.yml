@@ -1,7 +1,26 @@
+ignore:
+  - "./src/index.tsx"  # Do not count index.tsx on coverage
+  - "./src/components/layout/StyleGuide.tsx"  # Do not count coding styles on coverage
+  - "./src/test/" # Do not count tests for coverage
+  - "./src/config/" # Do not count the config files for coverage
+  - "./functions/" # Do not include cloud functions template for code coverage
+  - "./coverage/" # Do not include coverage html on coverage
+  - "./build/" # Do not include build on coverage
+  - ".github/" # Do not include github configs on coverage
+  - ".firebase/" # Do not include firebase configs on coverage 
 # configuration related to pull request comments
 coverage:
   range: 40..90 # coverage lower than 50 is red, higher than 90 green, between color code
-
+  round: up
+  precision: 2
   status:
-    project: off
-    patch: off
+    project:
+      default:
+        informational: true
+        target: auto
+        # adjust accordingly based on how flaky your tests are
+        # this allows a 10% drop from the previous base commit coverage
+        threshold: 10%
+    patch:
+      default:
+        informational: true

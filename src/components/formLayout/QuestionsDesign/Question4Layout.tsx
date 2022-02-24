@@ -79,7 +79,7 @@ export default function Question4Layout() {
               minWidth: 0,
             }}
           >
-            Question 2
+            Question 4
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 3 }}>
             What is the severity of your cough?
