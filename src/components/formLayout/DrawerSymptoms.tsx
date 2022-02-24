@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Drawer,
@@ -10,7 +11,8 @@ import {
 
 const drawerWidth = 350;
 
-export default function DrawerSymptoms() {
+export default function DrawerSymptoms({ id }: any) {
+  const navigate = useNavigate();
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -41,7 +43,11 @@ export default function DrawerSymptoms() {
               minWidth: 0,
             }}
           >
-            Step 1 of 2
+            Step
+            {' '}
+            {id}
+            {' '}
+            of 2
           </Button>
         </Container>
         <Container>
@@ -53,10 +59,17 @@ export default function DrawerSymptoms() {
             }}
           >
             Covid-19 Assessment Test
-            <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
-              Answer a few quick questions to get a recommendation on what to do
-              next!
-            </Typography>
+            {id === '1' && (
+              <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                Answer a few quick questions to get a recommendation on what to do
+                next!
+              </Typography>
+            )}
+            {id === '2' && (
+              <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                Follow our recommendation!
+              </Typography>
+            )}
           </Typography>
         </Container>
         <Container>
@@ -68,6 +81,7 @@ export default function DrawerSymptoms() {
               bottom: 10,
               textAlign: 'center',
             }}
+            onClick={() => { navigate('/dashboard'); }}
           >
             Back to Home
           </Button>

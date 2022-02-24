@@ -12,11 +12,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { auth, firestore } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
 
+type Props = {
+  handleClose: any;
+};
 // form state objects
-function AdminCreateAccount() {
+function AdminCreateAccount({ handleClose }: Props) {
   const [role, setRole] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -167,7 +171,10 @@ function AdminCreateAccount() {
           </Grid>
           <Button
             type="button"
-            onClick={() => signUpWithEmailAndPassword()}
+            onClick={() => {
+              signUpWithEmailAndPassword();
+              handleClose();
+            }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

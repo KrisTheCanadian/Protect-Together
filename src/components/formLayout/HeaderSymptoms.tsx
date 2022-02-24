@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -9,7 +10,8 @@ import {
   CssBaseline,
 } from '@mui/material';
 
-export default function HeaderSymptoms() {
+export default function HeaderSymptoms({ id }: any) {
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <CssBaseline />
@@ -30,20 +32,34 @@ export default function HeaderSymptoms() {
                 minWidth: 0,
               }}
             >
-              Step 1 of 2
+              Step
+              {' '}
+              {id}
+              {' '}
+              of 2
             </Button>
             <Typography variant="h5" sx={{ marginRight: '3rem', marginTop: 1 }}>
               Covid-19 Assessment Test
-              <Typography sx={{ fontSize: '1rem' }}>
-                Answer a few quick questions to get a recommendation on what to
-                do next!
-              </Typography>
+              {id === '1' && (
+                <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                  Answer a few quick questions to get a recommendation on what to do
+                  next!
+                </Typography>
+              )}
+              {id === '2' && (
+                <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                  Follow our recommendation!
+                </Typography>
+              )}
             </Typography>
           </Container>
           <Button
             variant="contained"
             color="secondary"
             sx={{ marginLeft: 'auto' }}
+            onClick={() => {
+              navigate('/dashboard');
+            }}
           >
             Back to Home
           </Button>

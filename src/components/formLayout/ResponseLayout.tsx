@@ -13,7 +13,7 @@ const styles = {
   },
 };
 
-export default function ResponseLayout({ selection } : any) {
+export default function ResponseLayout({ selection }: any) {
   return (
     <div style={{ display: 'flex' }}>
       <Box
@@ -38,17 +38,21 @@ export default function ResponseLayout({ selection } : any) {
           <Container>
             <Typography
               variant="h4"
-              sx={{ marginTop: 1,
+              sx={{
+                marginTop: 1,
                 flexGrow: 1,
-                textAlign: 'center' }}
+                textAlign: 'center',
+              }}
             >
               {data[selection].title}
             </Typography>
             <Typography
               variant="subtitle1"
-              sx={{ marginTop: 1,
+              sx={{
+                marginTop: 1,
                 flexGrow: 1,
-                textAlign: 'center' }}
+                textAlign: 'center',
+              }}
             >
               {data[selection].subTitle}
             </Typography>

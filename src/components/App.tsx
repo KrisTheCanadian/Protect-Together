@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import '../static/style/App.css';
 
@@ -13,10 +13,8 @@ import AuthRequired from './auth';
 import Dashboard from '../pages/dashboard/dashboard';
 import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
-import SymptomsForm from '../pages/auth/symptomsForm/SymptomsForm';
-import ResponseForm from '../pages/auth/symptomsForm/ResponseForm';
-import Layout from './layout/Layout';
-import AdminCreateAccount from '../pages/auth/admincreateaccount';
+import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
+import ResponseForm from '../pages/symptomsForm/ResponseForm';
 
 import { LayoutContext } from '../context/LayoutContext';
 import { UserContext, UserProvider } from '../context/UserContext';
@@ -43,16 +41,9 @@ function App() {
                 element={<AuthRequired component={<ChangePassword />} />}
               />
               <Route path="/styleguide" element={<StyleGuide />} />
-              <Route path="/layout" element={<Layout />} />
-              <Route
-                path="/admincreateaccount"
-                element={<AdminCreateAccount />}
-              />
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
               <Route path="/responseForm" element={<AuthRequired component={<ResponseForm />} />} />
               <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
-              <Route path="/styleguide" element={<StyleGuide />} />
-              <Route path="/layout" element={<Layout />} />
             </Routes>
           </UserProvider>
         </div>

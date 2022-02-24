@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-export default function QuestionsLayout({ changeStatus, selection } : any) {
+export default function Question5Layout({ changeStatus, selection }: any) {
   const [ansYes, setAnsYes] = React.useState(false);
   const [buttonClicked, setButtonClicked] = React.useState(false);
   const [value, setValue] = React.useState(question[selection].value);

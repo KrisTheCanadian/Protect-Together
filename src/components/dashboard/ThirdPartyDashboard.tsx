@@ -41,7 +41,7 @@ function ThirdPartyDashboard() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Header title={`Welcome ${state.lastName}`} subtitle="Track covid cases around Canada" />
+      <Header title={`Welcome ${state.lastName}`} subtitle="Track Covid Cases around Canada" />
       <SideBar>
         <List>
           <ListItem button key="Dashboard">
@@ -64,7 +64,7 @@ function ThirdPartyDashboard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AdminCreateAccount />
+          <h1>ThirdParty Dashboard</h1>
         </Box>
       </Modal>
     </Box>

@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-export default function QuestionsLayout(props: any) {
+export default function Question1Layout(props: any) {
   const [ansYes, setAnsYes] = React.useState(false);
   const [buttonClicked, setButtonClicked] = React.useState(false);
   const [value, setValue] = React.useState('false');
@@ -62,7 +62,7 @@ export default function QuestionsLayout(props: any) {
           <List sx={{ marginBottom: 1 }}>
             <ListItem>
               <ListItemText>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ color: '#202020' }}>
                   <CircleIcon sx={{ fontSize: 'small' }} />
                   {' '}
                   Severe difficulty breathing (struggling to breathe or speaking in single words)
@@ -71,7 +71,7 @@ export default function QuestionsLayout(props: any) {
             </ListItem>
             <ListItem>
               <ListItemText>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ color: '#202020' }}>
                   <CircleIcon sx={{ fontSize: 'small' }} />
                   {' '}
                   Severe chest pain (constant tightness or crushing sensation)
@@ -80,7 +80,7 @@ export default function QuestionsLayout(props: any) {
             </ListItem>
             <ListItem>
               <ListItemText>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ color: '#202020' }}>
                   <CircleIcon sx={{ fontSize: 'small' }} />
                   {' '}
                   Losing consciousness

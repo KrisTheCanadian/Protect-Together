@@ -9,7 +9,7 @@ const styles = {
   },
 };
 
-export default function Question2Layout() {
+export default function Question4Layout() {
   const [ansOne, setAnsOne] = React.useState(false);
   const [ansTwo, setAnsTwo] = React.useState(false);
   const [ansThree, setAnsThree] = React.useState(false);

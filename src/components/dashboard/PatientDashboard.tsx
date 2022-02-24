@@ -14,6 +14,7 @@ import {
   Typography,
   Modal,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Header from '../layout/Header';
 import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
@@ -35,6 +36,7 @@ function PatientDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpenQuiz = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const navigate = useNavigate();
 
   const { state, update } = React.useContext(UserContext);
 
@@ -42,7 +44,7 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="primary" onClick={handleOpenQuiz}>
+        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>
           Ask for Help
         </Button>
       </Header>
