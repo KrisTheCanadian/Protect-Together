@@ -13,6 +13,8 @@ import AuthRequired from './auth';
 import Dashboard from '../pages/dashboard/dashboard';
 import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
+import SymptomsForm from '../pages/auth/symptomsForm/SymptomsForm';
+import ResponseForm from '../pages/auth/symptomsForm/ResponseForm';
 import Layout from './layout/Layout';
 import AdminCreateAccount from '../pages/auth/admincreateaccount';
 
@@ -46,6 +48,11 @@ function App() {
                 path="/admincreateaccount"
                 element={<AdminCreateAccount />}
               />
+            <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
+            <Route path="/responseForm" element={<AuthRequired component={<ResponseForm />} />} />
+            <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
+            <Route path="/styleguide" element={<StyleGuide />} />
+            <Route path="/layout" element={<Layout />} />
             </Routes>
           </UserProvider>
         </div>

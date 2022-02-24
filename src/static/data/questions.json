@@ -1,0 +1,26 @@
+[    
+    {
+      "id": 0,
+      "title": "Are you an individual who is moderately to severely immunocompromised?",
+      "number": "4",
+      "value": "5"
+  },
+  {
+    "id": 1,
+    "title": "Are you fully vaccincated agaisnt COVID-19?",
+    "number": "5",
+    "value": "6"
+  },
+  {
+    "id": 2,
+    "title": "Are you pregnant?",
+    "number": "6",
+    "value": "7"
+  },
+  {
+    "id": 3,
+    "title": "Did you return from travel outside of Canada in the past 14 days?",
+    "number": "7",
+    "value": "response2"
+  }
+]

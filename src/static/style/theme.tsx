@@ -1,6 +1,12 @@
 import { createTheme } from '@mui/material';
 import { Shadows } from '@mui/material/styles/shadows';
 
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    dashed: true;
+  }
+}
+
 //  Theme for material UI
 const theme = createTheme({
   typography: {
@@ -41,6 +47,14 @@ const theme = createTheme({
   components: {
     // Name of the component
     MuiButton: {
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            backgroundColor: '#ffff',
+          },
+        },
+      ],
       styleOverrides: {
         // Name of the slot
         root: {

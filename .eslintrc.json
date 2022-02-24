@@ -21,6 +21,7 @@
     "no-console": "off",
     "react/require-default-props": "off",
     "react/jsx-no-constructed-context-values": "off",
+    "object-curly-newline": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",   
     "@typescript-eslint/no-use-before-define": ["error"],
@@ -48,7 +49,8 @@
     "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-unstable-nested-components": "off",
-    "react/destructuring-assignment": "off"
+    "react/destructuring-assignment": "off",
+    "react/no-this-in-sfc":"off"
   },
   "settings": {
     "import/resolver": {
