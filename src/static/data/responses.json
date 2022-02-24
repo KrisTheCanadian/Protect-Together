@@ -1,0 +1,17 @@
+[    
+    {
+      "id": 0,
+      "title": "Please call 9-1-1 or go directly to your nearest emergency department.",
+      "subTitle": "These symptoms require emergency medical care. You should call 9-1-1 immediately, or go directly to your nearest emergency department."
+  },
+  {
+    "id": 1,
+    "title": "Monitor your symptoms.",
+    "subTitle": "Pay attention to your health and note if anything changes for 10 days. If you start to experience worsening symptoms, please retake this self-assessment form."
+  },
+  {
+    "id": 2,
+    "title": "You will be contacted by one of our doctors shortly.",
+    "subTitle": "Please self-isolate and take a COVID-19 test. Monitor your symptoms. Note that sometimes symptoms may suddenly worsen and require urgent medical care."
+  }
+  ]

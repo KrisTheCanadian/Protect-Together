@@ -68,7 +68,7 @@ function AdminDashboard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AdminCreateAccount />
+          <AdminCreateAccount handleClose={handleClose} />
         </Box>
       </Modal>
     </Box>
