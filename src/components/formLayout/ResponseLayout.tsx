@@ -44,7 +44,7 @@ export default function ResponseLayout({ selection }: any) {
                 textAlign: 'center',
               }}
             >
-              {data[selection].title}
+              {data[selection]?.title}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -54,7 +54,7 @@ export default function ResponseLayout({ selection }: any) {
                 textAlign: 'center',
               }}
             >
-              {data[selection].subTitle}
+              {data[selection]?.subTitle}
             </Typography>
           </Container>
 

@@ -5,6 +5,10 @@ import { cleanup, render } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../components/auth';
+import AdminDashboard from '../components/dashboard/AdminDashboard';
+import MedicalDashboard from '../components/dashboard/MedicalDashboard';
+import PatientDashboard from '../components/dashboard/PatientDashboard';
+import ThirdPartyDashboard from '../components/dashboard/ThirdPartyDashboard';
 import Dashboard from '../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
@@ -27,14 +31,28 @@ jest.mock('firebase/compat/app', () => {
 });
 
 afterEach(cleanup);
-/*
-test('Dashboard is rendering correctly', () => {
-  const { getByText } = render(<BrowserRouter><Dashboard /></BrowserRouter>);
-  expect(getByText('Welcome Dr. Who')).toBeTruthy();
-});
-*/
 
-test('Dashboard is rendering correctly', () => {
+test('Admin Dashboard is rendering', () => {
+  render(<BrowserRouter><AdminDashboard /></BrowserRouter>);
+});
+
+test('Thirdparty Dashboard is rendering', () => {
+  render(<BrowserRouter><ThirdPartyDashboard /></BrowserRouter>);
+});
+
+test('Medical Dashboard is rendering', () => {
+  render(<BrowserRouter><MedicalDashboard /></BrowserRouter>);
+});
+
+test('Patient Dashboard is rendering', () => {
+  render(<BrowserRouter><PatientDashboard /></BrowserRouter>);
+});
+
+test('Dashboard is rendering', () => {
+  render(<BrowserRouter><Dashboard /></BrowserRouter>);
+});
+
+test('AuthRequired is protecting dashboard correctly', () => {
   const { getByText } = render(
     <BrowserRouter>
       <Routes>

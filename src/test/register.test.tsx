@@ -1,11 +1,13 @@
+/* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import {
+  cleanup, fireEvent, queryByAttribute, render,
+} from '@testing-library/react';
 import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { auth } from '../config/firebase_config';
-import Dashboard from '../pages/dashboard/dashboard';
 import RegisterPage from '../pages/auth/register';
 
 jest.mock('firebase/compat/app', () => {
@@ -26,15 +28,30 @@ jest.mock('firebase/compat/app', () => {
   };
 });
 
+const getById = queryByAttribute.bind(null, 'id');
+
 afterEach(cleanup);
 
-test('Dashboard is not shown when user is not logged in', () => {
-  const { getByText } = render(<BrowserRouter><RegisterPage /></BrowserRouter>);
-  expect(getByText('Getting Started')).toBeTruthy();
-  expect(getByText('Already have an account? Sign in')).toBeTruthy();
-  expect(getByText('First Name')).toBeTruthy();
-  expect(getByText('Last Name')).toBeTruthy();
-  expect(getByText('Email Address')).toBeTruthy();
-  expect(getByText('Password')).toBeTruthy();
-  expect(getByText('Confirm Password')).toBeTruthy();
+test('Dashboard Test', async () => {
+  const component = render(<BrowserRouter><RegisterPage /></BrowserRouter>);
+  expect(component.getByText('Getting Started')).toBeTruthy();
+  expect(component.getByText('Already have an account? Sign in')).toBeTruthy();
+  expect(component.getByText('First Name')).toBeTruthy();
+  expect(component.getByText('Last Name')).toBeTruthy();
+  expect(component.getByText('Email Address')).toBeTruthy();
+  expect(component.getByText('Password')).toBeTruthy();
+  expect(component.getByText('Confirm Password')).toBeTruthy();
+
+  const button = getById(component.container, 'next-1');
+  fireEvent.click(button as HTMLElement);
+
+  expect(component.getByText('Health Information')).toBeTruthy();
+  expect(component.getByText('Date of Birth *')).toBeTruthy();
+  expect(component.getByLabelText('Weight')).toBeTruthy();
+  expect(component.getByText('Height *')).toBeTruthy();
+  expect(component.getByText('Sex')).toBeTruthy();
+  expect(component.getByText('Health Card Number *')).toBeTruthy();
+  expect(component.getByLabelText('Medical Conditions')).toBeTruthy();
+  expect(component.getByLabelText('Additional Notes')).toBeTruthy();
+  expect(component.getByText('I accept the privacy policy')).toBeTruthy();
 });

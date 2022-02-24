@@ -13,7 +13,7 @@ const styles = {
 export default function Question5Layout({ changeStatus, selection }: any) {
   const [ansYes, setAnsYes] = React.useState(false);
   const [buttonClicked, setButtonClicked] = React.useState(false);
-  const [value, setValue] = React.useState(question[selection].value);
+  const [value, setValue] = React.useState(question[selection]?.value);
 
   const handleClickYes = () => {
     setAnsYes(true);
@@ -61,10 +61,10 @@ export default function Question5Layout({ changeStatus, selection }: any) {
           >
             Question
             {' '}
-            {question[selection].number}
+            {question[selection]?.number}
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1 }}>
-            {question[selection].title}
+            {question[selection]?.title}
           </Typography>
           <Button
             onClick={handleClickYes}
