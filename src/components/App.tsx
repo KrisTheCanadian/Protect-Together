@@ -48,11 +48,11 @@ function App() {
                 path="/admincreateaccount"
                 element={<AdminCreateAccount />}
               />
-            <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
-            <Route path="/responseForm" element={<AuthRequired component={<ResponseForm />} />} />
-            <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
-            <Route path="/styleguide" element={<StyleGuide />} />
-            <Route path="/layout" element={<Layout />} />
+              <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
+              <Route path="/responseForm" element={<AuthRequired component={<ResponseForm />} />} />
+              <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
+              <Route path="/styleguide" element={<StyleGuide />} />
+              <Route path="/layout" element={<Layout />} />
             </Routes>
           </UserProvider>
         </div>
