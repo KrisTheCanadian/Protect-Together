@@ -19,6 +19,7 @@ import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import AdminCreateAccount from '../../pages/auth/admincreateaccount';
+import AdminTable from '../tables/AdminTable';
 
 const style = {
   position: 'absolute' as const,
@@ -39,7 +40,7 @@ function AdminDashboard() {
   const { state, update } = React.useContext(UserContext);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Track and manage staff">
         <Button variant="contained" color="info" onClick={handleOpen}>
@@ -58,7 +59,7 @@ function AdminDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Typography paragraph>{state.firstName}</Typography>
+        <AdminTable />
       </MainContent>
 
       <Modal

@@ -39,7 +39,7 @@ function MedicalDashboard() {
   const { state, update } = React.useContext(UserContext);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
         <Button variant="contained" color="info" onClick={handleOpen}>
