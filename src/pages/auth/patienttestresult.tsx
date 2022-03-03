@@ -17,90 +17,169 @@ function UpdateTestResult({ handleTestClose }: Props) {
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
   return (
-    <Box
+    <Grid
+      container
       sx={{
+        bgcolor: 'primary.contrastText',
+        borderRadius: 2,
+        boxShadow: 6,
         display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 10,
       }}
     >
       <Grid
         container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
       >
-        <Box
-          p={16}
+        <Grid
+          item
+          xs={6}
           sx={{
-            bgcolor: 'primary.contrastText',
-            borderRadius: 2,
-            boxShadow: 6,
-            marginTop: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: 10,
+            borderRadius: 4,
+            bgcolor: 'secondary.main',
+            p: 4,
           }}
         >
-          <Grid
-            item
-            xs={12}
-            sx={{
-              bgcolor: 'secondary.main',
-              p: 4,
-              mb: 2,
-            }}
-          >
-            <Typography variant="h5">
-              Which test did you take?
-            </Typography>
-            <FormControl>
-              <RadioGroup
-                value={testType}
-                onChange={(event) => setTestType(event.target.value)}
-              >
-                <FormControlLabel value="PCRTest" control={<Radio />} label="PCR Test" />
-                <FormControlLabel value="rapidAntigenTest" control={<Radio />} label="Rapid Antigen Test" />
-                <FormControlLabel value="antibodyTest" control={<Radio />} label="Antibody Test" />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              bgcolor: 'secondary.main',
-              p: 4,
-              mt: 2,
-            }}
-          >
-            <Typography variant="h5">
-              What was your result?
-            </Typography>
-            <FormControl>
-              <RadioGroup
-                value={testResult}
-                onChange={(event) => setTestResult(event.target.value)}
-              >
-                <FormControlLabel value="positive" control={<Radio />} label="Covid-19 Positive" />
-                <FormControlLabel value="negative" control={<Radio />} label="Covid-19 Negative" />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            Which test did you take?
+          </Typography>
+          <FormControl>
+            <RadioGroup
+              value={testType}
+              onChange={(event) => setTestType(event.target.value)}
+            >
+              <FormControlLabel
+                value="PCRTest"
+                control={<Radio />}
+                label="PCR Test"
+                sx={{
+                  borderRadius: 4,
+                  bgcolor: 'primary.contrastText',
+                  mb: 2,
+                  p: 1,
+                }}
+              />
+              <FormControlLabel
+                value="rapidAntigenTest"
+                control={<Radio />}
+                label="Rapid Antigen Test"
+                sx={{
+                  borderRadius: 4,
+                  border: 2,
+                  borderColor: 'primary.main',
+                  bgcolor: 'primary.contrastText',
+                  mb: 2,
+                  p: 1,
+                  pr: 2,
+                }}
+              />
+              <FormControlLabel
+                value="antibodyTest"
+                control={<Radio />}
+                label="Antibody Test"
+                sx={{
+                  borderRadius: 4,
+                  bgcolor: 'primary.contrastText',
+                  mb: 2,
+                  p: 1,
+                }}
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{
+            borderRadius: 4,
+            bgcolor: 'secondary.main',
+            p: 4,
+          }}
+        >
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            What was your result?
+          </Typography>
+          <FormControl>
+            <RadioGroup
+              value={testResult}
+              onChange={(event) => setTestResult(event.target.value)}
+            >
+              <FormControlLabel
+                value="positive"
+                control={<Radio />}
+                label="Covid-19 Positive"
+                sx={{
+                  borderRadius: 4,
+                  bgcolor: 'primary.contrastText',
+                  mb: 2,
+                  p: 1,
+                }}
+              />
+              <FormControlLabel
+                value="negative"
+                control={<Radio />}
+                label="Covid-19 Negative"
+                sx={{
+                  borderRadius: 4,
+                  bgcolor: 'primary.contrastText',
+                  mb: 2,
+                  p: 1,
+                  pr: 2,
+                }}
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        xs={12}
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexDirection: 'row',
+        }}
+      >
+        <Grid item xs={3}>
           <Button
             type="button"
             onClick={() => {
               handleTestClose();
             }}
-            fullWidth
+            color="warning"
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              width: '100%',
+              mr: 2,
+            }}
+          >
+            Cancel
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
+          <Button
+            type="button"
+            onClick={() => {
+              handleTestClose();
+            }}
+            variant="contained"
+            sx={{
+              mt: 3,
+              width: '100%',
+              ml: 2,
+            }}
           >
             Submit
           </Button>
-        </Box>
+        </Grid>
       </Grid>
-    </Box>
+    </Grid>
   );
 }
 
