@@ -15,18 +15,14 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useEffect } from 'react';
-import { collection, doc, DocumentData, FirestoreDataConverter, getDocs, onSnapshot, query, QueryDocumentSnapshot, SnapshotOptions, where } from 'firebase/firestore';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { UserContext } from '../../context/UserContext';
-import { auth, firestore } from '../../config/firebase_config';
+import { firestore } from '../../config/firebase_config';
 
 // CHANGE define the type of data for each row in the table
 interface Data {
@@ -254,11 +250,14 @@ export default function AdminTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { state, update } = React.useContext(UserContext);
 
-  // request data
-  const q = query(collection(firestore, 'users'), where('role', '!=', 'patient'));
+  // CHANGE define rows here
 
-  // CHANGE function to return data object for a row
-  function createData(
+  const [rowData, setRowData] = React.useState<Data[]>([]);
+  const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
+
+  // get table data
+
+  function createTableData(
     name: string,
     role: string,
     patientSlots: number,
@@ -273,40 +272,28 @@ export default function AdminTable() {
       status,
     };
   }
-  // CHANGE define rows here
 
-  const [rowData, setRowData] = React.useState<Data[]>(new Array<Data>());
-  const [filteredRows, setFilteredRows] = React.useState<Data[]>(rowData);
+  const usersRef = firestore.collection('users').where('role', '!=', 'patient');
 
-  // get data from firebase
-  const requestUsersForTable = async () => {
-    const querySnapshot = await getDocs(q);
-    const users = querySnapshot.docs.map((docs) => docs.data());
-
-    // here we can adjust the items that are hardcoded as we have more info in database
-
-    users.forEach((user) => {
-      const name = user.firstName + user.lastName;
-      const { role } = user;
-      const patientSlots = 10;
-      const appointmentSlots = 4;
-      const status = 'active';
-    });
-    const serverRowData = users.map((user) => {
-      const name = [user.firstName, user.lastName].join(' ');
-      const { role } = user;
-      const patientSlots = 10;
-      const appointmentSlots = 4;
-      const status = 'active';
-
-      return (createData(name, role, patientSlots, appointmentSlots, status));
-    });
-
-    setRowData(serverRowData);
-    setFilteredRows(serverRowData);
-  };
   useEffect(() => {
-    requestUsersForTable();
+    usersRef.onSnapshot(async (snapshot: any) => {
+      let tableData = new Array<Data>();
+
+      // generate list from data and assign to table data array
+      await snapshot.forEach((childSnapshot: any) => {
+        const user = childSnapshot.data();
+        const name = [user.firstName, user.lastName].join(' ');
+        const { role } = user;
+        const patientSlots = 10;
+        const appointmentSlots = 4;
+        const status = 'active';
+        const tableEntry = createTableData(name, role, patientSlots, appointmentSlots, status);
+        tableData = [tableEntry, ...tableData];
+        setRowData(tableData);
+        setFilteredRows(tableData);
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRequestSort = (
