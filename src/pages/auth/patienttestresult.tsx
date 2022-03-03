@@ -16,6 +16,7 @@ type Props = {
 function UpdateTestResult({ handleTestClose }: Props) {
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
+
   return (
     <Grid
       container
@@ -34,15 +35,16 @@ function UpdateTestResult({ handleTestClose }: Props) {
         sx={{
           display: 'flex',
           flexDirection: 'row',
+          justifyContent: 'space-evenly',
         }}
       >
         <Grid
           item
-          xs={6}
+          xs={5}
           sx={{
             borderRadius: 4,
             bgcolor: 'secondary.main',
-            p: 4,
+            p: 5,
           }}
         >
           <Typography variant="h5" sx={{ mb: 2 }}>
@@ -70,8 +72,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
                 label="Rapid Antigen Test"
                 sx={{
                   borderRadius: 4,
-                  border: 2,
-                  borderColor: 'primary.main',
                   bgcolor: 'primary.contrastText',
                   mb: 2,
                   p: 1,
@@ -94,11 +94,11 @@ function UpdateTestResult({ handleTestClose }: Props) {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={5}
           sx={{
             borderRadius: 4,
             bgcolor: 'secondary.main',
-            p: 4,
+            p: 5,
           }}
         >
           <Typography variant="h5" sx={{ mb: 2 }}>
@@ -145,7 +145,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
           flexDirection: 'row',
         }}
       >
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <Button
             type="button"
             onClick={() => {
@@ -156,13 +156,12 @@ function UpdateTestResult({ handleTestClose }: Props) {
             sx={{
               mt: 3,
               width: '100%',
-              mr: 2,
             }}
           >
             Cancel
           </Button>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <Button
             type="button"
             onClick={() => {
