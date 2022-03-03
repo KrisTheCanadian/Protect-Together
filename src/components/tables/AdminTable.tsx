@@ -23,7 +23,8 @@ import { visuallyHidden } from '@mui/utils';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useEffect } from 'react';
-import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, DocumentData, FirestoreDataConverter, getDocs, onSnapshot, query, QueryDocumentSnapshot, SnapshotOptions, where } from 'firebase/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { UserContext } from '../../context/UserContext';
 import { auth, firestore } from '../../config/firebase_config';
 
@@ -300,7 +301,7 @@ export default function AdminTable() {
 
       return (createData(name, role, patientSlots, appointmentSlots, status));
     });
-    console.table(serverRowData);
+
     setRowData(serverRowData);
     setFilteredRows(serverRowData);
   };
