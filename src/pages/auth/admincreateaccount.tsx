@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { auth, firestore } from '../../config/firebase_config';
+import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
 
 type Props = {
@@ -49,7 +49,7 @@ function AdminCreateAccount({ handleClose }: Props) {
 
   const signUpWithEmailAndPassword = () => {
     const password = generatePassword();
-    auth.createUserWithEmailAndPassword(email, password)
+    createUserFirebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCreds) => {
         addUserInfo(userCreds);
       }).catch((err: { code: string | string[]; }) => {
