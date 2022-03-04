@@ -9,13 +9,26 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
+import useId from '@mui/material/utils/useId';
+import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
+import { auth, firestore } from '../../config/firebase_config';
 
 type Props = {
     handleTestClose: any;
   };
 function UpdateTestResult({ handleTestClose }: Props) {
+  const [error, setError] = useState<string>('');
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
+
+  const addPatientTestResults = async () => {
+    const uid = auth.currentUser?.uid;
+    const user = firestore.collection('users').doc(uid);
+    await user.update({
+      testsResults: arrayUnion({ testResult,
+        testType }),
+    });
+  };
 
   return (
     <Grid
@@ -166,6 +179,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
             type="button"
             onClick={() => {
               handleTestClose();
+              addPatientTestResults();
             }}
             variant="contained"
             sx={{
