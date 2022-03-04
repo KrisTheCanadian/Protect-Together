@@ -14,12 +14,12 @@ import {
   Typography,
   Modal,
 } from '@mui/material';
-import Header from '../layout/Header';
-import MainContent from '../layout/MainContent';
-import SideBar from '../layout/SideBar';
-import { UserContext } from '../../context/UserContext';
-import AdminCreateAccount from '../../pages/auth/admincreateaccount';
-import AdminTable from '../tables/AdminTable';
+import Header from '../../layout/Header';
+import MainContent from '../../layout/MainContent';
+import SideBar from '../../layout/SideBar';
+import { UserContext } from '../../../context/UserContext';
+import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
+import AdminTable from './AdminTable';
 
 const style = {
   position: 'absolute' as const,

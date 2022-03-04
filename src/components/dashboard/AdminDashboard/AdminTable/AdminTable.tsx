@@ -1,36 +1,31 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
-import { InputAdornment, TextField } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import { useEffect } from 'react';
-import { UserContext } from '../../context/UserContext';
-import { firestore } from '../../config/firebase_config';
+import { UserContext } from '../../../../context/UserContext';
+import { firestore } from '../../../../config/firebase_config';
+import { TableHeader } from './TableHeader';
+import { TableToolbar } from './TableToolbar';
 
-// CHANGE define the type of data for each row in the table
-interface Data {
-  name: string;
-  role: string;
-  patientSlots: number;
-  appointmentSlots: number;
-  status: string;
+export interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
+
+export interface EnhancedTableToolbarProps {
+  numSelected: number;
+  onSearch: (event: any)=> void;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -71,6 +66,15 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
+// CHANGE define the type of data for each row in the table
+export interface Data {
+  name: string;
+  role: string;
+  patientSlots: number;
+  appointmentSlots: number;
+  status: string;
+}
+
 // CHANGE define the header cell interface
 interface HeadCell {
   disablePadding: boolean;
@@ -79,7 +83,7 @@ interface HeadCell {
   numeric: boolean;
 }
 // CHANGE populate each headercell
-const headCells: readonly HeadCell[] = [
+export const headCells: readonly HeadCell[] = [
   {
     id: 'name',
     numeric: false,
@@ -112,134 +116,6 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-// create table head
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric || headCell.id === 'status' ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-  onSearch: (event: any)=> void;
-}
-
-// toolbar above table
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected, onSearch } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected}
-          {' '}
-          selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          <TextField
-            sx={{ marginTop: '15px', marginBottom: '15px' }}
-            id="outlined-basic"
-            label="Search"
-            variant="standard"
-            onChange={onSearch}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
-
-// table built here
 export default function AdminTable() {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
@@ -250,12 +126,12 @@ export default function AdminTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { state, update } = React.useContext(UserContext);
 
-  // CHANGE define rows here
-
+  // Data rows for table, filteredRows represents searched data
+  // rowData represents the unfiltered query data
   const [rowData, setRowData] = React.useState<Data[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
 
-  // get table data
+  // CHANGE function to convert query data to table format
 
   function createTableData(
     name: string,
@@ -275,8 +151,9 @@ export default function AdminTable() {
 
   const usersRef = firestore.collection('users').where('role', '!=', 'patient');
 
+  // CHANGE Fetch data for table
   useEffect(() => {
-    usersRef.onSnapshot(async (snapshot: any) => {
+    const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
       let tableData = new Array<Data>();
 
       // generate list from data and assign to table data array
@@ -292,6 +169,7 @@ export default function AdminTable() {
         setRowData(tableData);
         setFilteredRows(tableData);
       });
+      return () => unsubscribe();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -364,14 +242,14 @@ export default function AdminTable() {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} onSearch={handleSearch} />
+        <TableToolbar numSelected={selected.length} onSearch={handleSearch} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
-            <EnhancedTableHead
+            <TableHeader
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
