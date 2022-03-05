@@ -19,14 +19,14 @@ import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
 import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
-import AdminTable from './AdminTable';
+import AdminTable from './AdminTable/AdminTable';
 
 const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
+  width: 600,
   boxShadow: 0,
   margin: 0,
   p: 4,
