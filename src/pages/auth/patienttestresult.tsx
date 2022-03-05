@@ -30,7 +30,8 @@ function UpdateTestResult({ handleTestClose }: Props) {
     const user = firestore.collection('users').doc(uid);
     await user.update({
       testsResults: arrayUnion({ testResult,
-        testType }),
+        testType,
+        testDate }),
     });
   };
 
