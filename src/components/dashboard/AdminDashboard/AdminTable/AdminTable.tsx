@@ -240,7 +240,7 @@ export default function AdminTable() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableToolbar numSelected={selected.length} onSearch={handleSearch} />
         <TableContainer>
