@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  Alert,
   TextField,
 } from '@mui/material';
 import useId from '@mui/material/utils/useId';
@@ -17,21 +18,33 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { auth, firestore } from '../../config/firebase_config';
 
 type Props = {
-    handleTestClose: any;
-  };
+  handleTestClose: any;
+};
 function UpdateTestResult({ handleTestClose }: Props) {
   const [error, setError] = useState<string>('');
   const [testDate, setTestDate] = useState<Date | null>(null);
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
+  const [status, setStatus] = useState<boolean>(true);
 
-  const addPatientTestResults = async () => {
+  useEffect(() => {
+    if (testResult === '' || !testDate || testType === '') {
+      console.log('Invalid Inputs');
+    } else {
+      // console.log('im goood');
+      setStatus(false);
+    }
+  }, [testDate, testType, testResult]);
+
+  const addPatientTestResults = () => {
     const uid = auth.currentUser?.uid;
     const user = firestore.collection('users').doc(uid);
-    await user.update({
-      testsResults: arrayUnion({ testResult,
+    user.update({
+      testsResults: arrayUnion({
+        testResult,
         testType,
-        testDate }),
+        testDate,
+      }),
     });
   };
 
@@ -166,14 +179,15 @@ function UpdateTestResult({ handleTestClose }: Props) {
         <Button
           type="button"
           onClick={() => {
-            handleTestClose();
             addPatientTestResults();
+            handleTestClose();
           }}
           variant="contained"
           sx={{
             mt: 2,
             width: 150,
           }}
+          disabled={status}
         >
           Submit
         </Button>
@@ -193,7 +207,9 @@ function UpdateTestResult({ handleTestClose }: Props) {
         >
           Cancel
         </Button>
+
       </Grid>
+      {error && <Alert severity="error">{error}</Alert>}
     </Grid>
   );
 }
