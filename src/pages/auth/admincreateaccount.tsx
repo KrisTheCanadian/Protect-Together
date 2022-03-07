@@ -14,8 +14,9 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
-import { auth, firestore } from '../../config/firebase_config';
+import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
+import theme from '../../static/style/theme';
 
 type Props = {
   handleClose: any;
@@ -76,7 +77,7 @@ function AdminCreateAccount({ handleClose }: Props) {
 
   const signUpWithEmailAndPassword = () : boolean => {
     const password = generatePassword();
-    auth.createUserWithEmailAndPassword(formData.email, password)
+    createUserFirebase.auth().createUserWithEmailAndPassword(formData.email, password)
       .then((userCreds) => {
         addUserInfo(userCreds);
       }).catch((err: { code: string | string[]; }) => {
