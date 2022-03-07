@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // remove access to read and write any document by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if isLoggedIn() 
+          && (belongsTo(userId) || hasRole('admin') || hasRole('medical'));
+
+      allow update: if isLoggedIn() 
+                        && (hasRole('admin') || (belongsTo(userId) 
+                        && checkIfEmailOrIdIsChanged() == false 
+                        && checkIfRoleIsChanged() == false));
+
+      allow create: if hasRole('admin') || validateUserCreation();
+    }
+
+    // TODO: Make sure doctor is matched correctly with patient
+    match /test_results/{testId} {
+      allow read: if (request.auth.uid == resource.data.uid ||
+                    hasRole('admin') || hasRole('medical'));
+
+      allow create: if isLoggedIn() && (request.auth.uid == request.resource.data.uid || hasRole('admin') || hasRole('medical'));
+
+      allow update: if isLoggedIn() && (request.auth.uid == resource.data.uid || hasRole('admin') || hasRole('medical'));
+    }
+
+    function getUserById(userid) {
+      return get(/databases/$(database)/documents/users/$(userid));
+    }
+
+    function isLoggedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function belongsTo(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function hasRole(role) {
+      let user = getUserById(request.auth.uid);
+      let userHasRoleAttribute = getUserById(request.auth.uid).data.keys().hasAny(['role']) == true;
+      let userHasRole = user.data.role == role;
+      return isLoggedIn() && user != null && userHasRoleAttribute && userHasRole;
+    }
+
+    function checkIfRoleIsChanged() {
+      let roleChangedCondition = request.resource.data.role == resource.data.role;
+      return roleChangedCondition == false;
+    }
+
+    // Makes sure that the user did not spoof email, UID or changed their role
+    function validateUserCreation() {
+      let requestKeys = request.resource.data.keys();
+
+      let emailCondition = (requestKeys.hasAny(['email']) == true)
+                          && (request.auth.token.email != null)
+                          && (request.auth.token.email == request.resource.data.email);
+
+      let UIDCondition = (requestKeys.hasAny(['UID']) == true) 
+                          && (request.auth.uid == request.resource.data.UID);
+
+      let roleCondition = (requestKeys.hasAny(['role']) == true) 
+                          && (request.resource.data.role == 'patient');
+
+      return emailCondition && UIDCondition && roleCondition;
+    }
+
+    function checkIfEmailOrIdIsChanged() {
+      let emailCondition = request.resource.data.email == resource.data.email;
+      let userIdCondition = request.resource.data.UID == resource.data.UID;
+      return emailCondition == false && userIdCondition == false;
+    }
+  }
+}
