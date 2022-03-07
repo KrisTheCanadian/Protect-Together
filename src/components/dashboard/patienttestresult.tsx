@@ -28,10 +28,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
   const [status, setStatus] = useState<boolean>(true);
 
   useEffect(() => {
-    if (testResult === '' || !testDate || testType === '') {
-      console.log('Invalid Inputs');
-    } else {
-      // console.log('im goood');
+    if (testResult !== '' || testDate || testType !== '') {
       setStatus(false);
     }
   }, [testDate, testType, testResult]);
