@@ -28,7 +28,9 @@ function UpdateTestResult({ handleTestClose }: Props) {
   const [status, setStatus] = useState<boolean>(true);
 
   useEffect(() => {
-    if (testResult !== '' || testDate || testType !== '') {
+    if (testResult === '' || !testDate || testType === '') {
+      setStatus(true);
+    } else {
       setStatus(false);
     }
   }, [testDate, testType, testResult]);
