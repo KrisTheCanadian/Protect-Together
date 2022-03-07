@@ -10,25 +10,55 @@ const styles = {
   },
 };
 
-export default function Question5Layout({ changeStatus, selection }: any) {
+export default function Question5Layout({ changeStatus, changeCount, count }: any) {
   const [ansYes, setAnsYes] = React.useState(false);
-  const [buttonClicked, setButtonClicked] = React.useState(false);
-  const [value, setValue] = React.useState(question[selection]?.value);
+  const [ansNo, setAnsNo] = React.useState(false);
+  const [id, setId] = React.useState(0);
+  const [value, setValue] = React.useState(question[id]?.value);
+  const [counter, setCounter] = React.useState(count);
+  const [error, setError] = React.useState(false);
+  console.log(count);
+  console.log(counter);
 
   const handleClickYes = () => {
-    setAnsYes(true);
-    setButtonClicked(true);
+    if (!ansYes) {
+      setAnsYes(true);
+      setAnsNo(false);
+      setError(false);
+    } else {
+      setAnsYes(false);
+    }
   };
 
   const handleClickNo = () => {
-    setAnsYes(false);
-    setButtonClicked(true);
+    if (!ansNo) {
+      setAnsYes(false);
+      setAnsNo(true);
+      setError(false);
+    } else {
+      setAnsNo(false);
+    }
   };
 
-  const handleClick = () => {
-    setButtonClicked(false);
-    setAnsYes(false);
-    changeStatus(question[selection].value);
+  //  useEffect(() => {
+  //   if (value !== 'false') {
+  //     changeStatus(value);
+  //   }
+  // }, [changeStatus, value]);
+
+  const handleSubmit = () => {
+    if (!ansYes && !ansNo) {
+      setError(true);
+    } else {
+      setAnsNo(false);
+      setAnsYes(false);
+      if (question.length - 1 > id) {
+        setId(id + 1);
+        setCounter(counter + 1);
+      } else {
+        changeStatus('response2');
+      }
+    }
   };
 
   return (
@@ -61,34 +91,47 @@ export default function Question5Layout({ changeStatus, selection }: any) {
           >
             Question
             {' '}
-            {question[selection]?.number}
+            {counter}
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1 }}>
-            {question[selection]?.title}
+            {question[id]?.title}
           </Typography>
-          <Button
-            onClick={handleClickYes}
-            variant={ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
+          <Container
+            sx={{
+              marginTop: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '50%',
+            }}
           >
-            Yes
-          </Button>
-          <Button
-            onClick={handleClickNo}
-            variant={!ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
-          >
-            No
-          </Button>
+            <Button
+              onClick={handleClickYes}
+              variant={ansYes ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem' }}
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={handleClickNo}
+              variant={ansNo ? 'contained' : 'outlined'}
+            >
+              No
+            </Button>
+          </Container>
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
           <Button
-            onClick={handleClick}
+            onClick={handleSubmit}
             type="submit"
             variant="contained"
             color="primary"

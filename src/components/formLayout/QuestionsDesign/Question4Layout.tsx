@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
+import questions from '../../../static/data/formIntensityQuestions.json';
 
 const styles = {
   centered: {
@@ -9,21 +10,25 @@ const styles = {
   },
 };
 
-export default function Question4Layout() {
+export default function Question4Layout({ changeStatus, selection, count, changeCount }: any) {
+  const [id, setId] = React.useState(0);
   const [ansOne, setAnsOne] = React.useState(false);
   const [ansTwo, setAnsTwo] = React.useState(false);
   const [ansThree, setAnsThree] = React.useState(false);
   const [value, setValue] = React.useState('false');
-  const [error, setError] = React.useState(true);
+  const [error, setError] = React.useState(false);
+  const [counter, setCounter] = React.useState(count);
+  const theme = useTheme();
+  const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleClickOne = () => {
     if (ansOne !== true) {
       setAnsOne(true);
       setAnsTwo(false);
       setAnsThree(false);
-      setValue('one');
+      setError(false);
     } else {
       setAnsOne(false);
-      setValue('false');
     }
   };
 
@@ -32,10 +37,9 @@ export default function Question4Layout() {
       setAnsTwo(true);
       setAnsOne(false);
       setAnsThree(false);
-      setValue('two');
+      setError(false);
     } else {
       setAnsTwo(false);
-      setValue('false');
     }
   };
 
@@ -44,10 +48,32 @@ export default function Question4Layout() {
       setAnsThree(true);
       setAnsOne(false);
       setAnsTwo(false);
-      setValue('three');
+      setError(false);
     } else {
       setAnsThree(false);
-      setValue('false');
+    }
+  };
+
+  useEffect(() => {
+    if (value !== 'false') {
+      changeStatus(value);
+    }
+  }, [changeStatus, value]);
+
+  const handleSubmit = () => {
+    if (!ansOne && !ansTwo && !ansThree) {
+      setError(true);
+    } else {
+      setAnsOne(false);
+      setAnsTwo(false);
+      setAnsThree(false);
+      if (selection.length - 1 > id) {
+        setId(id + 1);
+        setCounter(counter + 1);
+      } else {
+        changeCount(counter + 1);
+        setValue('5');
+      }
     }
   };
 
@@ -79,12 +105,22 @@ export default function Question4Layout() {
               minWidth: 0,
             }}
           >
-            Question 4
+            Question
+            {' '}
+            {counter}
+            {' '}
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 3 }}>
-            What is the severity of your cough?
+            What is the severity of your
+            {' '}
+            {questions[selection[id]].label}
+            {' '}
+            ?
           </Typography>
-          <Container sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Container sx={{ display: 'flex',
+            justifyContent: 'space-around',
+            width: matchesSm ? '100%' : '80%' }}
+          >
             <Button
               onClick={handleClickOne}
               variant={ansOne ? 'contained' : 'outlined'}
@@ -110,11 +146,16 @@ export default function Question4Layout() {
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
-          <Button type="submit" variant="contained" color="primary">
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
+          <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
             Continue
           </Button>
         </Container>

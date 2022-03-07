@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   Container,
@@ -12,6 +12,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+import questions from '../../../static/data/formQuestions.json';
+
 const styles = {
   centered: {
     display: 'flex',
@@ -24,24 +26,53 @@ export default function Question3Layout(props: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
-  const [value, setValue] = React.useState('4');
+  const [value, setValue] = React.useState('false');
+  const [checkedSymptoms, setCheckedSymptoms] = React.useState<number[]>([]);
+  const [nextQuestions, setNextQuestions] = React.useState<number[]>([]);
+  const [error, setError] = React.useState(false);
 
-  const buttons = [
-    'Fever and/or chills',
-    'Cough', 'Shortness of breath',
-    'Sore throat',
-    'Loss or change of sense of smell or taste',
-    'Headache',
-    'Extreme fatigue or tiredness',
-    'Runny nose',
-    'Sneezing',
-    'Diarrhea',
-    'Loss of appetite',
-    'Nausea or vomiting',
-    'Body or muscle aches',
-    'None of the above',
+  const handleCheckboxChange = (symptom: any) => {
+    if (symptom.id === 13) {
+      setCheckedSymptoms([13]);
+      setNextQuestions([]);
+    } else if (checkedSymptoms.includes(symptom.id)) {
+      setCheckedSymptoms(checkedSymptoms.filter((item) => item !== symptom.id));
 
-  ];
+      if (nextQuestions.includes(symptom.next)) {
+        setNextQuestions(nextQuestions.filter((item) => item !== symptom.next));
+      }
+    } else {
+      setCheckedSymptoms([...checkedSymptoms, symptom.id]);
+      if (symptom.next !== -1) {
+        setNextQuestions([...nextQuestions, symptom.next]);
+      }
+
+      console.log(checkedSymptoms);
+    }
+  };
+
+  useEffect(() => {
+    if (checkedSymptoms.includes(13) && checkedSymptoms.length > 1) {
+      setCheckedSymptoms(checkedSymptoms.filter((item) => item !== 13));
+    }
+  }, [checkedSymptoms]);
+
+  useEffect(() => {
+    if (value !== 'false') {
+      props.changeStatus(value);
+    }
+  }, [props, value]);
+
+  const handleSubmit = () => {
+    if (checkedSymptoms.length === 0) {
+      setError(true);
+    } else if (nextQuestions.length !== 0) {
+      setValue('4');
+      props.changeSymptoms(nextQuestions);
+    } else {
+      setValue('5');
+    }
+  };
 
   return (
     <div style={{ display: 'flex' }}>
@@ -98,15 +129,18 @@ export default function Question3Layout(props: any) {
           >
             <FormControl component="fieldset">
               <FormGroup>
-                {buttons.map((name) => (
+                {questions.map((symptom) => (
                   <FormControlLabel
-                    key={name}
+                    key={Math.random()}
                     control={(
                       <Checkbox
-                        name={name}
+                        onChange={() => handleCheckboxChange(symptom)}
+                        checked={checkedSymptoms.includes(symptom.id)}
+                        name={symptom.label}
+
                       />
             )}
-                    label={name}
+                    label={symptom.label}
                   />
                 ))}
               </FormGroup>
@@ -118,10 +152,14 @@ export default function Question3Layout(props: any) {
         <Container
           sx={{
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
-          <Button onClick={() => props.changeStatus(value)} type="submit" variant="contained" color="primary">
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
+          <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
             Continue
           </Button>
         </Container>
