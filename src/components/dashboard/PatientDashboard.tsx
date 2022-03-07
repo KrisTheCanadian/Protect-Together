@@ -41,7 +41,7 @@ function PatientDashboard() {
   const { state, update } = React.useContext(UserContext);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
         <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>

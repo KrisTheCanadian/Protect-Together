@@ -22,7 +22,7 @@ function onAuthStateChange(callback: any) {
 // https://rnfirebase.io/firestore/usage
 // get the user id asynch
 function getUserId() {
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     auth.onAuthStateChanged((user: any) => {
       if (user) resolve(user.uid);
     });
@@ -45,6 +45,7 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
+            id,
           });
         }
       });

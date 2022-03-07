@@ -39,7 +39,7 @@ function ThirdPartyDashboard() {
   const { state, update } = React.useContext(UserContext);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.lastName}`} subtitle="Track Covid Cases around Canada" />
       <SideBar>

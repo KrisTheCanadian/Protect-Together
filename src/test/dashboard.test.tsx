@@ -12,8 +12,26 @@ import ThirdPartyDashboard from '../components/dashboard/ThirdPartyDashboard';
 import Dashboard from '../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
+  const onSnapshot = () => ({
+    onSnapshot,
+  });
+  const where = () => ({
+    onSnapshot,
+  });
+  const collection = () => ({
+    where,
+  });
+  const Firestore = () => ({
+    collection,
+  });
+
+  Firestore.FieldValue = {
+    serverTimestamp: jest.fn(),
+  };
+  const firestore = Firestore;
+
   const app = jest.requireActual('firebase/compat/app');
-  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
+
   const auth = () => ({
     onAuthStateChanged: () => new Promise<void>((resolve) => resolve()),
   });

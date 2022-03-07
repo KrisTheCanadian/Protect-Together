@@ -63,6 +63,7 @@ export default function SideBar({ children }: Props) {
         }}
       >
         {drawer}
+        <Button onClick={logout}>Logout</Button>
       </Drawer>
       <Drawer
         variant="permanent"
