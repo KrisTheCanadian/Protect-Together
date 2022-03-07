@@ -264,6 +264,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
               }}
               fullWidth
               variant="contained"
+              disabled={status}
             >
               Submit
             </Button>
