@@ -19,6 +19,7 @@
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
     "no-console": "off",
+    "react/jsx-no-duplicate-props": [0, { "ignoreCase": true }],
     "react/require-default-props": "off",
     "react/jsx-no-constructed-context-values": "off",
     "object-curly-newline": "off",

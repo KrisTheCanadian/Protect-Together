@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Avatar,
@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import validator from 'validator';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
 import theme from '../../static/style/theme';
@@ -20,13 +21,39 @@ import theme from '../../static/style/theme';
 type Props = {
   handleClose: any;
 };
+
+type FormData = {
+  role: string,
+  email: string,
+  firstName: string,
+  lastName: string,
+  phoneNumber: string,
+};
+
+type FormError = {
+  errorEmail: string,
+  errorPhoneNumber: string,
+  errorSignup: string,
+};
+
+const formDataDefaultValues: FormData = {
+  role: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+};
+
+const formErrorDefaultValues: FormError = {
+  errorEmail: '',
+  errorPhoneNumber: '',
+  errorSignup: '',
+};
+
 // form state objects
 function AdminCreateAccount({ handleClose }: Props) {
-  const [role, setRole] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [formData, setFormData] = useState<FormData>(formDataDefaultValues);
+  const [formError, setFormError] = useState<FormError>(formErrorDefaultValues);
   const [error, setError] = useState<string>('');
 
   // save user to database
@@ -38,157 +65,185 @@ function AdminCreateAccount({ handleClose }: Props) {
     }
     await users.doc(uid).set({
       UID: uid,
-      firstName,
-      lastName,
-      email,
-      phone: phoneNumber,
-      role,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phoneNumber,
+      role: formData.role,
     }).then(() => {
-      auth.sendPasswordResetEmail(email);
+      auth.sendPasswordResetEmail(formData.email);
     });
   };
 
-  const signUpWithEmailAndPassword = () => {
+  const signUpWithEmailAndPassword = () : boolean => {
     const password = generatePassword();
-    createUserFirebase.auth().createUserWithEmailAndPassword(email, password)
+    createUserFirebase.auth().createUserWithEmailAndPassword(formData.email, password)
       .then((userCreds) => {
         addUserInfo(userCreds);
       }).catch((err: { code: string | string[]; }) => {
         if (err.code.includes('auth/weak-password')) {
-          setError('Please enter a stronger password.');
+          setFormError({ ...formError, errorSignup: 'Please enter a stronger password.' });
         } else if (err.code.includes('auth/email-already-in-use')) {
-          setError('Email already in use.');
+          setFormError({ ...formError, errorSignup: 'Email already in use.' });
         } else {
-          setError('Unable to register. Please try again later.');
+          setFormError({ ...formError, errorSignup: 'Unable to register. Please try again later.' });
         }
+        return false;
       });
+    return true;
   };
 
+  const handleSubmit = (event: any) => {
+    if (formError.errorEmail !== '' || formError.errorPhoneNumber !== '' || !signUpWithEmailAndPassword()) {
+      event.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    if (formError.errorEmail !== '') {
+      setError('Please enter a valid email address.');
+    } else if (formError.errorPhoneNumber !== '') {
+      setError('Please enter a valid phone number.');
+    } else if (formError.errorSignup !== '') {
+      setError(formError.errorSignup);
+    } else {
+      setError('');
+    }
+  }, [formError.errorEmail, formError.errorPhoneNumber, formError.errorSignup]);
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        bgcolor: 'background.default',
-      }}
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{ minHeight: '100vh' }}
     >
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-
+      <Box
+        p={3}
+        sx={{
+          bgcolor: 'secondary.main',
+          borderRadius: 2,
+          boxShadow: 6,
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '50%',
+          minWidth: '600px',
+        }}
       >
-        <Box
-          p={16}
+        <Avatar
           sx={{
-            [theme.breakpoints.down('sm')]: {
-              padding: 4,
-            },
-            bgcolor: 'primary.contrastText',
-            borderRadius: 2,
-            boxShadow: 6,
-            marginTop: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: 10,
-
+            m: 1,
+            bgcolor: 'primary.main',
+            width: 48,
+            height: 48,
           }}
-        >
-          <Avatar
-            sx={{
-              m: 1,
-              bgcolor: 'primary.main',
-              width: 48,
-              height: 48,
-            }}
-          />
-          <Typography component="h1" variant="h4">
-            Create Account
-          </Typography>
-
-          <Grid container spacing={3} mt={2}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel id="role">Account Type</InputLabel>
-                <Select
-                  labelId="role"
-                  label="Account Type"
-                  required
-                  id="role"
-                  value={role}
-                  onChange={(event) => setRole(event.target.value)}
-                  autoFocus
-                >
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="medical">Medical Professional</MenuItem>
-                  <MenuItem value="thirdParty"> Third Party</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
+        />
+        <Typography component="h1" variant="h4">
+          Create Account
+        </Typography>
+        <Grid container spacing={3} mt={2}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="role">Account Type</InputLabel>
+              <Select
+                labelId="role"
+                label="Account Type"
                 required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                onChange={(event) => setFirstName(event.target.value)}
+                id="role"
+                value={formData.role}
+                onChange={(event) => setFormData({ ...formData, role: event.target.value })}
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                onChange={(event) => setLastName(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="phoneNumber"
-                label="Phone Number"
-                name="phoneNumber"
-                autoComplete="phone-number"
-                onChange={(event) => setPhoneNumber(event.target.value)}
-              />
-            </Grid>
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="medical">Medical Professional</MenuItem>
+                <MenuItem value="thirdParty"> Third Party</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-          <Button
-            type="button"
-            onClick={() => {
-              signUpWithEmailAndPassword();
-              handleClose();
-            }}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Send Activation Link to Email
-          </Button>
-        </Box>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Grid>
-    </Box>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="given-name"
+              name="firstName"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              value={formData.firstName}
+              onChange={(event) => setFormData({ ...formData, firstName: event.target.value })}
+              autoFocus
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="family-name"
+              value={formData.lastName}
+              onChange={(event) => setFormData({ ...formData, lastName: event.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={formData.email}
+              error={Boolean(formError.errorEmail)}
+              helperText={formError.errorEmail}
+              onChange={(event) => {
+                if (!validator.isEmail(event.target.value)) {
+                  setFormError({ ...formError, errorEmail: 'Invalid email address.' });
+                } else {
+                  setFormError({ ...formError, errorEmail: '' });
+                }
+                setFormData({ ...formData, email: event.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="phoneNumber"
+              label="Phone Number"
+              name="phoneNumber"
+              autoComplete="phone-number"
+              value={formData.phoneNumber}
+              error={Boolean(formError.errorPhoneNumber)}
+              helperText={formError.errorPhoneNumber}
+              onChange={(event) => {
+                if (!validator.isMobilePhone(event.target.value, 'en-CA')) {
+                  setFormError({ ...formError, errorPhoneNumber: 'Invalid phone number.' });
+                } else {
+                  setFormError({ ...formError, errorPhoneNumber: '' });
+                }
+                setFormData({ ...formData, phoneNumber: event.target.value });
+              }}
+            />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          onClick={handleSubmit}
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Send Activation Link to Email
+        </Button>
+      </Box>
+      {error && <Alert severity="error">{error}</Alert>}
+    </Grid>
   );
 }
 
