@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -19,26 +19,25 @@ import Header from '../layout/Header';
 import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
-import AdminCreateAccount from '../../pages/auth/admincreateaccount';
-import UpdateTestResult from '../../pages/auth/patienttestresult';
+import UpdateTestResult from './patienttestresult';
 
 const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
+  width: 600,
   boxShadow: 0,
   margin: 0,
   p: 4,
 };
 
 function PatientDashboard() {
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const handleOpenQuiz = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
   const navigate = useNavigate();
-  const [testOpen, setTestOpen] = React.useState(false);
+  const [testOpen, setTestOpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
 
