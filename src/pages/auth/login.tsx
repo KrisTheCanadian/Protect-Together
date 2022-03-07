@@ -16,8 +16,6 @@ function LoginPage() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [patientTab, setPatientTab] = useState<boolean>(true);
-  const [staffTab, setStaffTab] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -67,30 +65,7 @@ function LoginPage() {
           alignItems: 'center',
         }}
       >
-        <ButtonGroup
-          orientation="horizontal"
-          fullWidth
-          size="large"
-          sx={{ mb: 3 }}
-        >
-          <Button
-            variant="text"
-            color="primary"
-            sx={{ borderTop: patientTab ? 1 : 0, bgcolor: patientTab ? 'secondary.main' : '#f5f7fa' }}
-            onClick={() => { setStaffTab(false); setPatientTab(true); }}
-          >
-            Patient Login
-          </Button>
-          <Button
-            variant="text"
-            color="primary"
-            sx={{ borderTop: staffTab ? 1 : 0, bgcolor: staffTab ? 'secondary.main' : '#f5f7fa' }}
-            onClick={() => { setStaffTab(true); setPatientTab(false); }}
-          >
-            Staff Login
-          </Button>
-        </ButtonGroup>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" mt={3}>
           Welcome
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }}>
