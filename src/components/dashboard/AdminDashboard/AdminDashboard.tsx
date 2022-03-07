@@ -20,6 +20,7 @@ import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
 import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
 import AdminTable from './AdminTable/AdminTable';
+import theme from '../../../static/style/theme';
 
 const style = {
   position: 'absolute' as const,
@@ -27,6 +28,10 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    padding: 0,
+  },
   boxShadow: 0,
   margin: 0,
   p: 4,

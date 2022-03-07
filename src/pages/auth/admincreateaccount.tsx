@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
+import theme from '../../static/style/theme';
 
 type Props = {
   handleClose: any;
@@ -81,6 +82,9 @@ function AdminCreateAccount({ handleClose }: Props) {
         <Box
           p={16}
           sx={{
+            [theme.breakpoints.down('sm')]: {
+              padding: 4,
+            },
             bgcolor: 'primary.contrastText',
             borderRadius: 2,
             boxShadow: 6,
