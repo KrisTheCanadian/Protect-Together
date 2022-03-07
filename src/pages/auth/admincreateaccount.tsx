@@ -145,103 +145,102 @@ function AdminCreateAccount({ handleClose }: Props) {
         <Typography component="h1" variant="h4">
           Create Account
         </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3} mt={2}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel id="role">Account Type</InputLabel>
-                <Select
-                  labelId="role"
-                  label="Account Type"
-                  required
-                  id="role"
-                  value={formData.role}
-                  onChange={(event) => setFormData({ ...formData, role: event.target.value })}
-                  autoFocus
-                >
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="medical">Medical Professional</MenuItem>
-                  <MenuItem value="thirdParty"> Third Party</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
+        <Grid container spacing={3} mt={2}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="role">Account Type</InputLabel>
+              <Select
+                labelId="role"
+                label="Account Type"
                 required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                value={formData.firstName}
-                onChange={(event) => setFormData({ ...formData, firstName: event.target.value })}
+                id="role"
+                value={formData.role}
+                onChange={(event) => setFormData({ ...formData, role: event.target.value })}
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                value={formData.lastName}
-                onChange={(event) => setFormData({ ...formData, lastName: event.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={formData.email}
-                error={Boolean(formError.errorEmail)}
-                helperText={formError.errorEmail}
-                onChange={(event) => {
-                  if (!validator.isEmail(event.target.value)) {
-                    setFormError({ ...formError, errorEmail: 'Invalid email address.' });
-                  } else {
-                    setFormError({ ...formError, errorEmail: '' });
-                  }
-                  setFormData({ ...formData, email: event.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="phoneNumber"
-                label="Phone Number"
-                name="phoneNumber"
-                autoComplete="phone-number"
-                value={formData.phoneNumber}
-                error={Boolean(formError.errorPhoneNumber)}
-                helperText={formError.errorPhoneNumber}
-                onChange={(event) => {
-                  if (!validator.isMobilePhone(event.target.value, 'en-CA')) {
-                    setFormError({ ...formError, errorPhoneNumber: 'Invalid phone number.' });
-                  } else {
-                    setFormError({ ...formError, errorPhoneNumber: '' });
-                  }
-                  setFormData({ ...formData, phoneNumber: event.target.value });
-                }}
-              />
-            </Grid>
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="medical">Medical Professional</MenuItem>
+                <MenuItem value="thirdParty"> Third Party</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Send Activation Link to Email
-          </Button>
-        </form>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="given-name"
+              name="firstName"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              value={formData.firstName}
+              onChange={(event) => setFormData({ ...formData, firstName: event.target.value })}
+              autoFocus
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="family-name"
+              value={formData.lastName}
+              onChange={(event) => setFormData({ ...formData, lastName: event.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={formData.email}
+              error={Boolean(formError.errorEmail)}
+              helperText={formError.errorEmail}
+              onChange={(event) => {
+                if (!validator.isEmail(event.target.value)) {
+                  setFormError({ ...formError, errorEmail: 'Invalid email address.' });
+                } else {
+                  setFormError({ ...formError, errorEmail: '' });
+                }
+                setFormData({ ...formData, email: event.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="phoneNumber"
+              label="Phone Number"
+              name="phoneNumber"
+              autoComplete="phone-number"
+              value={formData.phoneNumber}
+              error={Boolean(formError.errorPhoneNumber)}
+              helperText={formError.errorPhoneNumber}
+              onChange={(event) => {
+                if (!validator.isMobilePhone(event.target.value, 'en-CA')) {
+                  setFormError({ ...formError, errorPhoneNumber: 'Invalid phone number.' });
+                } else {
+                  setFormError({ ...formError, errorPhoneNumber: '' });
+                }
+                setFormData({ ...formData, phoneNumber: event.target.value });
+              }}
+            />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          onClick={handleSubmit}
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Send Activation Link to Email
+        </Button>
       </Box>
       {error && <Alert severity="error">{error}</Alert>}
     </Grid>
