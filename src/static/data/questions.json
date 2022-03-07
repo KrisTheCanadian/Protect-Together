@@ -2,18 +2,12 @@
     {
       "id": 0,
       "title": "Are you an individual who is moderately to severely immunocompromised?",
-      "number": "4",
-      "value": "5"
+      "number": "5",
+      "value": "6"
   },
   {
     "id": 1,
     "title": "Are you fully vaccinated against COVID-19?",
-    "number": "5",
-    "value": "6"
-  },
-  {
-    "id": 2,
-    "title": "Are you pregnant?",
     "number": "6",
     "value": "7"
   },

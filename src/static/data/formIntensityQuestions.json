@@ -1,0 +1,58 @@
+[    
+  {
+    "id": 0,
+    "label": "Fever and/or chills",
+    "p1": 3,
+    "p2": 4,
+    "p3": 5
+},
+{
+    "id": 1,
+    "label": "Cough",
+    "p1": 2,
+    "p2": 4,
+    "p3": 5
+},
+{
+    "id": 3,
+    "label": "Shortness of breath",
+    "p1": 3,
+    "p2": 4,
+    "p3": 5
+},
+{
+    "id": 4,
+    "label": "Sore throat",
+    "p1": 2,
+    "p2": 3,
+    "p3": 5
+},
+{
+    "id": 5,
+    "label": "Headache",
+    "p1": 2,
+    "p2": 3,
+    "p3": 5
+},
+{
+    "id": 6,
+    "label": "Diarrhea",
+    "p1": 1,
+    "p2": 2,
+    "p3": 3
+},
+{
+    "id": 7,
+    "label": "Nausea or vomiting",
+    "p1": 2,
+    "p2": 3,
+    "p3": 4
+},
+{
+    "id": 8,
+    "label": "Body or muscle aches",
+    "p1": 2,
+    "p2": 3,
+    "p3": 4
+}
+]

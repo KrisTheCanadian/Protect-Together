@@ -14,6 +14,7 @@ export default function Question2Layout(props: any) {
   const [ansOne, setAnsOne] = React.useState(false);
   const [ansTwo, setAnsTwo] = React.useState(false);
   const [ansThree, setAnsThree] = React.useState(false);
+  const [error, setError] = React.useState(false);
   const [value, setValue] = React.useState('false');
   const handleClickOne = () => {
     if (ansOne !== true) {
@@ -21,6 +22,7 @@ export default function Question2Layout(props: any) {
       setAnsTwo(false);
       setAnsThree(false);
       setValue('3');
+      setError(false);
     } else {
       setAnsOne(false);
       setValue('false');
@@ -33,6 +35,7 @@ export default function Question2Layout(props: any) {
       setAnsOne(false);
       setAnsThree(false);
       setValue('3');
+      setError(false);
     } else {
       setAnsTwo(false);
       setValue('false');
@@ -45,9 +48,19 @@ export default function Question2Layout(props: any) {
       setAnsOne(false);
       setAnsTwo(false);
       setValue('3');
+      setError(false);
     } else {
       setAnsThree(false);
       setValue('false');
+    }
+  };
+
+  const handleClick = () => {
+    if (value === 'false') {
+      setError(true);
+    }
+    if (value !== 'false') {
+      props.changeStatus(value);
     }
   };
 
@@ -84,35 +97,47 @@ export default function Question2Layout(props: any) {
           <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 3 }}>
             Which statement best describes your situation?
           </Typography>
-          <Button
-            onClick={handleClickOne}
-            variant={ansOne ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
+          <Container sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '70%',
+          }}
           >
-            I have been in contact with a person who has COVID-19.
-          </Button>
-          <Button
-            onClick={handleClickTwo}
-            variant={ansTwo ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
-          >
-            I have tested positive for COVID-19
-          </Button>
-          <Button
-            onClick={handleClickThree}
-            variant={ansThree ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
-          >
-            I have one or more symptoms of COVID-19.
-          </Button>
+            <Button
+              onClick={handleClickOne}
+              variant={ansOne ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
+            >
+              I have been in contact with a person who has COVID-19.
+            </Button>
+            <Button
+              onClick={handleClickTwo}
+              variant={ansTwo ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
+            >
+              I have tested positive for COVID-19
+            </Button>
+            <Button
+              onClick={handleClickThree}
+              variant={ansThree ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem', fontSize: '1.1rem' }}
+            >
+              I have one or more symptoms of COVID-19.
+            </Button>
+          </Container>
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
-          <Button onClick={() => props.changeStatus(value)} type="submit" variant="contained" color="primary">
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
+          <Button onClick={handleClick} type="submit" variant="contained" color="primary">
             Continue
           </Button>
         </Container>

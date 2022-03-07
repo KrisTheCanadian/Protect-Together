@@ -1,0 +1,87 @@
+[    
+    {
+        "id": 0,
+        "label": "Fever and/or chills",
+        "next": 0,
+        "pt": 0
+    },
+    {
+        "id": 1,
+        "label": "Cough",
+        "next": 1,
+        "pt": 0
+    },
+    {
+        "id": 2,
+        "label": "Shortness of breath",
+        "next": 2,
+        "pt": 0
+    },
+    {
+        "id": 3,
+        "label": "Sore throat",
+        "next": 3,
+        "pt": 0
+    },
+    {
+        "id": 4,
+        "label": "Loss or change of sense of smell or taste",
+        "next": -1,
+        "pt": 5
+    },
+    {   
+        "id": 5,
+        "label": "Headache",
+        "next": 4,
+        "pt": 0
+    },
+    {
+        "id": 6,
+        "label": "Extreme fatigue or tiredness",
+        "next": -1,
+        "pt": 4
+    },
+    {
+        "id": 7,
+        "label": "Runny nose",
+        "next": -1,
+        "pt": 2
+    },
+    {
+        "id": 8,
+        "label": "Sneezing",
+        "next": -1,
+        "pt": 1
+    },
+    {
+        "id": 9,
+        "label": "Diarrhea",
+        "next": 5,
+        "pt": 0
+    },
+    {
+        "id": 10,
+        "label": "Loss of appetite",
+        "next": -1,
+        "pt": 2
+    },
+    {
+        "id": 11,
+        "label": "Nausea or vomiting",
+        "next": 6,
+        "pt": 0
+    },
+    {
+        "id": 12,
+        "label": "Body or muscle aches",
+        "next": 7,
+        "pt": 0
+    },
+    {
+        "id": 13,
+        "label": "None of the above",
+        "next": -1,
+        "pt": 0
+    }  
+]
+
