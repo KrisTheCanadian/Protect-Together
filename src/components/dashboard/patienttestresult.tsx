@@ -58,6 +58,8 @@ function UpdateTestResult({ handleTestClose }: Props) {
         padding: 6,
         flexDirection: 'column',
         width: '100%',
+        maxHeight: '100vh',
+        overflow: 'scroll',
       }}
     >
       <Grid
@@ -218,58 +220,59 @@ function UpdateTestResult({ handleTestClose }: Props) {
               </RadioGroup>
             </FormControl>
           </Paper>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        item
-        spacing={2}
-        sx={{
-          flexDirection: 'row',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Grid item xs={4}>
-          <Paper
+          <Grid
+            container
+            item
+            spacing={2}
             sx={{
-              mt: 2,
+              flexDirection: 'row',
+              display: 'flex',
+              justifyContent: 'center',
             }}
           >
-            <Button
-              type="button"
-              onClick={() => {
-                handleTestClose();
-              }}
-              color="warning"
-              fullWidth
-              variant="contained"
-            >
-              Cancel
-            </Button>
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper
-            sx={{
-              mt: 2,
-            }}
-          >
-            <Button
-              type="button"
-              onClick={() => {
-                handleTestClose();
-                addPatientTestResults();
-              }}
-              fullWidth
-              variant="contained"
-              disabled={status}
-            >
-              Submit
-            </Button>
-          </Paper>
+            <Grid item xs={4}>
+              <Paper
+                sx={{
+                  mt: 2,
+                }}
+              >
+                <Button
+                  type="button"
+                  onClick={() => {
+                    handleTestClose();
+                  }}
+                  color="warning"
+                  fullWidth
+                  variant="contained"
+                >
+                  Cancel
+                </Button>
+              </Paper>
+            </Grid>
+            <Grid item xs={4}>
+              <Paper
+                sx={{
+                  mt: 2,
+                }}
+              >
+                <Button
+                  type="button"
+                  onClick={() => {
+                    handleTestClose();
+                    addPatientTestResults();
+                  }}
+                  fullWidth
+                  variant="contained"
+                  disabled={status}
+                >
+                  Submit
+                </Button>
+              </Paper>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
+
     </Grid>
   );
 }
