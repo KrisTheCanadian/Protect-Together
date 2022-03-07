@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../components/auth';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
-import MedicalDashboard from '../components/dashboard/MedicalDashboard';
+import MedicalDashboard from '../components/dashboard/MedicalDashboard/MedicalDashboard';
 import PatientDashboard from '../components/dashboard/PatientDashboard';
 import ThirdPartyDashboard from '../components/dashboard/ThirdPartyDashboard';
 import Dashboard from '../pages/dashboard/dashboard';
