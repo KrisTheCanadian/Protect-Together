@@ -1,5 +1,15 @@
-import React from 'react';
-import { Button, Container, Typography, Box, List, ListItem, ListItemText } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Button,
+  Container,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 
 const styles = {
@@ -10,11 +20,13 @@ const styles = {
   },
 };
 
-export default function Question1Layout(props: any) {
-  const [ansYes, setAnsYes] = React.useState(false);
-  const [ansNo, setAnsNo] = React.useState(false);
-  const [value, setValue] = React.useState('false');
-  const [error, setError] = React.useState(false);
+export default function Question1Layout({ changeStatus }: any) {
+  const theme = useTheme();
+  const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
+  const [ansYes, setAnsYes] = useState(false);
+  const [ansNo, setAnsNo] = useState(false);
+  const [value, setValue] = useState('false');
+  const [error, setError] = useState(false);
 
   const handleClickYes = () => {
     if (!ansYes) {
@@ -43,11 +55,15 @@ export default function Question1Layout(props: any) {
   const handleClick = () => {
     if (value === 'false') {
       setError(true);
-    } else { props.changeStatus(value); }
+    } else { changeStatus(value); }
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex',
+      marginTop: matchesMd ? 60 : 0,
+    }}
+    >
       <Box
         minHeight="95vh"
         width="100%"

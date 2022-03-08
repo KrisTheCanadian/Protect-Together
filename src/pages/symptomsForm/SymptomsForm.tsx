@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import HeaderSymptoms from '../../components/formLayout/HeaderSymptoms';
 import DrawerSymptoms from '../../components/formLayout/DrawerSymptoms';
@@ -8,7 +8,7 @@ export default function SymptomsForm() {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const [status, setStatus] = React.useState('1');
+  const [status, setStatus] = useState('1');
 
   return (
     <div>
@@ -25,11 +25,11 @@ export default function SymptomsForm() {
           <div
             style={{
               justifyContent: 'center',
-              marginTop: matchesMd ? 20 : 0,
+              marginTop: matchesMd ? 30 : 0,
               paddingTop: matchesSm ? 130 : 0,
             }}
           >
-            <FormLayout changeStatus={setStatus} />
+            <FormLayout changeState={setStatus} />
           </div>
         </Box>
       </div>

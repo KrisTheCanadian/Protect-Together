@@ -14,8 +14,6 @@ import Dashboard from '../pages/dashboard/dashboard';
 import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
 import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
-import ResponseForm from '../pages/symptomsForm/ResponseForm';
-
 import { LayoutContext } from '../context/LayoutContext';
 import { UserContext, UserProvider } from '../context/UserContext';
 
@@ -42,7 +40,6 @@ function App() {
               />
               <Route path="/styleguide" element={<StyleGuide />} />
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
-              <Route path="/responseForm" element={<AuthRequired component={<ResponseForm />} />} />
               <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
             </Routes>
           </UserProvider>

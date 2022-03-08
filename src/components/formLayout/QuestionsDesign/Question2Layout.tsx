@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
 
 const styles = {
   centered: {
@@ -10,11 +10,13 @@ const styles = {
 };
 
 export default function Question2Layout({ changeStatus, changePoints }: any) {
-  const [ansOne, setAnsOne] = React.useState(false);
-  const [ansTwo, setAnsTwo] = React.useState(false);
-  const [ansThree, setAnsThree] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [pointValue, setPointValue] = React.useState(0);
+  const theme = useTheme();
+  const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
+  const [ansOne, setAnsOne] = useState(false);
+  const [ansTwo, setAnsTwo] = useState(false);
+  const [ansThree, setAnsThree] = useState(false);
+  const [error, setError] = useState(false);
+  const [pointValue, setPointValue] = useState(0);
   const handleClickOne = () => {
     if (ansOne !== true) {
       setAnsOne(true);
@@ -61,7 +63,7 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', marginTop: matchesMd ? 10 : 0 }}>
       <Box
         minHeight="95vh"
         width="100%"

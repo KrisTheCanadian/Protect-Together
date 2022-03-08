@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
 import questions from '../../../static/data/formSymptomsIntensity.json';
 
@@ -11,14 +11,14 @@ const styles = {
 };
 
 export default function Question4Layout({ changeStatus, selection, count, changeCount, changePoints }: any) {
-  const [id, setId] = React.useState(0);
-  const [ansOne, setAnsOne] = React.useState(false);
-  const [ansTwo, setAnsTwo] = React.useState(false);
-  const [ansThree, setAnsThree] = React.useState(false);
-  const [value, setValue] = React.useState('false');
-  const [error, setError] = React.useState(false);
-  const [counter, setCounter] = React.useState(count);
-  const [pointValue, setPointValue] = React.useState(0);
+  const [id, setId] = useState(0);
+  const [ansOne, setAnsOne] = useState(false);
+  const [ansTwo, setAnsTwo] = useState(false);
+  const [ansThree, setAnsThree] = useState(false);
+  const [value, setValue] = useState('false');
+  const [error, setError] = useState(false);
+  const [counter, setCounter] = useState(count);
+  const [pointValue, setPointValue] = useState(0);
   const theme = useTheme();
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -119,7 +119,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
           <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 3 }}>
             What is the severity of your
             {' '}
-            {questions[selection[id]].label}
+            {questions[selection[id]]?.label}
             {' '}
             ?
           </Typography>

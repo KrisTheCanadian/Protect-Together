@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Container, Typography, Box } from '@mui/material';
 import question from '../../../static/data/questions.json';
 
@@ -11,12 +11,12 @@ const styles = {
 };
 
 export default function Question5Layout({ changeStatus, count, changePoints }: any) {
-  const [ansYes, setAnsYes] = React.useState(false);
-  const [ansNo, setAnsNo] = React.useState(false);
-  const [id, setId] = React.useState(0);
-  const [counter, setCounter] = React.useState(count);
-  const [pointValue, setPointValue] = React.useState(0);
-  const [error, setError] = React.useState(false);
+  const [ansYes, setAnsYes] = useState(false);
+  const [ansNo, setAnsNo] = useState(false);
+  const [id, setId] = useState(0);
+  const [counter, setCounter] = useState(count);
+  const [pointValue, setPointValue] = useState(0);
+  const [error, setError] = useState(false);
 
   const handleClickYes = () => {
     if (!ansYes) {

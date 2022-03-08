@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Container,
@@ -26,11 +26,11 @@ export default function Question3Layout({ changeStatus, changePoints, changeSymp
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
-  const [value, setValue] = React.useState('false');
-  const [checkedSymptoms, setCheckedSymptoms] = React.useState<number[]>([]);
-  const [nextQuestions, setNextQuestions] = React.useState<number[]>([]);
-  const [error, setError] = React.useState(false);
-  const [pointValue, setPointValue] = React.useState(0);
+  const [value, setValue] = useState('false');
+  const [checkedSymptoms, setCheckedSymptoms] = useState<number[]>([]);
+  const [nextQuestions, setNextQuestions] = useState<number[]>([]);
+  const [error, setError] = useState(false);
+  const [pointValue, setPointValue] = useState(0);
 
   const handleCheckboxChange = (symptom: any) => {
     if (symptom.id === 13) {
