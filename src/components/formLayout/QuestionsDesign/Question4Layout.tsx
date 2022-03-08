@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
+import questions from '../../../static/data/formSymptomsIntensity.json';
 
 const styles = {
   centered: {
@@ -9,21 +10,27 @@ const styles = {
   },
 };
 
-export default function Question4Layout() {
-  const [ansOne, setAnsOne] = React.useState(false);
-  const [ansTwo, setAnsTwo] = React.useState(false);
-  const [ansThree, setAnsThree] = React.useState(false);
-  const [value, setValue] = React.useState('false');
-  const [error, setError] = React.useState(true);
+export default function Question4Layout({ changeStatus, selection, count, changeCount, changePoints }: any) {
+  const [id, setId] = useState(0);
+  const [ansOne, setAnsOne] = useState(false);
+  const [ansTwo, setAnsTwo] = useState(false);
+  const [ansThree, setAnsThree] = useState(false);
+  const [value, setValue] = useState('false');
+  const [error, setError] = useState(false);
+  const [counter, setCounter] = useState(count);
+  const [pointValue, setPointValue] = useState(0);
+  const theme = useTheme();
+  const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleClickOne = () => {
     if (ansOne !== true) {
       setAnsOne(true);
       setAnsTwo(false);
       setAnsThree(false);
-      setValue('one');
+      setError(false);
+      setPointValue(questions[id].p1);
     } else {
       setAnsOne(false);
-      setValue('false');
     }
   };
 
@@ -32,10 +39,10 @@ export default function Question4Layout() {
       setAnsTwo(true);
       setAnsOne(false);
       setAnsThree(false);
-      setValue('two');
+      setError(false);
+      setPointValue(questions[id].p2);
     } else {
       setAnsTwo(false);
-      setValue('false');
     }
   };
 
@@ -44,10 +51,35 @@ export default function Question4Layout() {
       setAnsThree(true);
       setAnsOne(false);
       setAnsTwo(false);
-      setValue('three');
+      setError(false);
+      setPointValue(questions[id].p3);
     } else {
       setAnsThree(false);
-      setValue('false');
+    }
+  };
+
+  useEffect(() => {
+    if (value !== 'false') {
+      changeStatus(value);
+    }
+  }, [changeStatus, value]);
+
+  const handleSubmit = () => {
+    if (!ansOne && !ansTwo && !ansThree) {
+      setError(true);
+    } else {
+      setAnsOne(false);
+      setAnsTwo(false);
+      setAnsThree(false);
+      if (selection.length - 1 > id) {
+        setId(id + 1);
+        setCounter(counter + 1);
+        changePoints(pointValue);
+      } else {
+        changeCount(counter + 1);
+        changePoints(pointValue);
+        setValue('5');
+      }
     }
   };
 
@@ -79,12 +111,22 @@ export default function Question4Layout() {
               minWidth: 0,
             }}
           >
-            Question 4
+            Question
+            {' '}
+            {counter}
+            {' '}
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 3 }}>
-            What is the severity of your cough?
+            What is the severity of your
+            {' '}
+            {questions[selection[id]]?.label}
+            {' '}
+            ?
           </Typography>
-          <Container sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Container sx={{ display: 'flex',
+            justifyContent: 'space-around',
+            width: matchesSm ? '100%' : '80%' }}
+          >
             <Button
               onClick={handleClickOne}
               variant={ansOne ? 'contained' : 'outlined'}
@@ -110,11 +152,16 @@ export default function Question4Layout() {
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
-          <Button type="submit" variant="contained" color="primary">
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
+          <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
             Continue
           </Button>
         </Container>

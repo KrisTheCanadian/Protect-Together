@@ -56,7 +56,7 @@ export default function HeaderSymptoms({ id }: any) {
           <Button
             variant="contained"
             color="secondary"
-            sx={{ marginLeft: 'auto' }}
+            sx={{ marginLeft: 'auto', marginRight: '0.5rem' }}
             onClick={() => {
               navigate('/dashboard');
             }}

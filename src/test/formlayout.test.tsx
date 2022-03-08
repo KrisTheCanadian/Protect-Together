@@ -17,7 +17,6 @@ import Question3Layout from '../components/formLayout/QuestionsDesign/Question3L
 import Question4Layout from '../components/formLayout/QuestionsDesign/Question4Layout';
 import Question5Layout from '../components/formLayout/QuestionsDesign/Question5Layout';
 import ResponseLayout from '../components/formLayout/ResponseLayout';
-import ResponseForm from '../pages/symptomsForm/ResponseForm';
 import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 
 jest.mock('firebase/compat/app', () => {
@@ -62,8 +61,8 @@ test('Question 3 Renders correctly', () => {
 });
 
 test('Question 4 Renders correctly', () => {
-  const { getByText } = render(<BrowserRouter><Question4Layout /></BrowserRouter>);
-  expect(getByText('Question 4')).toBeTruthy();
+  const { getByText } = render(<BrowserRouter><Question4Layout selection="0" /></BrowserRouter>);
+  expect(getByText('Question')).toBeTruthy();
 });
 
 test('Question 5 Renders correctly', () => {
@@ -86,10 +85,6 @@ test('Header Renders correctly', () => {
 
 test('Response Layout Renders correctly', () => {
   render(<BrowserRouter><ResponseLayout /></BrowserRouter>);
-});
-
-test('ResponseForm Renders correctly', () => {
-  render(<BrowserRouter><ResponseForm /></BrowserRouter>);
 });
 
 test('SymptomsForm Renders correctly', () => {

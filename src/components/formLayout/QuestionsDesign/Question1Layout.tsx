@@ -1,5 +1,15 @@
-import React from 'react';
-import { Button, Container, Typography, Box, List, ListItem, ListItemText } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Button,
+  Container,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 
 const styles = {
@@ -10,24 +20,50 @@ const styles = {
   },
 };
 
-export default function Question1Layout(props: any) {
-  const [ansYes, setAnsYes] = React.useState(false);
-  const [buttonClicked, setButtonClicked] = React.useState(false);
-  const [value, setValue] = React.useState('false');
+export default function Question1Layout({ changeStatus }: any) {
+  const theme = useTheme();
+  const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
+  const [ansYes, setAnsYes] = useState(false);
+  const [ansNo, setAnsNo] = useState(false);
+  const [value, setValue] = useState('false');
+  const [error, setError] = useState(false);
+
   const handleClickYes = () => {
-    setAnsYes(true);
-    setButtonClicked(true);
-    setValue('response0');
+    if (!ansYes) {
+      setAnsYes(true);
+      setAnsNo(false);
+      setError(false);
+      setValue('response0');
+    } else {
+      setAnsYes(false);
+      setValue('false');
+    }
   };
 
   const handleClickNo = () => {
-    setAnsYes(false);
-    setButtonClicked(true);
-    setValue('2');
+    if (!ansNo) {
+      setAnsYes(false);
+      setAnsNo(true);
+      setError(false);
+      setValue('2');
+    } else {
+      setAnsNo(false);
+      setValue('false');
+    }
+  };
+
+  const handleClick = () => {
+    if (value === 'false') {
+      setError(true);
+    } else { changeStatus(value); }
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex',
+      marginTop: matchesMd ? 60 : 0,
+    }}
+    >
       <Box
         minHeight="95vh"
         width="100%"
@@ -45,6 +81,7 @@ export default function Question1Layout(props: any) {
         >
           <Button
             variant="contained"
+            className="steps-button"
             sx={{
               borderRadius: 8,
               fontSize: '17px',
@@ -63,7 +100,7 @@ export default function Question1Layout(props: any) {
             <ListItem>
               <ListItemText>
                 <Typography variant="subtitle1" sx={{ color: '#202020' }}>
-                  <CircleIcon sx={{ fontSize: 'small' }} />
+                  <CircleIcon sx={{ fontSize: '9px' }} />
                   {' '}
                   Severe difficulty breathing (struggling to breathe or speaking in single words)
                 </Typography>
@@ -72,7 +109,7 @@ export default function Question1Layout(props: any) {
             <ListItem>
               <ListItemText>
                 <Typography variant="subtitle1" sx={{ color: '#202020' }}>
-                  <CircleIcon sx={{ fontSize: 'small' }} />
+                  <CircleIcon sx={{ fontSize: '9px' }} />
                   {' '}
                   Severe chest pain (constant tightness or crushing sensation)
                 </Typography>
@@ -81,35 +118,48 @@ export default function Question1Layout(props: any) {
             <ListItem>
               <ListItemText>
                 <Typography variant="subtitle1" sx={{ color: '#202020' }}>
-                  <CircleIcon sx={{ fontSize: 'small' }} />
+                  <CircleIcon sx={{ fontSize: '9px' }} />
                   {' '}
                   Losing consciousness
                 </Typography>
               </ListItemText>
             </ListItem>
           </List>
-          <Button
-            onClick={handleClickYes}
-            variant={ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
+          <Container
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '50%',
+            }}
           >
-            Yes
-          </Button>
-          <Button
-            onClick={handleClickNo}
-            variant={!ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
-          >
-            No
-          </Button>
+            <Button
+              onClick={handleClickYes}
+              variant={ansYes ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem' }}
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={handleClickNo}
+              variant={ansNo ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem' }}
+            >
+              No
+            </Button>
+          </Container>
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
-          <Button onClick={() => props.changeStatus(value)} type="submit" variant="contained" color="primary">
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
+          <Button onClick={handleClick} type="submit" variant="contained" color="primary">
             Continue
           </Button>
         </Container>

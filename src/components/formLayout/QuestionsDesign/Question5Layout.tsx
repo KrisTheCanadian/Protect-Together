@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Container, Typography, Box } from '@mui/material';
 import question from '../../../static/data/questions.json';
 
@@ -10,25 +10,51 @@ const styles = {
   },
 };
 
-export default function Question5Layout({ changeStatus, selection }: any) {
-  const [ansYes, setAnsYes] = React.useState(false);
-  const [buttonClicked, setButtonClicked] = React.useState(false);
-  const [value, setValue] = React.useState(question[selection]?.value);
+export default function Question5Layout({ changeStatus, count, changePoints }: any) {
+  const [ansYes, setAnsYes] = useState(false);
+  const [ansNo, setAnsNo] = useState(false);
+  const [id, setId] = useState(0);
+  const [counter, setCounter] = useState(count);
+  const [pointValue, setPointValue] = useState(0);
+  const [error, setError] = useState(false);
 
   const handleClickYes = () => {
-    setAnsYes(true);
-    setButtonClicked(true);
+    if (!ansYes) {
+      setAnsYes(true);
+      setAnsNo(false);
+      setError(false);
+      setPointValue(question[id].p1);
+    } else {
+      setAnsYes(false);
+    }
   };
 
   const handleClickNo = () => {
-    setAnsYes(false);
-    setButtonClicked(true);
+    if (!ansNo) {
+      setAnsYes(false);
+      setAnsNo(true);
+      setError(false);
+      setPointValue(question[id].p2);
+    } else {
+      setAnsNo(false);
+    }
   };
 
-  const handleClick = () => {
-    setButtonClicked(false);
-    setAnsYes(false);
-    changeStatus(question[selection].value);
+  const handleSubmit = () => {
+    if (!ansYes && !ansNo) {
+      setError(true);
+    } else {
+      setAnsNo(false);
+      setAnsYes(false);
+      if (question.length - 1 > id) {
+        setId(id + 1);
+        setCounter(counter + 1);
+        changePoints(pointValue);
+      } else {
+        changePoints(pointValue);
+        changeStatus('response');
+      }
+    }
   };
 
   return (
@@ -61,34 +87,47 @@ export default function Question5Layout({ changeStatus, selection }: any) {
           >
             Question
             {' '}
-            {question[selection]?.number}
+            {counter}
           </Button>
           <Typography variant="h4" sx={{ marginTop: 1 }}>
-            {question[selection]?.title}
+            {question[id]?.title}
           </Typography>
-          <Button
-            onClick={handleClickYes}
-            variant={ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
+          <Container
+            sx={{
+              marginTop: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '50%',
+            }}
           >
-            Yes
-          </Button>
-          <Button
-            onClick={handleClickNo}
-            variant={!ansYes && buttonClicked ? 'contained' : 'outlined'}
-            sx={{ marginBottom: '1rem' }}
-          >
-            No
-          </Button>
+            <Button
+              onClick={handleClickYes}
+              variant={ansYes ? 'contained' : 'outlined'}
+              sx={{ marginBottom: '1rem' }}
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={handleClickNo}
+              variant={ansNo ? 'contained' : 'outlined'}
+            >
+              No
+            </Button>
+          </Container>
         </Container>
         <Container
           sx={{
+            marginLeft: '1rem',
             marginTop: '2rem',
+            flexDirection: 'column',
           }}
           style={styles.centered}
         >
+          {error && (
+          <p className="validationError">Please select an option.</p>
+          )}
           <Button
-            onClick={handleClick}
+            onClick={handleSubmit}
             type="submit"
             variant="contained"
             color="primary"
