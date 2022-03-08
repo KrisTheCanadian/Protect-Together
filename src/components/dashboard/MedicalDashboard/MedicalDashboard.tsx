@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -19,6 +19,8 @@ import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
 import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
+import { firestore } from '../../../config/firebase_config';
+import MedicalTable from './MedicalTable/MedicalTable';
 
 const style = {
   position: 'absolute' as const,
@@ -58,7 +60,7 @@ function MedicalDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Typography paragraph>{state.firstName}</Typography>
+        <MedicalTable />
       </MainContent>
 
       <Modal

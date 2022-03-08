@@ -18,6 +18,8 @@
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
+    "eslint-disable-next-line max-len": "off",
+    "linebreak-style": 0,
     "no-console": "off",
     "react/jsx-no-duplicate-props": [0, { "ignoreCase": true }],
     "react/require-default-props": "off",
