@@ -43,10 +43,7 @@ export default function Question1Layout(props: any) {
   const handleClick = () => {
     if (value === 'false') {
       setError(true);
-    }
-    if (value !== 'false') {
-      props.changeStatus(value);
-    }
+    } else { props.changeStatus(value); }
   };
 
   return (
@@ -68,6 +65,7 @@ export default function Question1Layout(props: any) {
         >
           <Button
             variant="contained"
+            className="steps-button"
             sx={{
               borderRadius: 8,
               fontSize: '17px',

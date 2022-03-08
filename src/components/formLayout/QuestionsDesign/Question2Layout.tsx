@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Container, Typography, Box, List, ListItem, ListItemText } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
+import { Button, Container, Typography, Box } from '@mui/material';
 
 const styles = {
   centered: {
@@ -10,22 +9,21 @@ const styles = {
   },
 };
 
-export default function Question2Layout(props: any) {
+export default function Question2Layout({ changeStatus, changePoints }: any) {
   const [ansOne, setAnsOne] = React.useState(false);
   const [ansTwo, setAnsTwo] = React.useState(false);
   const [ansThree, setAnsThree] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const [value, setValue] = React.useState('false');
+  const [pointValue, setPointValue] = React.useState(0);
   const handleClickOne = () => {
     if (ansOne !== true) {
       setAnsOne(true);
       setAnsTwo(false);
       setAnsThree(false);
-      setValue('3');
+      setPointValue(2);
       setError(false);
     } else {
       setAnsOne(false);
-      setValue('false');
     }
   };
 
@@ -34,11 +32,10 @@ export default function Question2Layout(props: any) {
       setAnsTwo(true);
       setAnsOne(false);
       setAnsThree(false);
-      setValue('3');
       setError(false);
+      setPointValue(5);
     } else {
       setAnsTwo(false);
-      setValue('false');
     }
   };
 
@@ -47,20 +44,19 @@ export default function Question2Layout(props: any) {
       setAnsThree(true);
       setAnsOne(false);
       setAnsTwo(false);
-      setValue('3');
       setError(false);
+      setPointValue(4);
     } else {
       setAnsThree(false);
-      setValue('false');
     }
   };
 
   const handleClick = () => {
-    if (value === 'false') {
+    if (!ansOne && !ansTwo && !ansThree) {
       setError(true);
-    }
-    if (value !== 'false') {
-      props.changeStatus(value);
+    } else {
+      changePoints(pointValue);
+      changeStatus('3');
     }
   };
 
