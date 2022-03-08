@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
-import questions from '../../../static/data/formIntensityQuestions.json';
+import questions from '../../../static/data/formSymptomsIntensity.json';
 
 const styles = {
   centered: {
@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-export default function Question4Layout({ changeStatus, selection, count, changeCount }: any) {
+export default function Question4Layout({ changeStatus, selection, count, changeCount, changePoints }: any) {
   const [id, setId] = React.useState(0);
   const [ansOne, setAnsOne] = React.useState(false);
   const [ansTwo, setAnsTwo] = React.useState(false);
@@ -18,6 +18,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
   const [value, setValue] = React.useState('false');
   const [error, setError] = React.useState(false);
   const [counter, setCounter] = React.useState(count);
+  const [pointValue, setPointValue] = React.useState(0);
   const theme = useTheme();
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -27,6 +28,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsTwo(false);
       setAnsThree(false);
       setError(false);
+      setPointValue(questions[id].p1);
     } else {
       setAnsOne(false);
     }
@@ -38,6 +40,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsThree(false);
       setError(false);
+      setPointValue(questions[id].p2);
     } else {
       setAnsTwo(false);
     }
@@ -49,6 +52,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsTwo(false);
       setError(false);
+      setPointValue(questions[id].p3);
     } else {
       setAnsThree(false);
     }
@@ -70,8 +74,10 @@ export default function Question4Layout({ changeStatus, selection, count, change
       if (selection.length - 1 > id) {
         setId(id + 1);
         setCounter(counter + 1);
+        changePoints(pointValue);
       } else {
         changeCount(counter + 1);
+        changePoints(pointValue);
         setValue('5');
       }
     }

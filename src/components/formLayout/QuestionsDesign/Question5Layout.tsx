@@ -10,21 +10,20 @@ const styles = {
   },
 };
 
-export default function Question5Layout({ changeStatus, changeCount, count }: any) {
+export default function Question5Layout({ changeStatus, count, changePoints }: any) {
   const [ansYes, setAnsYes] = React.useState(false);
   const [ansNo, setAnsNo] = React.useState(false);
   const [id, setId] = React.useState(0);
-  const [value, setValue] = React.useState(question[id]?.value);
   const [counter, setCounter] = React.useState(count);
+  const [pointValue, setPointValue] = React.useState(0);
   const [error, setError] = React.useState(false);
-  console.log(count);
-  console.log(counter);
 
   const handleClickYes = () => {
     if (!ansYes) {
       setAnsYes(true);
       setAnsNo(false);
       setError(false);
+      setPointValue(question[id].p1);
     } else {
       setAnsYes(false);
     }
@@ -35,16 +34,11 @@ export default function Question5Layout({ changeStatus, changeCount, count }: an
       setAnsYes(false);
       setAnsNo(true);
       setError(false);
+      setPointValue(question[id].p2);
     } else {
       setAnsNo(false);
     }
   };
-
-  //  useEffect(() => {
-  //   if (value !== 'false') {
-  //     changeStatus(value);
-  //   }
-  // }, [changeStatus, value]);
 
   const handleSubmit = () => {
     if (!ansYes && !ansNo) {
@@ -55,8 +49,10 @@ export default function Question5Layout({ changeStatus, changeCount, count }: an
       if (question.length - 1 > id) {
         setId(id + 1);
         setCounter(counter + 1);
+        changePoints(pointValue);
       } else {
-        changeStatus('response2');
+        changePoints(pointValue);
+        changeStatus('response');
       }
     }
   };

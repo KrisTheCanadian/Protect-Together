@@ -9,19 +9,27 @@ import ResponseLayout from './ResponseLayout';
 export default function FormLayout(props: any) {
   const [status, setStatus] = React.useState('1');
   const [count, setCount] = React.useState(4);
+  const [points, setPoints] = React.useState(0);
   const [symptomsArray, setSymptomsArray] = React.useState<number[]>([]);
 
   const handleCallBack = (childData: any) => {
     setStatus(childData);
   };
 
+  const handlePoints = (childData: any) => {
+    setPoints(points + childData);
+  };
+
   const handleCount = (childData: any) => {
     setCount(childData);
-    console.log(count);
   };
 
   const handleSymptoms = (childData: any) => {
     setSymptomsArray(childData);
+  };
+
+  const handleParentState = () => {
+    props.changeStatus('2');
   };
 
   let layout;
@@ -31,10 +39,10 @@ export default function FormLayout(props: any) {
       layout = <Question1 changeStatus={handleCallBack} />;
       break;
     case '2':
-      layout = <Question2 changeStatus={handleCallBack} />;
+      layout = <Question2 changePoints={handlePoints} changeStatus={handleCallBack} />;
       break;
     case '3':
-      layout = <Question3 changeStatus={handleCallBack} changeSymptoms={handleSymptoms} />;
+      layout = <Question3 changePoints={handlePoints} changeStatus={handleCallBack} changeSymptoms={handleSymptoms} />;
       break;
     case '4':
       layout = (
@@ -43,29 +51,30 @@ export default function FormLayout(props: any) {
           selection={symptomsArray}
           changeStatus={handleCallBack}
           changeCount={handleCount}
+          changePoints={handlePoints}
         />
       );
       break;
     case '5':
-      layout = <Question5 count={count} changeCount={handleCount} changeStatus={handleCallBack} />;
-      break;
-    case '6':
-      layout = <Question5 selection={1} changeStatus={handleCallBack} />;
-      break;
-    case '7':
-      layout = <Question5 selection={2} changeStatus={handleCallBack} />;
+      layout = (
+        <Question5
+          count={count}
+          changeStatus={handleCallBack}
+          changePoints={handlePoints}
+        />
+      );
       break;
     case 'response0':
       layout = <ResponseLayout selection={0} />;
-      props.changeStatus('2');
+      handleParentState();
       break;
-    case 'response1':
-      layout = <ResponseLayout selection={1} />;
-      props.changeStatus('2');
-      break;
-    case 'response2':
-      layout = <ResponseLayout selection={2} />;
-      props.changeStatus('2');
+    case 'response':
+      if (points < 15) {
+        layout = <ResponseLayout selection={1} />;
+      } else {
+        layout = <ResponseLayout selection={2} />;
+      }
+      handleParentState();
       break;
     default:
       layout = '';

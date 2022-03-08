@@ -12,7 +12,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import questions from '../../../static/data/formQuestions.json';
+import symptoms from '../../../static/data/formSymptoms.json';
 
 const styles = {
   centered: {
@@ -22,7 +22,7 @@ const styles = {
   },
 };
 
-export default function Question3Layout(props: any) {
+export default function Question3Layout({ changeStatus, changePoints, changeSymptoms }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
@@ -30,24 +30,26 @@ export default function Question3Layout(props: any) {
   const [checkedSymptoms, setCheckedSymptoms] = React.useState<number[]>([]);
   const [nextQuestions, setNextQuestions] = React.useState<number[]>([]);
   const [error, setError] = React.useState(false);
+  const [pointValue, setPointValue] = React.useState(0);
 
   const handleCheckboxChange = (symptom: any) => {
     if (symptom.id === 13) {
       setCheckedSymptoms([13]);
       setNextQuestions([]);
+      setPointValue(0);
     } else if (checkedSymptoms.includes(symptom.id)) {
       setCheckedSymptoms(checkedSymptoms.filter((item) => item !== symptom.id));
+      setPointValue(pointValue - symptom.pt);
 
       if (nextQuestions.includes(symptom.next)) {
         setNextQuestions(nextQuestions.filter((item) => item !== symptom.next));
       }
     } else {
       setCheckedSymptoms([...checkedSymptoms, symptom.id]);
+      setPointValue(pointValue + symptom.pt);
       if (symptom.next !== -1) {
         setNextQuestions([...nextQuestions, symptom.next]);
       }
-
-      console.log(checkedSymptoms);
     }
   };
 
@@ -59,18 +61,21 @@ export default function Question3Layout(props: any) {
 
   useEffect(() => {
     if (value !== 'false') {
-      props.changeStatus(value);
+      changeStatus(value);
     }
-  }, [props, value]);
+  }, [changeStatus, value]);
 
   const handleSubmit = () => {
     if (checkedSymptoms.length === 0) {
       setError(true);
-    } else if (nextQuestions.length !== 0) {
-      setValue('4');
-      props.changeSymptoms(nextQuestions);
     } else {
-      setValue('5');
+      changePoints(pointValue);
+      if (nextQuestions.length !== 0) {
+        setValue('4');
+        changeSymptoms(nextQuestions);
+      } else {
+        setValue('5');
+      }
     }
   };
 
@@ -129,7 +134,7 @@ export default function Question3Layout(props: any) {
           >
             <FormControl component="fieldset">
               <FormGroup>
-                {questions.map((symptom) => (
+                {symptoms.map((symptom) => (
                   <FormControlLabel
                     key={Math.random()}
                     control={(
