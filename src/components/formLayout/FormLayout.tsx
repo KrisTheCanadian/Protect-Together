@@ -20,11 +20,7 @@ export default function FormLayout({ changeState }: any) {
 
   switch (status) {
     case '1':
-      layout = (
-        <Question1
-          changeStatus={setStatus}
-        />
-      );
+      layout = <Question1 changeStatus={setStatus} />;
       break;
     case '2':
       layout = <Question2 changePoints={handlePoints} changeStatus={setStatus} />;
