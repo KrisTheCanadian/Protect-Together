@@ -10,10 +10,6 @@ export default function SymptomsForm() {
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [status, setStatus] = React.useState('1');
 
-  const handleCallBack = (childData: any) => {
-    setStatus(childData);
-  };
-
   return (
     <div>
       <div
@@ -33,7 +29,7 @@ export default function SymptomsForm() {
               paddingTop: matchesSm ? 130 : 0,
             }}
           >
-            <FormLayout changeStatus={handleCallBack} />
+            <FormLayout changeStatus={setStatus} />
           </div>
         </Box>
       </div>

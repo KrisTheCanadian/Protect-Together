@@ -12,45 +12,29 @@ export default function FormLayout(props: any) {
   const [points, setPoints] = React.useState(0);
   const [symptomsArray, setSymptomsArray] = React.useState<number[]>([]);
 
-  const handleCallBack = (childData: any) => {
-    setStatus(childData);
-  };
-
   const handlePoints = (childData: any) => {
     setPoints(points + childData);
-  };
-
-  const handleCount = (childData: any) => {
-    setCount(childData);
-  };
-
-  const handleSymptoms = (childData: any) => {
-    setSymptomsArray(childData);
-  };
-
-  const handleParentState = () => {
-    props.changeStatus('2');
   };
 
   let layout;
 
   switch (status) {
     case '1':
-      layout = <Question1 changeStatus={handleCallBack} />;
+      layout = <Question1 changeStatus={setStatus} />;
       break;
     case '2':
-      layout = <Question2 changePoints={handlePoints} changeStatus={handleCallBack} />;
+      layout = <Question2 changePoints={handlePoints} changeStatus={setStatus} />;
       break;
     case '3':
-      layout = <Question3 changePoints={handlePoints} changeStatus={handleCallBack} changeSymptoms={handleSymptoms} />;
+      layout = <Question3 changePoints={handlePoints} changeStatus={setStatus} changeSymptoms={setSymptomsArray} />;
       break;
     case '4':
       layout = (
         <Question4
           count={count}
           selection={symptomsArray}
-          changeStatus={handleCallBack}
-          changeCount={handleCount}
+          changeStatus={setStatus}
+          changeCount={setCount}
           changePoints={handlePoints}
         />
       );
@@ -59,14 +43,14 @@ export default function FormLayout(props: any) {
       layout = (
         <Question5
           count={count}
-          changeStatus={handleCallBack}
+          changeStatus={setStatus}
           changePoints={handlePoints}
         />
       );
       break;
     case 'response0':
       layout = <ResponseLayout selection={0} />;
-      handleParentState();
+      setTimeout(() => props.changeStatus('2'), 0);
       break;
     case 'response':
       if (points < 15) {
@@ -74,7 +58,7 @@ export default function FormLayout(props: any) {
       } else {
         layout = <ResponseLayout selection={2} />;
       }
-      handleParentState();
+      setTimeout(() => props.changeStatus('2'), 0);
       break;
     default:
       layout = '';
