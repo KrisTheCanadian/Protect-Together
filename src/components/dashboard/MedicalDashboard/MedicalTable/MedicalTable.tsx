@@ -132,6 +132,8 @@ export default function MedicalTable() {
   // rowData represents the unfiltered query data
   const [rowData, setRowData] = React.useState<Data[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
+  // const [hasUpdates, sethasUpdates] = React.useState<{[key:string]:boolean}>();
+  const [hasUpdates, sethasUpdates] = React.useState<string[]>([]);
 
   // CHANGE function to convert query data to table format
 
@@ -159,6 +161,7 @@ export default function MedicalTable() {
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
       let tableData = new Array<Data>();
+      const hasUpdatesData: string[] = [];
 
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
@@ -170,11 +173,14 @@ export default function MedicalTable() {
         // eslint-disable-next-line max-len
         const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
         const symptoms = 'Severe fever';
+        const userUasUpdates = Math.round(Math.random()) === 1;
+        if (userUasUpdates) hasUpdatesData.push(user.UID);
         const tableEntry = createTableData(UID, name, age, appointmentDate, status, symptoms);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
       });
+      sethasUpdates(hasUpdatesData);
       return () => unsubscribe();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,6 +206,14 @@ export default function MedicalTable() {
 
   // this handles the click to select a row
   const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
+    if (hasUpdates.includes(UID)) {
+      sethasUpdates(hasUpdates.filter((ID) => ID !== UID));
+      // TODO: set hasUpdates  to false in user (UID)
+      //
+    }
+    // TODO: redirect to patient page
+    //
+    // TODO: delete the following 2 lines
     // eslint-disable-next-line no-alert
     alert(`${UID} is selected`);
   };
@@ -254,7 +268,7 @@ export default function MedicalTable() {
               {stableSort(filteredRows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.UID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -264,7 +278,7 @@ export default function MedicalTable() {
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.UID}
-                      selected={isItemSelected}
+                      selected={hasUpdates.includes(row.UID)}
                     >
                       <TableCell />
                       <TableCell
