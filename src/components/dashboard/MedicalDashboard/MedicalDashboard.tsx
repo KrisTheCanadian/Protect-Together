@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -18,8 +18,6 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
-import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
-import { firestore } from '../../../config/firebase_config';
 import MedicalTable from './MedicalTable/MedicalTable';
 
 const style = {
