@@ -4,7 +4,7 @@
 import { cleanup, render } from '@testing-library/react';
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import MedicalDashboard from '../../components/dashboard/MedicalDashboard/MedicalDashboard';
+import MedicalDashboard from '../../components/dashboard/MedicalDashboard';
 import { UserProvider } from '../../context/UserContext';
 
 jest.mock('firebase/compat/app', () => {
