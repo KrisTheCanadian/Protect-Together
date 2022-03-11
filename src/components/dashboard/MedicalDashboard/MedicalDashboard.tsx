@@ -14,11 +14,11 @@ import {
   Typography,
   Modal,
 } from '@mui/material';
-import Header from '../layout/Header';
-import MainContent from '../layout/MainContent';
-import SideBar from '../layout/SideBar';
-import { UserContext } from '../../context/UserContext';
-import AdminCreateAccount from '../../pages/auth/admincreateaccount';
+import Header from '../../layout/Header';
+import MainContent from '../../layout/MainContent';
+import SideBar from '../../layout/SideBar';
+import { UserContext } from '../../../context/UserContext';
+import MedicalTable from './MedicalTable/MedicalTable';
 
 const style = {
   position: 'absolute' as const,
@@ -58,7 +58,7 @@ function MedicalDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Typography paragraph>{state.firstName}</Typography>
+        <MedicalTable />
       </MainContent>
 
       <Modal

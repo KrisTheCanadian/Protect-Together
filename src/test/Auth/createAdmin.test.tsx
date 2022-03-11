@@ -5,8 +5,8 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { auth } from '../config/firebase_config';
-import AdminCreateAccount from '../pages/auth/admincreateaccount';
+import { auth } from '../../config/firebase_config';
+import AdminCreateAccount from '../../pages/auth/admincreateaccount';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');

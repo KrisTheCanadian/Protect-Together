@@ -8,8 +8,8 @@ import userEvent from '@testing-library/user-event';
 import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { auth } from '../config/firebase_config';
-import RegisterPage from '../pages/auth/register';
+import { auth } from '../../config/firebase_config';
+import RegisterPage from '../../pages/auth/register';
 import '@testing-library/jest-dom';
 
 jest.mock('firebase/compat/app', () => {

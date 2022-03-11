@@ -8,6 +8,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import { format } from 'date-fns';
 import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
@@ -67,11 +68,12 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 // CHANGE define the type of data for each row in the table
 export interface Data {
+  UID: string;
   name: string;
-  role: string;
-  patientSlots: number;
-  appointmentSlots: number;
+  age: number;
+  appointmentDate: string;
   status: string;
+  symptoms: string;
 }
 
 // CHANGE define the header cell interface
@@ -90,22 +92,16 @@ export const headCells: readonly HeadCell[] = [
     label: 'Name',
   },
   {
-    id: 'role',
+    id: 'age',
     numeric: false,
     disablePadding: false,
-    label: 'Role',
+    label: 'Age',
   },
   {
-    id: 'patientSlots',
-    numeric: true,
+    id: 'appointmentDate',
+    numeric: false,
     disablePadding: false,
-    label: 'Patient Slots',
-  },
-  {
-    id: 'appointmentSlots',
-    numeric: true,
-    disablePadding: false,
-    label: 'Appointment Slots',
+    label: 'Appointment Dates',
   },
   {
     id: 'status',
@@ -113,9 +109,15 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Status',
   },
+  {
+    id: 'symptoms',
+    numeric: false,
+    disablePadding: false,
+    label: 'Symptoms',
+  },
 ];
 
-export default function AdminTable() {
+export default function MedicalTable() {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
   // can access selected rows here
@@ -129,45 +131,55 @@ export default function AdminTable() {
   // rowData represents the unfiltered query data
   const [rowData, setRowData] = React.useState<Data[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
+  // const [hasUpdates, sethasUpdates] = React.useState<{[key:string]:boolean}>();
+  const [hasUpdates, sethasUpdates] = React.useState<string[]>([]);
 
   // CHANGE function to convert query data to table format
 
   function createTableData(
+    UID: string,
     name: string,
-    role: string,
-    patientSlots: number,
-    appointmentSlots: number,
+    age: number,
+    appointmentDate: string,
     status: string,
+    symptoms: string,
   ): Data {
     return {
+      UID,
       name,
-      role,
-      patientSlots,
-      appointmentSlots,
+      age,
+      appointmentDate,
       status,
+      symptoms,
     };
   }
 
-  const usersRef = firestore.collection('users').where('role', '!=', 'patient');
+  const usersRef = firestore.collection('users').where('role', '==', 'patient');
 
   // CHANGE Fetch data for table
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
       let tableData = new Array<Data>();
+      const hasUpdatesData: string[] = [];
 
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
         const user = childSnapshot.data();
+        const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
-        const { role } = user;
-        const patientSlots = 10;
-        const appointmentSlots = 4;
-        const status = 'active';
-        const tableEntry = createTableData(name, role, patientSlots, appointmentSlots, status);
+        const age = Math.floor(((Date.now() - user.dateOfBirth.toDate()) / 31536000000));
+        const appointmentDate = format(new Date(1646707969351), 'Pp');
+        // eslint-disable-next-line max-len
+        const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
+        const symptoms = 'Severe fever';
+        const userHasUpdates = Math.round(Math.random()) === 1;
+        if (userHasUpdates) hasUpdatesData.push(user.UID);
+        const tableEntry = createTableData(UID, name, age, appointmentDate, status, symptoms);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
       });
+      sethasUpdates(hasUpdatesData);
       return () => unsubscribe();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -192,24 +204,17 @@ export default function AdminTable() {
   };
 
   // this handles the click to select a row
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
+  const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
+    if (hasUpdates.includes(UID)) {
+      sethasUpdates(hasUpdates.filter((ID) => ID !== UID));
+      // TODO: set hasUpdates  to false in user (UID)
+      //
     }
-
-    setSelected(newSelected);
+    // TODO: redirect to patient page
+    //
+    // TODO: delete the following 2 lines
+    // eslint-disable-next-line no-alert
+    alert(`${UID} is selected`);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -230,7 +235,7 @@ export default function AdminTable() {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
     setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
-       || row.role.toLowerCase().includes(searchText.toLowerCase())
+       || row.appointmentDate.toString().toLowerCase().includes(searchText.toLowerCase())
        || row.status.toLowerCase().includes(searchText.toLowerCase())
     )));
   };
@@ -262,28 +267,19 @@ export default function AdminTable() {
               {stableSort(filteredRows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.UID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
+                      onClick={(event) => handleClick(event, row.UID)}
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
+                      key={row.UID}
+                      selected={hasUpdates.includes(row.UID)}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
+                      <TableCell />
                       <TableCell
                         component="th"
                         id={labelId}
@@ -292,10 +288,10 @@ export default function AdminTable() {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="right">{row.patientSlots}</TableCell>
-                      <TableCell align="right">{row.appointmentSlots}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                      <TableCell align="left">{row.age}</TableCell>
+                      <TableCell align="left">{row.appointmentDate}</TableCell>
+                      <TableCell align="left">{row.status}</TableCell>
+                      <TableCell align="left">{row.symptoms}</TableCell>
                     </TableRow>
                   );
                 })}

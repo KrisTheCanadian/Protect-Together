@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { EnhancedTableToolbarProps } from './AdminTable';
+import { EnhancedTableToolbarProps } from './MedicalTable';
 
 // toolbar above table
 export const TableToolbar = (props: EnhancedTableToolbarProps) => {
