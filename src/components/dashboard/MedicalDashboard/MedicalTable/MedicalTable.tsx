@@ -173,8 +173,8 @@ export default function MedicalTable() {
         // eslint-disable-next-line max-len
         const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
         const symptoms = 'Severe fever';
-        const userUasUpdates = Math.round(Math.random()) === 1;
-        if (userUasUpdates) hasUpdatesData.push(user.UID);
+        const userHasUpdates = Math.round(Math.random()) === 1;
+        if (userHasUpdates) hasUpdatesData.push(user.UID);
         const tableEntry = createTableData(UID, name, age, appointmentDate, status, symptoms);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
