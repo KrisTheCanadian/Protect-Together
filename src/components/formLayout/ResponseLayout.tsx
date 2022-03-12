@@ -6,7 +6,7 @@ import Hospital from '../../static/style/images/Hospital.png';
 import Symptoms from '../../static/style/images/Symptoms.png';
 import Doctor from '../../static/style/images/Doctor.png';
 import data from '../../static/data/responses.json';
-import { firestore } from '../../config/firebase_config';
+import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
 const styles = {
@@ -25,14 +25,14 @@ export default function ResponseLayout({ selection }: any) {
   const { state, update } = React.useContext(UserContext);
 
   const requestDoctor = async (patientScore: number) => {
-    console.log('clicked');
-    console.log(state.id);
     await users
       .doc(state.id)
       .update({
         score: patientScore,
       })
       .then(() => {
+        const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
+        getDoctor();
         navigate('/dashboard');
       });
   };
@@ -122,7 +122,7 @@ export default function ResponseLayout({ selection }: any) {
             <Button
               variant="text"
               onClick={() => {
-                requestDoctor(12);
+                requestDoctor(1);
               }}
             >
               Yes
