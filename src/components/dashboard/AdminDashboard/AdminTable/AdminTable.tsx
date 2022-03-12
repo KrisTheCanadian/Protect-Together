@@ -67,11 +67,13 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 // CHANGE define the type of data for each row in the table
 export interface Data {
+  UID: string;
   name: string;
   role: string;
   patientSlots: number;
   appointmentSlots: number;
   status: string;
+
 }
 
 // CHANGE define the header cell interface
@@ -133,6 +135,7 @@ export default function AdminTable() {
   // CHANGE function to convert query data to table format
 
   function createTableData(
+    UID: string,
     name: string,
     role: string,
     patientSlots: number,
@@ -140,6 +143,7 @@ export default function AdminTable() {
     status: string,
   ): Data {
     return {
+      UID,
       name,
       role,
       patientSlots,
@@ -158,12 +162,13 @@ export default function AdminTable() {
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
         const user = childSnapshot.data();
+        const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const { role } = user;
         const patientSlots = 10;
         const appointmentSlots = 4;
         const status = 'active';
-        const tableEntry = createTableData(name, role, patientSlots, appointmentSlots, status);
+        const tableEntry = createTableData(UID, name, role, patientSlots, appointmentSlots, status);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
@@ -272,7 +277,7 @@ export default function AdminTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.UID}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">

@@ -63,14 +63,19 @@ function AdminCreateAccount({ handleClose }: Props) {
     if (uid === undefined) {
       setError('An error has occured. Please try again later.');
     }
-    await users.doc(uid).set({
+    let staffMember: any = {
       UID: uid,
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       phone: formData.phoneNumber,
       role: formData.role,
-    }).then(() => {
+    };
+    if (formData.role === 'medical') {
+      staffMember = { ...staffMember, availableSlots: 10, patientSlots: 10 };
+    }
+
+    await users.doc(uid).set(staffMember).then(() => {
       auth.sendPasswordResetEmail(formData.email);
     });
   };
