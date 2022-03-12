@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { useEffect, useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-// import Card from '@material-ui/core/Card';
-// import CardContent from '@material-ui/core/CardContent';
-// import CardMedia from '@material-ui/core/CardMedia';
+// eslint-disable-next-line import/no-unresolved
+import './CovidData.css';
 import {
   Button,
   Box,
@@ -27,8 +27,6 @@ import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
 import theme from '../../static/style/theme';
-// import Chart from './Chart';
-// import Deposits from './Deposits.tsx';
 
 const style = {
   position: 'absolute' as const,
@@ -53,8 +51,54 @@ function PatientDashboard() {
   const [testOpen, setTestOpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
-
   const { state, update } = React.useContext(UserContext);
+
+  const [country, setCountry] = useState('');
+  const [cases, setCases] = useState('');
+  const [recovered, setRecovered] = useState('');
+  const [deaths, setDeaths] = useState('');
+  const [todayCases, setTodayCases] = useState('');
+  const [deathCases, setDeathCases] = useState('');
+  const [recoveredCases, setRecoveredCases] = useState('');
+  const [userInput, setUserInput] = useState('');
+
+  const setData = ({
+    country,
+    cases,
+    deaths,
+    recovered,
+    todayCases,
+    todayDeaths,
+    todayRecovered,
+  }: any) => {
+    setCountry(country);
+    setCases(cases);
+    setRecovered(recovered);
+    setDeaths(deaths);
+    setTodayCases(todayCases);
+    setDeathCases(todayDeaths);
+    setRecoveredCases(todayRecovered);
+  };
+
+  useEffect(() => {
+    fetch('https://disease.sh/v3/covid-19/countries')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+
+  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setUserInput(e.target.value);
+  };
+  const handleSubmit = (props: { preventDefault: () => void; }) => {
+    props.preventDefault();
+    fetch(`https://disease.sh/v3/covid-19/countries/${userInput}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  };
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -79,8 +123,8 @@ function PatientDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Typography paragraph>{state.firstName}</Typography>
-        <Box m={2} pt={3} />
+        {/* <Typography paragraph>{state.firstName}</Typography> */}
+        {/* <Box m={2} pt={3} /> */}
         <Typography
           variant="h4"
           sx={{
@@ -106,35 +150,95 @@ function PatientDashboard() {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                height: 400,
               }}
             >
               {/* <Chart /> */}
               <Iframe
+                // eslint-disable-next-line max-len
                 url="https://covid19canada.maps.arcgis.com/apps/Minimalist/index.html?appid=b3baccb0f30e4516b8e64009b3383f55"
                 position="absolute"
-                width="60%"
+                width="55%"
                 id="myId"
                 className="myClassname"
-                height="40%"
+                height="57%"
                 styles={{ height: '25px' }}
               />
             </Paper>
           </Grid>
-          {/* Recent Deposits */}
+          {/* box 1 */}
           <Grid item xs={12} md={4} lg={3}>
             <Paper
               sx={{
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                height: 400,
               }}
             >
-              {/* <Deposits /> */}
+
+              <div className="covidData">
+                {/* <h1>COVID-19 CASES COUNTRY WISE</h1> */}
+                <div className="covidData__input">
+                  <form onSubmit={handleSubmit}>
+                    {/* input county name */}
+                    <input onChange={handleSearch} placeholder="Enter Country Name" />
+                    <br />
+                    <button type="submit">Search</button>
+                  </form>
+                </div>
+
+                {/* Showing the details of the country */}
+                <div className="covidData__country__info">
+                  <p>
+                    Country Name :
+                    {' '}
+                    {country}
+                    {' '}
+                  </p>
+
+                  <p>
+                    Cases :
+                    {' '}
+                    {cases}
+                  </p>
+
+                  <p>
+                    Deaths :
+                    {' '}
+                    {deaths}
+                  </p>
+
+                  <p>
+                    Recovered :
+                    {' '}
+                    {recovered}
+                  </p>
+
+                  <p>
+                    Cases Today :
+                    {' '}
+                    {todayCases}
+                  </p>
+
+                  <p>
+                    Deaths Today :
+                    {' '}
+                    {deathCases}
+                  </p>
+
+                  <p>
+                    Recovered Today :
+                    {' '}
+                    {recoveredCases}
+                  </p>
+                </div>
+              </div>
+              {/* <box 2 /> */}
             </Paper>
           </Grid>
         </Grid>
+
       </MainContent>
 
       <Modal
