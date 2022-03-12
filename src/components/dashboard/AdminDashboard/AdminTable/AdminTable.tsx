@@ -71,7 +71,7 @@ export interface Data {
   name: string;
   role: string;
   patientSlots: number;
-  appointmentSlots: number;
+  availableSlots: number;
   status: string;
 
 }
@@ -104,7 +104,7 @@ export const headCells: readonly HeadCell[] = [
     label: 'Patient Slots',
   },
   {
-    id: 'appointmentSlots',
+    id: 'availableSlots',
     numeric: true,
     disablePadding: false,
     label: 'Appointment Slots',
@@ -139,7 +139,7 @@ export default function AdminTable() {
     name: string,
     role: string,
     patientSlots: number,
-    appointmentSlots: number,
+    availableSlots: number,
     status: string,
   ): Data {
     return {
@@ -147,8 +147,8 @@ export default function AdminTable() {
       name,
       role,
       patientSlots,
-      appointmentSlots,
       status,
+      availableSlots,
     };
   }
 
@@ -162,13 +162,17 @@ export default function AdminTable() {
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
         const user = childSnapshot.data();
+        let patientSlots = 0;
+        let availableSlots = 0;
+        if (user.role === 'medical' && user.patientSlots && user.availableSlots) {
+          patientSlots = user.patientSlots;
+          availableSlots = user.availableSlots;
+        }
         const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const { role } = user;
-        const patientSlots = 10;
-        const appointmentSlots = 4;
         const status = 'active';
-        const tableEntry = createTableData(UID, name, role, patientSlots, appointmentSlots, status);
+        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, status);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
@@ -298,8 +302,12 @@ export default function AdminTable() {
                         {row.name}
                       </TableCell>
                       <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="right">{row.patientSlots}</TableCell>
-                      <TableCell align="right">{row.appointmentSlots}</TableCell>
+                      <TableCell align="right">
+                        {row.role === 'medical'
+                          ? `${row.patientSlots - row.availableSlots}/${row.patientSlots}`
+                          : 'N/A'}
+                      </TableCell>
+                      <TableCell align="right">N/A</TableCell>
                       <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                   );
