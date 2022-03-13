@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -144,19 +144,19 @@ const modalStyle = {
 
 export default function AdminTable() {
   // modal window for editing user
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const [selectedUser, setSelectedUser] = React.useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState('');
   const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
 
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof Data>('name');
   // can access selected rows here
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { state, update } = React.useContext(UserContext);
+  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { state, update } = useContext(UserContext);
+  const [searchText, setSearchText] = useState('');
 
   // Data rows for table, filteredRows represents searched data
   // rowData represents the unfiltered query data
@@ -186,7 +186,12 @@ export default function AdminTable() {
   }
 
   const usersRef = firestore.collection('users').where('role', '!=', 'patient');
-
+  const filterTable = () => {
+    setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
+      || row.role.toLowerCase().includes(searchText.toLowerCase())
+      || row.status.toLowerCase().includes(searchText.toLowerCase())
+    )));
+  };
   // CHANGE Fetch data for table
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
@@ -276,11 +281,13 @@ export default function AdminTable() {
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = event.target.value;
-    setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
-      || row.role.toLowerCase().includes(searchText.toLowerCase())
-      || row.status.toLowerCase().includes(searchText.toLowerCase())
-    )));
+    setSearchText(event.target.value);
+    filterTable();
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+    filterTable();
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
