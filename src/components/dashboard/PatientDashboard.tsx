@@ -4,7 +4,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 // eslint-disable-next-line import/no-unresolved
-import './CovidData.css';
+import '../../static/style/CovidData.css';
 import {
   Button,
   Box,
@@ -14,9 +14,12 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListItemAvatar,
   Typography,
   Modal,
 } from '@mui/material';
+import FolderIcon from '@mui/icons-material/Folder';
+import Avatar from '@mui/material/Avatar';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
@@ -80,6 +83,12 @@ function PatientDashboard() {
     setRecoveredCases(todayRecovered);
   };
 
+  function generate(element: any) {
+    return [0, 1, 2].map((value) => React.cloneElement(element, {
+      key: value,
+    }));
+  }
+
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/countries')
       .then((res) => res.json())
@@ -132,13 +141,9 @@ function PatientDashboard() {
             paddingTop: 1,
           }}
         >
-          Covid-19 News
-
+          Covid-19 Statistics
           <Typography sx={{ fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' }}>
             Do not forget to follow the safety policies and stay safe!
-          </Typography>
-          <Typography sx={{ fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' }}>
-            Cumulative Covid-19 Statics for Canada
           </Typography>
         </Typography>
         <Box m={1} pt={1} />
@@ -150,19 +155,14 @@ function PatientDashboard() {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 400,
+                height: 390,
               }}
             >
               {/* <Chart /> */}
               <Iframe
                 // eslint-disable-next-line max-len
                 url="https://covid19canada.maps.arcgis.com/apps/Minimalist/index.html?appid=b3baccb0f30e4516b8e64009b3383f55"
-                position="absolute"
-                width="55%"
-                id="myId"
-                className="myClassname"
-                height="57%"
-                styles={{ height: '25px' }}
+                height="100%"
               />
             </Paper>
           </Grid>
@@ -173,18 +173,18 @@ function PatientDashboard() {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 400,
+                height: 390,
               }}
             >
 
               <div className="covidData">
-                {/* <h1>COVID-19 CASES COUNTRY WISE</h1> */}
+                <h4> COVID-19 Statistics Per Country</h4>
                 <div className="covidData__input">
                   <form onSubmit={handleSubmit}>
                     {/* input county name */}
                     <input onChange={handleSearch} placeholder="Enter Country Name" />
                     <br />
-                    <button type="submit">Search</button>
+                    <button color="secondary" type="submit">Search</button>
                   </form>
                 </div>
 
@@ -238,6 +238,95 @@ function PatientDashboard() {
             </Paper>
           </Grid>
         </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+              Basic Protective Measures Against Coronavirus
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="1." src="../../static/style/images/1.png" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Clean your hands "
+              secondary={(
+                <>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  />
+                  Wash hands often with soap and wataer for at least 20s.
+                </>
+          )}
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="2." src="/static/images/avatar/2.jpg" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Wear a facemask"
+              secondary={(
+                <>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  />
+                  You should wear facemask when you are around other poeple.
+                </>
+          )}
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="3." src="/static/images/avatar/3.jpg" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Avoid touching your face"
+              secondary={(
+                <>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  />
+                  Hands touch many surfaces and can pick up viruses.
+                </>
+          )}
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="4." src="../../static/style/images/2.png" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Avoid close contact"
+              secondary={(
+                <>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  />
+                  Put distance between yourself and other people.
+                </>
+          )}
+            />
+          </ListItem>
+        </List>
 
       </MainContent>
 

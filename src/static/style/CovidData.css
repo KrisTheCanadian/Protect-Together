@@ -1,0 +1,41 @@
+    .covidData {
+    border-radius: 6px;
+    }
+    
+    /* input stylings */
+    
+    .covidData__form {
+    padding: 10px;
+    margin: 20px;
+    }
+    .covidData__input input {
+    width: 170px;
+    height: 35px;
+    text-align: center;
+    border-radius: 10px;
+    border-color: #ebeefd;
+    font-size: 15px;
+    }
+    .covidData__input button {
+    width: 80px;
+    height: 30px;
+    margin-top: 5px;
+    background-color: #ebeefd;
+    font-family: Roboto,sans-serif;
+    color: #434ce7;
+    font-size: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    }
+    
+    /* detail stylings */
+    
+    .covidData__country__info {
+    font-size: 12px;
+    width: 170px;
+    height: auto;
+    padding-left: 10px;
+    padding: 2px;
+    }
+    
