@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../../components/auth';
 import AdminDashboard from '../../components/dashboard/AdminDashboard';
-import MedicalDashboard from '../../components/dashboard/MedicalDashboard/MedicalDashboard';
+import MedicalView from '../../components/dashboard/MedicalView/MedicalView';
 import PatientDashboard from '../../components/dashboard/PatientDashboard';
 import ThirdPartyDashboard from '../../components/dashboard/ThirdPartyDashboard';
 import Dashboard from '../../pages/dashboard/dashboard';
@@ -62,7 +62,7 @@ test('Thirdparty Dashboard is rendering', () => {
 });
 
 test('Medical Dashboard is rendering', () => {
-  render(<BrowserRouter><MedicalDashboard /></BrowserRouter>);
+  render(<BrowserRouter><MedicalView /></BrowserRouter>);
 });
 
 /* TODO

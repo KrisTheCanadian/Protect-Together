@@ -19,6 +19,8 @@ import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
 import MedicalTable from './MedicalTable/MedicalTable';
+import MedicalDashboard from './MedicalDashboard';
+import PatientInfo from './PatientInfo';
 
 const style = {
   position: 'absolute' as const,
@@ -31,31 +33,28 @@ const style = {
   p: 4,
 };
 
-const rowNewInfoStyle = {
-  backgroundColor: 'red!important',
-  '&:hover': {
-    backgroundColor: 'purple!important',
-  },
-};
-
-function MedicalDashboard() {
+function MedicalView() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
   const { state, update } = React.useContext(UserContext);
 
+  // contentId
+  // medical dashboard: 0
+  // patient's into: 1
+  const [contentId, setContentId] = React.useState<number>(0);
+
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
-      <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
-        <Button variant="contained" color="info" onClick={handleOpen}>
-          View Apointments
-        </Button>
-      </Header>
       <SideBar>
         <List>
-          <ListItem button key="Dashboard">
+          <ListItem
+            button
+            key="Dashboard"
+            onClick={() => setContentId(contentId === 1 ? 0 : 1)}
+          >
             <ListItemIcon>
               <DashboardOutlinedIcon />
             </ListItemIcon>
@@ -64,11 +63,16 @@ function MedicalDashboard() {
         </List>
         <Divider />
       </SideBar>
+      {/* <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
+        <Button variant="contained" color="info" onClick={handleOpen}>
+          View Apointments
+        </Button>
+      </Header>
       <MainContent>
         <MedicalTable />
-      </MainContent>
+      </MainContent> */}
 
-      <Modal
+      {/* <Modal
         open={modalOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -77,8 +81,12 @@ function MedicalDashboard() {
         <Box sx={style}>
           apointments
         </Box>
-      </Modal>
+      </Modal> */}
+
+      { contentId === 0 && <MedicalDashboard /> }
+      { contentId === 1 && <PatientInfo />}
+
     </Box>
   );
 }
-export default MedicalDashboard;
+export default MedicalView;

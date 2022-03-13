@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { format } from 'date-fns';
+import theme from '../../../../static/style/theme';
 import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
@@ -156,6 +157,13 @@ export default function MedicalTable() {
 
   const usersRef = firestore.collection('users').where('role', '==', 'patient');
 
+  const rowNewInfoStyle = {
+    backgroundColor: '#FDFFA9',
+    '&:hover': {
+      backgroundColor: '#F9F7CF!important', // `${theme.palette.warning.dark}!important`,
+    },
+  };
+
   // CHANGE Fetch data for table
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
@@ -277,7 +285,7 @@ export default function MedicalTable() {
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.UID}
-                      selected={hasUpdates.includes(row.UID)}
+                      sx={hasUpdates.includes(row.UID) ? rowNewInfoStyle : { backgroundColor: 'inherited' }}
                     >
                       <TableCell />
                       <TableCell
