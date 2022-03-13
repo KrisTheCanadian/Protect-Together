@@ -8,36 +8,8 @@ type Props = {
   selectedUser: string;
 };
 
-type FormData = {
-  role: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  phoneNumber: string,
-};
-
-type FormError = {
-  errorEmail: string,
-  errorPhoneNumber: string,
-  errorSignup: string,
-};
-
-const formDataDefaultValues: FormData = {
-  role: '',
-  email: '',
-  firstName: '',
-  lastName: '',
-  phoneNumber: '',
-};
-
-const formErrorDefaultValues: FormError = {
-  errorEmail: '',
-  errorPhoneNumber: '',
-  errorSignup: '',
-};
-
 export const EditUser = ({ handleClose, selectedUser }: Props) => {
-  const [patientSlots, setPatientSlots] = useState<string>('0');
+  const [patientSlots, setPatientSlots] = useState<string>('');
 
   const [user, setUser] = useState<DocumentData>();
   // get selected user doc
@@ -51,14 +23,9 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
       availableSlots = user.availableSlots;
       oldPatientSlots = user.patientSlots;
     }
-    if (availableSlots > oldPatientSlots) {
-      availableSlots = oldPatientSlots;
-    }
+    // adjust available slots
     if (oldPatientSlots < newPatientSlots) {
       availableSlots += newPatientSlots - oldPatientSlots;
-      if (availableSlots < 0) {
-        availableSlots = 0;
-      }
     } else if (oldPatientSlots > newPatientSlots) {
       availableSlots -= oldPatientSlots - newPatientSlots;
       if (availableSlots < 0) {
@@ -91,13 +58,13 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
   }, []);
 
   return (
-    <div>
+    <>
       <Typography
         variant="h4"
         component="div"
         gutterBottom
       >
-        {user ? `${user.firstName} ${user.lastName}` : <>&nbsp;</>}
+        {user ? `Dr. ${user.firstName} ${user.lastName}` : <>&nbsp;</>}
 
       </Typography>
       <TextField
@@ -122,6 +89,6 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
         Save
       </Button>
 
-    </div>
+    </>
   );
 };

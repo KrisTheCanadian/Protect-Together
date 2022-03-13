@@ -135,7 +135,9 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  display: 'flex',
+  flexDirection: 'column',
+
   bgcolor: 'background.paper',
   border: 'none',
   boxShadow: 24,
