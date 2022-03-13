@@ -123,7 +123,6 @@ function AdminCreateAccount({ handleClose }: Props) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: '100vh' }}
     >
       <Box
         p={3}
@@ -131,12 +130,11 @@ function AdminCreateAccount({ handleClose }: Props) {
           bgcolor: 'white',
           borderRadius: 2,
           boxShadow: 6,
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          width: '50%',
-          minWidth: '600px',
+          width: '100%',
+
         }}
       >
         <Avatar
