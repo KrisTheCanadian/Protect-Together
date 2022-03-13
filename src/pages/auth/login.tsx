@@ -8,11 +8,9 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { doc } from 'firebase/firestore';
 import { auth, firestore } from '../../config/firebase_config';
 
 function LoginPage() {
-  const [authenticating, setAuthenticating] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -22,14 +20,11 @@ function LoginPage() {
   const LoginWithEmailAndPassword = () => {
     if (error !== '') setError('');
 
-    setAuthenticating(true);
-
     auth.signInWithEmailAndPassword(email, password)
       .then(async (data) => {
         const user = (await firestore.collection('users').doc(data.user?.uid).get()).data();
         navigate('/dashboard');
       }).catch(() => {
-        setAuthenticating(false);
         setError('Login Failed: Your email or password is incorrect');
       });
   };
@@ -91,7 +86,6 @@ function LoginPage() {
           <Button
             type="button"
             onClick={() => LoginWithEmailAndPassword()}
-            disabled={authenticating}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

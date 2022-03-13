@@ -14,8 +14,9 @@ import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
-import { EditUser } from './EditUser';
+
 import theme from '../../../../static/style/theme';
+import { EditUser } from './EditUser';
 
 export interface EnhancedTableProps {
   numSelected: number;
@@ -196,7 +197,7 @@ export default function AdminTable() {
         const user = childSnapshot.data();
         let patientSlots = 0;
         let availableSlots = 0;
-        if (user.role === 'medical' && user.patientSlots && user.availableSlots) {
+        if (user.role === 'medical') {
           patientSlots = user.patientSlots;
           availableSlots = user.availableSlots;
         }
