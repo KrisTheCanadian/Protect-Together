@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
-import theme from '../../static/style/theme';
 
 type Props = {
   handleClose: any;
@@ -101,6 +100,7 @@ function AdminCreateAccount({ handleClose }: Props) {
   const handleSubmit = (event: any) => {
     if (formError.errorEmail !== '' || formError.errorPhoneNumber !== '' || !signUpWithEmailAndPassword()) {
       event.preventDefault();
+      handleClose();
     }
   };
 
@@ -128,7 +128,7 @@ function AdminCreateAccount({ handleClose }: Props) {
       <Box
         p={3}
         sx={{
-          bgcolor: 'secondary.main',
+          bgcolor: 'white',
           borderRadius: 2,
           boxShadow: 6,
           marginTop: 8,

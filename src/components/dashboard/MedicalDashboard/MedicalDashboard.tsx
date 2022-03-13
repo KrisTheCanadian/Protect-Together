@@ -31,6 +31,13 @@ const style = {
   p: 4,
 };
 
+const rowNewInfoStyle = {
+  backgroundColor: 'red!important',
+  '&:hover': {
+    backgroundColor: 'purple!important',
+  },
+};
+
 function MedicalDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);

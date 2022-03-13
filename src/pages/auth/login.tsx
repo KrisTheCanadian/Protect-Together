@@ -27,9 +27,6 @@ function LoginPage() {
     auth.signInWithEmailAndPassword(email, password)
       .then(async (data) => {
         const user = (await firestore.collection('users').doc(data.user?.uid).get()).data();
-        console.log('current user');
-        console.log(user);
-
         navigate('/dashboard');
       }).catch(() => {
         setAuthenticating(false);

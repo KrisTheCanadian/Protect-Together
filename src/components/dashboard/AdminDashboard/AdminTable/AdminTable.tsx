@@ -7,11 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
+import { IconButton, Modal } from '@mui/material';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
+import { EditUser } from './EditUser';
+import theme from '../../../../static/style/theme';
 
 export interface EnhancedTableProps {
   numSelected: number;
@@ -24,7 +28,7 @@ export interface EnhancedTableProps {
 
 export interface EnhancedTableToolbarProps {
   numSelected: number;
-  onSearch: (event: any)=> void;
+  onSearch: (event: any) => void;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -43,9 +47,9 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string },
+  ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -73,6 +77,7 @@ export interface Data {
   patientSlots: number;
   availableSlots: number;
   status: string;
+  modify: number;
 
 }
 
@@ -88,7 +93,7 @@ export const headCells: readonly HeadCell[] = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Name',
   },
   {
@@ -115,9 +120,34 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Status',
   },
+  {
+    id: 'modify',
+    numeric: false,
+    disablePadding: false,
+    label: 'Modify',
+  },
 ];
 
+const modalStyle = {
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function AdminTable() {
+  // modal window for editing user
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState('');
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
   // can access selected rows here
@@ -141,6 +171,7 @@ export default function AdminTable() {
     patientSlots: number,
     availableSlots: number,
     status: string,
+    modify: number,
   ): Data {
     return {
       UID,
@@ -149,6 +180,7 @@ export default function AdminTable() {
       patientSlots,
       status,
       availableSlots,
+      modify,
     };
   }
 
@@ -172,7 +204,7 @@ export default function AdminTable() {
         const name = [user.firstName, user.lastName].join(' ');
         const { role } = user;
         const status = 'active';
-        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, status);
+        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, status, 0);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
@@ -200,8 +232,14 @@ export default function AdminTable() {
     setSelected([]);
   };
 
-  // this handles the click to select a row
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+  // this handles the click to click a row
+  const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
+    setModalOpen(true);
+    setSelectedUser(UID);
+  };
+  const handleCheck = (event: React.MouseEvent<unknown>, name: string) => {
+    event.preventDefault();
+    event.stopPropagation();
     const selectedIndex = selected.indexOf(name);
     let newSelected: readonly string[] = [];
 
@@ -239,8 +277,8 @@ export default function AdminTable() {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
     setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
-       || row.role.toLowerCase().includes(searchText.toLowerCase())
-       || row.status.toLowerCase().includes(searchText.toLowerCase())
+      || row.role.toLowerCase().includes(searchText.toLowerCase())
+      || row.status.toLowerCase().includes(searchText.toLowerCase())
     )));
   };
 
@@ -277,38 +315,41 @@ export default function AdminTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.UID}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
+
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+
                       >
                         {row.name}
                       </TableCell>
                       <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {row.role === 'medical'
                           ? `${row.patientSlots - row.availableSlots}/${row.patientSlots}`
                           : 'N/A'}
                       </TableCell>
-                      <TableCell align="right">N/A</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                      <TableCell align="left">N/A</TableCell>
+                      <TableCell align="left">{row.status}</TableCell>
+                      <TableCell align="right">
+                        {row.role === 'medical'
+                          && (
+                            <IconButton aria-label="edit" onClick={(event) => handleClick(event, row.UID)}>
+                              <EditOutlinedIcon />
+                            </IconButton>
+                          )}
+                        <IconButton aria-label="delete">
+                          <DeleteOutlinedIcon />
+                        </IconButton>
+
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -334,6 +375,17 @@ export default function AdminTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Modal
+        open={modalOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <EditUser handleClose={handleClose} selectedUser={selectedUser} />
+
+        </Box>
+      </Modal>
 
     </Box>
   );
