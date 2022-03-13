@@ -13,22 +13,27 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
   const userSnap = await userRef.get();
 
   // check for available doctor
-  const availableDoctor = await db.collection("users")
+  const availableDoctorRef = await db.collection("users")
       .where("role", "==", "medical")
       .where("availableSlots", ">", 0)
       .orderBy("availableSlots", "desc").limit(1).get()
       .then((doc)=>{
         if (doc.docs[0]) {
-          return doc.docs[0].data();
+          return doc.docs[0];
         } else {
           return null;
         }
       });
 
   // assign user to doctor
-  if (availableDoctor) {
+  if (availableDoctorRef) {
     return userSnap.ref
-        .update({assignedDoctor: availableDoctor.UID});
+        .update({assignedDoctor: availableDoctorRef.data().UID}).then(()=>{
+          // decrement available Slots
+          const newAvailableSlots = availableDoctorRef.data().availableSlots -1;
+          return availableDoctorRef.ref
+              .update({availableSlots: newAvailableSlots});
+        });
   } else {
     return null;
   }
