@@ -71,7 +71,7 @@ function PatientDashboard() {
     };
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userRef]);
 
   const [country, setCountry] = useState('');
   const [cases, setCases] = useState('');
