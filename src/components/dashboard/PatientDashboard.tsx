@@ -22,6 +22,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import Avatar from '@mui/material/Avatar';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
+import { DocumentData } from 'firebase/firestore';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Header from '../layout/Header';
@@ -30,6 +31,7 @@ import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
 import theme from '../../static/style/theme';
+import { firestore } from '../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -55,6 +57,21 @@ function PatientDashboard() {
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
+
+  const [user, setUser] = useState<DocumentData>();
+  // get selected user doc
+  const userRef = firestore.collection('/users').doc(state.id);
+
+  useEffect(() => {
+    const getUser = () => {
+      userRef.get().then((doc) => {
+        const userData = doc.data();
+        setUser(userData);
+      });
+    };
+    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [country, setCountry] = useState('');
   const [cases, setCases] = useState('');
@@ -126,6 +143,9 @@ function PatientDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
+        <Typography paragraph>{state.firstName}</Typography>
+        {user?.assignedDoctor ? user?.assignedDoctor : ''}
+
         <Typography
           variant="h4"
           sx={{
