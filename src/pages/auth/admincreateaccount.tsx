@@ -71,7 +71,7 @@ function AdminCreateAccount({ handleClose }: Props) {
       role: formData.role,
     };
     if (formData.role === 'medical') {
-      staffMember = { ...staffMember, availableSlots: 10, patientSlots: 10 };
+      staffMember = { ...staffMember, availableSlots: 10, patientSlots: 10, filledSlots: 0 };
     }
 
     await users.doc(uid).set(staffMember).then(() => {
@@ -79,7 +79,7 @@ function AdminCreateAccount({ handleClose }: Props) {
     });
   };
 
-  const signUpWithEmailAndPassword = () : boolean => {
+  const signUpWithEmailAndPassword = (): boolean => {
     const password = generatePassword();
     createUserFirebase.auth().createUserWithEmailAndPassword(formData.email, password)
       .then((userCreds) => {

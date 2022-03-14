@@ -77,6 +77,7 @@ export interface Data {
   role: string;
   patientSlots: number;
   availableSlots: number;
+  filledSlots: number;
   status: string;
   modify: number;
 
@@ -173,6 +174,7 @@ export default function AdminTable() {
     role: string,
     patientSlots: number,
     availableSlots: number,
+    filledSlots: number,
     status: string,
     modify: number,
   ): Data {
@@ -183,6 +185,7 @@ export default function AdminTable() {
       patientSlots,
       status,
       availableSlots,
+      filledSlots,
       modify,
     };
   }
@@ -204,15 +207,17 @@ export default function AdminTable() {
         const user = childSnapshot.data();
         let patientSlots = 0;
         let availableSlots = 0;
+        let filledSlots = 0;
         if (user.role === 'medical') {
           patientSlots = user.patientSlots;
           availableSlots = user.availableSlots;
+          filledSlots = user.filledSlots;
         }
         const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const { role } = user;
         const status = 'active';
-        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, status, 0);
+        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, filledSlots, status, 0);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
@@ -342,9 +347,19 @@ export default function AdminTable() {
                       </TableCell>
                       <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">
-                        {row.role === 'medical'
-                          ? `${row.patientSlots - row.availableSlots}/${row.patientSlots}`
-                          : 'N/A'}
+                        {(row.role === 'medical' && row.filledSlots > row.patientSlots) && (
+                          // eslint-disable-next-line react/jsx-one-expression-per-line
+                          <span style={{ color: 'red' }}>{row.filledSlots}/{row.patientSlots}</span>
+                        )}
+                        {(row.role === 'medical' && row.filledSlots <= row.patientSlots) && (
+                          // eslint-disable-next-line react/jsx-one-expression-per-line
+                          <span>{row.filledSlots}/{row.patientSlots}</span>
+                        )}
+                        {(row.role !== 'medical') && (
+                          // eslint-disable-next-line react/jsx-one-expression-per-line
+                          ' N/A'
+                        )}
+
                       </TableCell>
                       <TableCell align="left">N/A</TableCell>
                       <TableCell align="left">{row.status}</TableCell>

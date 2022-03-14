@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from '@mui/material';
 import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { firestore } from '../../../../config/firebase_config';
+import Firebase, { firestore } from '../../../../config/firebase_config';
 
 type Props = {
   handleClose: any;
@@ -16,24 +16,17 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
   const userRef = firestore.collection('/users').doc(selectedUser);
 
   const handleSubmit = () => {
-    let availableSlots = 0;
-    let oldPatientSlots = 0;
-    const newPatientSlots = parseInt(patientSlots, 10);
     if (user) {
-      availableSlots = user.availableSlots;
-      oldPatientSlots = user.patientSlots;
+      const newPatientSlots = parseInt(patientSlots, 10);
+      const newAvailableSlots = newPatientSlots - user.filledSlots;
+      // adjust available slots
+      userRef.update({ patientSlots: newPatientSlots, availableSlots: newAvailableSlots }).then(() => {
+        // check if patients need to be assigned to doctor
+        const dispatchDoctor = Firebase.functions().httpsCallable('dispatchDoctor');
+        dispatchDoctor({ medicalID: user.UID, availableSlots: newAvailableSlots, filledSlots: user.filledSlots });
+      });
     }
-    // adjust available slots
-    if (oldPatientSlots < newPatientSlots) {
-      availableSlots += newPatientSlots - oldPatientSlots;
-    } else if (oldPatientSlots > newPatientSlots) {
-      availableSlots -= oldPatientSlots - newPatientSlots;
-      if (availableSlots < 0) {
-        availableSlots = 0;
-      }
-    }
-    userRef.update({ patientSlots: parseInt(patientSlots, 10), availableSlots });
-    // also must handle reassignment of patients here
+
     handleClose();
   };
 

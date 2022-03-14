@@ -29,6 +29,7 @@ export default function ResponseLayout({ selection }: any) {
       .doc(state.id)
       .update({
         score: patientScore,
+        assignedDoctor: 'requestedDoctor',
       })
       .then(() => {
         const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
