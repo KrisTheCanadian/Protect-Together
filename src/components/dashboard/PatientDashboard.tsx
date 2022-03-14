@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -83,12 +82,6 @@ function PatientDashboard() {
     setRecoveredCases(todayRecovered);
   };
 
-  function generate(element: any) {
-    return [0, 1, 2].map((value) => React.cloneElement(element, {
-      key: value,
-    }));
-  }
-
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/countries')
       .then((res) => res.json())
@@ -132,8 +125,6 @@ function PatientDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        {/* <Typography paragraph>{state.firstName}</Typography> */}
-        {/* <Box m={2} pt={3} /> */}
         <Typography
           variant="h4"
           sx={{
@@ -261,7 +252,7 @@ function PatientDashboard() {
                     variant="body2"
                     color="text.primary"
                   />
-                  Wash hands often with soap and wataer for at least 20s.
+                  Wash hands often with soap and water for at least 20s.
                 </>
           )}
             />
