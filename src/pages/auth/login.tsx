@@ -74,6 +74,7 @@ function LoginPage() {
             required
             fullWidth
             id="email"
+            inputProps={{ 'data-testid': 'email' }}
             label="Email Address"
             name="email"
             autoComplete="email"
@@ -88,6 +89,7 @@ function LoginPage() {
             label="Password"
             type="password"
             id="password"
+            inputProps={{ 'data-testid': 'password' }}
             autoComplete="current-password"
             onChange={(event) => setPassword(event.target.value)}
           />

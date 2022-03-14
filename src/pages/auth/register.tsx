@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -86,8 +87,6 @@ function RegisterPage() {
     }
   }, [formData, formError.errorConfirmPassword, formError.errorEmail, formError.errorHeight,
     formError.errorPhoneNumber, formError.errorWeight, nextButtonStatus]);
-
-  const navigate = useNavigate();
 
   const addUserDataToSignUp = async (userCreds: any) => {
     const uid = userCreds?.user?.uid;
@@ -380,7 +379,7 @@ function RegisterPage() {
                     onChange={(newValue) => {
                       setFormData({ ...formData, dob: newValue });
                     }}
-                    renderInput={(params) => <TextField fullWidth {...params} sx={{ mr: 0 }} required />}
+                    renderInput={(params) => <TextField id="dob" fullWidth {...params} sx={{ mr: 0 }} required />}
                   />
                 </LocalizationProvider>
               </Grid>
@@ -388,6 +387,7 @@ function RegisterPage() {
                 <TextField
                   fullWidth
                   value={formData.weight}
+                  inputProps={{ 'data-testid': 'weight' }}
                   id="weight"
                   label="Weight"
                   name="weight"
@@ -412,6 +412,7 @@ function RegisterPage() {
                 <TextField
                   fullWidth
                   value={formData.height}
+                  inputProps={{ 'data-testid': 'height' }}
                   id="height"
                   label="Height"
                   name="height"
@@ -437,6 +438,7 @@ function RegisterPage() {
                   <InputLabel id="sex">Sex</InputLabel>
                   <Select
                     value={formData.sex}
+                    inputProps={{ 'data-testid': 'sex' }}
                     labelId="sex"
                     label="sex"
                     id="sex"
@@ -454,6 +456,7 @@ function RegisterPage() {
               <Grid item xs={12}>
                 <TextField
                   value={formData.healthCardNumber}
+                  inputProps={{ 'data-testid': 'healthcare-number' }}
                   required
                   fullWidth
                   id="healthCardNumber"
@@ -468,6 +471,7 @@ function RegisterPage() {
               <Grid item xs={12}>
                 <TextField
                   value={formData.medicalConditions}
+                  inputProps={{ 'data-testid': 'medical-conditions' }}
                   fullWidth
                   multiline
                   rows={3}
@@ -483,6 +487,7 @@ function RegisterPage() {
               <Grid item xs={12}>
                 <TextField
                   value={formData.additionalNotes}
+                  inputProps={{ 'data-testid': 'additional-notes' }}
                   fullWidth
                   multiline
                   rows={2}
@@ -500,6 +505,7 @@ function RegisterPage() {
                   control={(
                     <Checkbox
                       checked={formData.policy}
+                      data-testid="accept-policy"
                       value="allowExtraEmails"
                       color="primary"
                       onChange={(event) => {
@@ -530,7 +536,13 @@ function RegisterPage() {
                 </Button>
               )}
               nextButton={(
-                <Button disabled={!nextButtonStatus} size="small" id="next-1" onClick={signUpWithEmailAndPassword}>
+                <Button
+                  disabled={!nextButtonStatus}
+                  data-testid="register-button"
+                  size="small"
+                  id="next-1"
+                  onClick={signUpWithEmailAndPassword}
+                >
                   Register
                   <KeyboardArrowRight />
                 </Button>

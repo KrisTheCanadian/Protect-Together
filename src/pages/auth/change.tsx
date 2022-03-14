@@ -36,7 +36,8 @@ function ChangePassword() {
     if (auth.currentUser?.providerData[0]?.providerId !== 'password') {
       navigate('/');
     }
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid
@@ -67,6 +68,7 @@ function ChangePassword() {
             required
             fullWidth
             id="newPassword"
+            inputProps={{ 'data-testid': 'new-password' }}
             label="New Password"
             name="password"
             autoComplete="password"
@@ -81,6 +83,7 @@ function ChangePassword() {
             label="Confirm Password"
             type="password"
             id="confirmPassword"
+            inputProps={{ 'data-testid': 'confirm-password' }}
             autoComplete="password"
             onChange={(event) => setConfirm(event.target.value)}
           />
@@ -92,6 +95,7 @@ function ChangePassword() {
             label="Current Password"
             type="password"
             id="OldPassword"
+            inputProps={{ 'data-testid': 'old-password' }}
             autoComplete=""
             onChange={(event) => setConfirm(event.target.value)}
           />
