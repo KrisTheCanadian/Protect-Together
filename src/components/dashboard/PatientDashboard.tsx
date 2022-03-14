@@ -30,6 +30,8 @@ import UpdateTestResult from './patienttestresult';
 import theme from '../../static/style/theme';
 import { firestore } from '../../config/firebase_config';
 
+import UpdateSymptomsLayout from '../UpdateFormLayout/UpdateSymptomsLayout';
+
 const style = {
   position: 'absolute' as const,
   top: '50%',
