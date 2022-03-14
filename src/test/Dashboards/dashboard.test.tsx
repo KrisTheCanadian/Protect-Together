@@ -12,22 +12,26 @@ import ThirdPartyDashboard from '../../components/dashboard/ThirdPartyDashboard'
 import Dashboard from '../../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
-  const onSnapshot = () => ({
-    onSnapshot,
-  });
-  const where = () => ({
-    onSnapshot,
-  });
-  const collection = () => ({
-    where,
-  });
+  // mock Firestore
   const Firestore = () => ({
-    collection,
+    collection: () => ({
+      where: () => ({
+        onSnapshot: () => null,
+      }),
+      doc: () => ({
+        get: () => ({
+          then: () => null,
+
+        }),
+      }),
+    }),
+    // to mock attributes
+    FieldValue: {
+      serverTimestamp: jest.fn(),
+    },
+
   });
 
-  Firestore.FieldValue = {
-    serverTimestamp: jest.fn(),
-  };
   const firestore = Firestore;
 
   const app = jest.requireActual('firebase/compat/app');
