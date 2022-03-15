@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Container, Typography, Box, useMediaQuery, useTheme, Paper, Grid } from '@mui/material';
 import questions from '../../static/data/formSymptomsIntensity.json';
 
 const styles = {
@@ -18,6 +18,7 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
   const [error, setError] = useState(false);
   const [pointValue, setPointValue] = useState(0);
   const theme = useTheme();
+  const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   console.log(selection);
@@ -83,71 +84,112 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
         sx={{ flexGrow: 1 }}
         style={styles.centered}
       >
-        <Container
+        <Paper
           sx={{
-            marginLeft: '1rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
+            width: midSize ? '100%' : '70%',
+            padding: 4,
           }}
         >
-          <Typography variant="h4" sx={{ marginTop: 1, marginBottom: 1 }}>
-            What is the severity of your
-          </Typography>
-          {selection.map((symptom: number) => (
-            <>
-              <Typography variant="h4" sx={{ marginBottom: 3 }}>
-                {' '}
-                {questions[symptom]?.label}
-                {' '}
-              </Typography>
-              <Container sx={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                width: matchesSm ? '100%' : '80%',
-              }}
+          <Container
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h5" sx={{ marginBottom: 3 }}>
+              Indicate the severity your symptoms
+            </Typography>
+            {selection.map((symptom: number) => (
+              <Container
+                sx={{
+                  justifyContent: 'center',
+                  width: midSize ? '100%' : '70%',
+                  margin: 0,
+                  paddingBottom: 2,
+                  paddingTop: 2,
+                  borderBottom: 1,
+                  // border: 1,
+                  alignItems: 'center',
+                  // borderRadius: 6,
+                  borderColor: '#adaeaf',
+                }}
               >
-                <Button
-                  onClick={handleClickOne}
-                  variant={ansOne ? 'contained' : 'outlined'}
-                  sx={{ fontSize: '1.1rem' }}
+                <Grid
+                  container
+                  direction="row"
                 >
-                  Mild
-                </Button>
-                <Button
-                  onClick={handleClickTwo}
-                  variant={ansTwo ? 'contained' : 'outlined'}
-                  sx={{ fontSize: '1.1rem' }}
-                >
-                  Moderate
-                </Button>
-                <Button
-                  onClick={handleClickThree}
-                  variant={ansThree ? 'contained' : 'outlined'}
-                  sx={{ fontSize: '1.1rem' }}
-                >
-                  Severe
-                </Button>
+                  <Grid
+                    item
+                    xs={12}
+                    md={4}
+                  >
+                    <Typography
+                      variant="h6"
+                      align="center"
+                      sx={{
+                        marginTop: 0.75,
+                      }}
+                    >
+                      {' '}
+                      {questions[symptom]?.label}
+                      {' '}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={8}
+                  >
+                    <Container sx={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      // width: matchesSm ? '100%' : '80%',
+                    }}
+                    >
+                      <Button
+                        onClick={handleClickOne}
+                        variant={ansOne ? 'contained' : 'outlined'}
+                        sx={{ fontSize: '1.1rem' }}
+                      >
+                        Mild
+                      </Button>
+                      <Button
+                        onClick={handleClickTwo}
+                        variant={ansTwo ? 'contained' : 'outlined'}
+                        sx={{ fontSize: '1.1rem' }}
+                      >
+                        Moderate
+                      </Button>
+                      <Button
+                        onClick={handleClickThree}
+                        variant={ansThree ? 'contained' : 'outlined'}
+                        sx={{ fontSize: '1.1rem' }}
+                      >
+                        Severe
+                      </Button>
+                    </Container>
+                  </Grid>
+                </Grid>
               </Container>
-
-            </>
-          ))}
-        </Container>
-        <Container
-          sx={{
-            marginLeft: '1rem',
-            marginTop: '2rem',
-            flexDirection: 'column',
-          }}
-          style={styles.centered}
-        >
-          {error && (
-          <p className="validationError">Please select an option.</p>
-          )}
-          <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
-            Continue
-          </Button>
-        </Container>
+            ))}
+          </Container>
+          <Container
+            sx={{
+              marginLeft: '1rem',
+              marginTop: '2rem',
+              flexDirection: 'column',
+            }}
+            style={styles.centered}
+          >
+            {error && (
+            <p className="validationError">Please select an option.</p>
+            )}
+            <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
+              Continue
+            </Button>
+          </Container>
+        </Paper>
       </Box>
     </div>
   );

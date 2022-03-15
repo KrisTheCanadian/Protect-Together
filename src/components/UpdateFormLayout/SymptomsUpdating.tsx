@@ -8,6 +8,7 @@ import {
   FormControl,
   FormGroup,
   FormControlLabel,
+  Paper,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -77,79 +78,82 @@ export default function SymptomsUpdating({ changeStatus, changeSymptoms }: any) 
 
   return (
     <div style={{ display: 'flex' }}>
-      <Box
-        minHeight="95vh"
-        width="100%"
-        flexDirection="column"
+      <Paper
         sx={{
-          flexGrow: 1,
-          marginBottom: 3 }}
-        style={styles.centered}
+          margin: 'auto',
+          padding: 4,
+        }}
       >
-        <Container
+        <Box
+          // minHeight="95vh"
+          width="100%"
+          flexDirection="column"
           sx={{
-            marginLeft: '1rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6" sx={{ marginTop: 1 }}>
-            In the last 10 days have you experienced any of these symptoms?
-          </Typography>
-          <Typography variant="subtitle1" sx={{ fontWeight: 400, marginTop: 1, marginBottom: 3 }}>
-            Choose any/all that are new, worsening,
-            and not related to other known causes or conditions you already have.
-          </Typography>
-          <Container
-            sx={{ display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '10%',
-              backgroundColor: '#ffff',
-              border: 2,
-              borderColor: 'primary.main',
-              width: midSize ? '70%' : '50%',
-              paddingBottom: 2,
-              paddingTop: 2,
-            }}
-          >
-            <FormControl component="fieldset">
-              <FormGroup>
-                {symptoms.map((symptom) => (
-                  <FormControlLabel
-                    key={Math.random()}
-                    control={(
-                      <Checkbox
-                        onChange={() => handleCheckboxChange(symptom)}
-                        checked={checkedSymptoms.includes(symptom.id)}
-                        name={symptom.label}
-
-                      />
-            )}
-                    label={symptom.label}
-                  />
-                ))}
-              </FormGroup>
-            </FormControl>
-          </Container>
-
-        </Container>
-
-        <Container
-          sx={{
-            marginTop: '2rem',
-            flexDirection: 'column',
-          }}
+            flexGrow: 1,
+            marginBottom: 1 }}
           style={styles.centered}
         >
-          {error && (
-          <p className="validationError">Please select an option.</p>
-          )}
-          <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
-            Continue
-          </Button>
-        </Container>
-      </Box>
+          <Container
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h5" sx={{ marginTop: 1 }}>
+              In the last 10 days have you experienced any of these symptoms?
+            </Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 400, marginTop: 1, marginBottom: 3 }}>
+              Choose any/all that are new, worsening,
+              and not related to other known causes or conditions you already have.
+            </Typography>
+            <Container
+              sx={{ display: 'flex',
+                justifyContent: 'center',
+                width: midSize ? '70%' : '50%',
+              }}
+            >
+              <FormControl component="fieldset">
+                <FormGroup>
+                  {symptoms.map((symptom) => (
+                    <FormControlLabel
+                      sx={{
+                        borderBottom: 1,
+                        borderColor: '#adaeaf',
+                      }}
+                      key={Math.random()}
+                      control={(
+                        <Checkbox
+                          onChange={() => handleCheckboxChange(symptom)}
+                          checked={checkedSymptoms.includes(symptom.id)}
+                          name={symptom.label}
+                        />
+              )}
+                      label={symptom.label}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+            </Container>
+
+          </Container>
+
+          <Container
+            sx={{
+              marginTop: '2rem',
+              flexDirection: 'column',
+            }}
+            style={styles.centered}
+          >
+            {error && (
+            <p className="validationError">Please select an option.</p>
+            )}
+            <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
+              Continue
+            </Button>
+          </Container>
+        </Box>
+      </Paper>
     </div>
   );
 }
