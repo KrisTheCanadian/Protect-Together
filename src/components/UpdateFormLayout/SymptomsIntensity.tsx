@@ -122,7 +122,9 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
                   <Grid
                     item
                     xs={12}
-                    md={4}
+                    sm={12}
+                    md={12}
+                    lg={4}
                   >
                     <Typography
                       variant="h6"
@@ -139,7 +141,11 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    sx={{ display: 'flex',
+                      alignItems: 'center' }}
                   >
                     <Container sx={{
                       display: 'flex',
@@ -150,21 +156,20 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
                       <Button
                         onClick={handleClickOne}
                         variant={ansOne ? 'contained' : 'outlined'}
-                        sx={{ fontSize: '1.1rem' }}
+                        sx={{ marginRight: '0.5rem' }}
                       >
                         Mild
                       </Button>
                       <Button
                         onClick={handleClickTwo}
                         variant={ansTwo ? 'contained' : 'outlined'}
-                        sx={{ fontSize: '1.1rem' }}
+                        sx={{ marginRight: '0.5rem' }}
                       >
                         Moderate
                       </Button>
                       <Button
                         onClick={handleClickThree}
                         variant={ansThree ? 'contained' : 'outlined'}
-                        sx={{ fontSize: '1.1rem' }}
                       >
                         Severe
                       </Button>
