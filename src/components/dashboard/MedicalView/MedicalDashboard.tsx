@@ -20,7 +20,11 @@ const style = {
   p: 4,
 };
 
-function MedicalDashboard() {
+type Props = {
+  handlePatientClick: any,
+};
+
+function MedicalDashboard({ handlePatientClick }: Props) {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -35,7 +39,7 @@ function MedicalDashboard() {
         </Button>
       </Header>
       <MainContent>
-        <MedicalTable />
+        <MedicalTable handlePatientClick={handlePatientClick} />
       </MainContent>
 
       <Modal

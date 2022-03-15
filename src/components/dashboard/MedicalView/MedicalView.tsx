@@ -44,6 +44,12 @@ function MedicalView() {
   // medical dashboard: 0
   // patient's into: 1
   const [contentId, setContentId] = React.useState<number>(0);
+  const [patientId, setPatientId] = React.useState<string>('');
+
+  const viewPatient = ((PID: string) => {
+    setPatientId(PID);
+    setContentId(1);
+  });
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -53,7 +59,7 @@ function MedicalView() {
           <ListItem
             button
             key="Dashboard"
-            onClick={() => setContentId(contentId === 1 ? 0 : 1)}
+            onClick={() => setContentId(0)}
           >
             <ListItemIcon>
               <DashboardOutlinedIcon />
@@ -83,8 +89,8 @@ function MedicalView() {
         </Box>
       </Modal> */}
 
-      { contentId === 0 && <MedicalDashboard /> }
-      { contentId === 1 && <PatientInfo />}
+      { contentId === 0 && <MedicalDashboard handlePatientClick={viewPatient} /> }
+      { contentId === 1 && <PatientInfo PID={patientId} />}
 
     </Box>
   );
