@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SymptomsQuestion from './SymptomsUpdating';
 import SymptomsIntensity from './SymptomsIntensity';
+import SymptomsUpdateResponse from './SymptomsUpdateResponse';
 
 export default function FormLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
@@ -13,6 +14,9 @@ export default function FormLayout({ changeState }: any) {
       break;
     case '2':
       layout = <SymptomsIntensity changeStatus={setStatus} selection={symptomsArray} />;
+      break;
+    case 'response':
+      layout = <SymptomsUpdateResponse />;
       break;
     default:
       layout = '';

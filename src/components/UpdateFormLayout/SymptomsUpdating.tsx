@@ -110,7 +110,7 @@ export default function SymptomsUpdating({ changeStatus, changeSymptoms }: any) 
             <Container
               sx={{ display: 'flex',
                 justifyContent: 'center',
-                width: midSize ? '70%' : '50%',
+                width: midSize ? '100%' : '70%',
               }}
             >
               <FormControl component="fieldset">

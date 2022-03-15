@@ -81,13 +81,14 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
         minHeight="95vh"
         width="100%"
         flexDirection="column"
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, margin: 'auto' }}
         style={styles.centered}
       >
         <Paper
           sx={{
-            width: midSize ? '100%' : '70%',
+            width: midSize ? '100%' : 'auto',
             padding: 4,
+            margin: 'auto',
           }}
         >
           <Container
@@ -104,7 +105,7 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
               <Container
                 sx={{
                   justifyContent: 'center',
-                  width: midSize ? '100%' : '70%',
+                  // width: midSize ? '100%' : '70%',
                   margin: 0,
                   paddingBottom: 2,
                   paddingTop: 2,
@@ -181,7 +182,7 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
           </Container>
           <Container
             sx={{
-              marginLeft: '1rem',
+              // marginLeft: '1rem',
               marginTop: '2rem',
               flexDirection: 'column',
             }}
