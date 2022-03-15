@@ -118,7 +118,11 @@ export const headCells: readonly HeadCell[] = [
   },
 ];
 
-export default function MedicalTable() {
+type Props = {
+  handlePatientClick: any,
+};
+
+export default function MedicalTable({ handlePatientClick }: Props) {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
   // can access selected rows here
@@ -132,7 +136,6 @@ export default function MedicalTable() {
   // rowData represents the unfiltered query data
   const [rowData, setRowData] = React.useState<Data[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
-  // const [hasUpdates, sethasUpdates] = React.useState<{[key:string]:boolean}>();
   const [hasUpdates, sethasUpdates] = React.useState<string[]>([]);
 
   // CHANGE function to convert query data to table format
@@ -215,14 +218,8 @@ export default function MedicalTable() {
   const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
     if (hasUpdates.includes(UID)) {
       sethasUpdates(hasUpdates.filter((ID) => ID !== UID));
-      // TODO: set hasUpdates  to false in user (UID)
-      //
     }
-    // TODO: redirect to patient page
-    //
-    // TODO: delete the following 2 lines
-    // eslint-disable-next-line no-alert
-    alert(`${UID} is selected`);
+    handlePatientClick(UID);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
