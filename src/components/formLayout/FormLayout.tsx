@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Question1 from './QuestionsDesign/Question1Layout';
 import Question2 from './QuestionsDesign/Question2Layout';
 import Question3 from './QuestionsDesign/Question3Layout';
@@ -6,17 +7,24 @@ import Question4 from './QuestionsDesign/Question4Layout';
 import Question5 from './QuestionsDesign/Question5Layout';
 import ResponseLayout from './ResponseLayout';
 
+import Firebase, { firestore } from '../../config/firebase_config';
+import { UserContext } from '../../context/UserContext';
+
 export default function FormLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
   const [count, setCount] = useState(4);
   const [points, setPoints] = useState(0);
-  const [priorityPoints, setPriorityPoints] = useState(0);
   // For the Symptoms Update Form
   const [symptomsPoints, setSymptomsPoints] = useState(0);
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
   // Array that has all user answers (useful for next sprint)
   const [userAnswer, setUserAnswer] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
+  const navigate = useNavigate();
+
+  const users = firestore.collection('users');
+
+  const { state } = React.useContext(UserContext);
 
   const handlePoints = (childData: any) => {
     setPoints(points + childData);
@@ -41,14 +49,29 @@ export default function FormLayout({ changeState }: any) {
     addToUserAnswer(symptomsAnswer);
   };
 
-  const sendToDatabase = () => {
+  const requestDoctor = async () => {
+    let patientScore = 0;
+
     if (status === 'response 0') {
-      setPriorityPoints(10);
+      patientScore = 10;
     } else {
-      setPriorityPoints((points / 66) * 10);
+      patientScore = ((points / 66) * 10);
     }
-    // SEND User answer
+
+    await users
+      .doc(state.id)
+      .update({
+        score: patientScore,
+        assignedDoctor: 'requestedDoctor',
+        initialPatientHelpFormData: userAnswer,
+      })
+      .then(() => {
+        const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
+        getDoctor();
+        navigate('/dashboard');
+      });
   };
+
   let layout;
 
   switch (status) {
@@ -93,14 +116,14 @@ export default function FormLayout({ changeState }: any) {
 
       break;
     case 'response0':
-      layout = <ResponseLayout selection={0} sendUserInfo={sendToDatabase} />;
+      layout = <ResponseLayout selection={0} requestDoctor={requestDoctor} />;
       setTimeout(() => changeState('2'), 0);
       break;
     case 'response':
       if (points < 15) {
-        layout = <ResponseLayout selection={1} sendUserInfo={sendToDatabase} />;
+        layout = <ResponseLayout selection={1} requestDoctor={requestDoctor} />;
       } else {
-        layout = <ResponseLayout selection={2} sendUserInfo={sendToDatabase} />;
+        layout = <ResponseLayout selection={2} requestDoctor={requestDoctor} />;
       }
       setTimeout(() => changeState('2'), 0);
       break;

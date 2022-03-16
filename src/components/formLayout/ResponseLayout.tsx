@@ -1,13 +1,9 @@
 import React from 'react';
 import { Container, Typography, Box, CardMedia, Button } from '@mui/material';
-import { Score } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import Hospital from '../../static/style/images/Hospital.png';
 import Symptoms from '../../static/style/images/Symptoms.png';
 import Doctor from '../../static/style/images/Doctor.png';
 import data from '../../static/data/responses.json';
-import Firebase, { firestore } from '../../config/firebase_config';
-import { UserContext } from '../../context/UserContext';
 
 const styles = {
   centered: {
@@ -17,27 +13,7 @@ const styles = {
   },
 };
 
-export default function ResponseLayout({ selection, sendUserInfo }: any) {
-  const navigate = useNavigate();
-
-  const users = firestore.collection('users');
-
-  const { state, update } = React.useContext(UserContext);
-
-  const requestDoctor = async (patientScore: number) => {
-    await users
-      .doc(state.id)
-      .update({
-        score: patientScore,
-        assignedDoctor: 'requestedDoctor',
-      })
-      .then(() => {
-        const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
-        getDoctor();
-        navigate('/dashboard');
-      });
-  };
-
+export default function ResponseLayout({ selection, requestDoctor }: any) {
   return (
     <div style={{ display: 'flex' }}>
       <Box
@@ -123,8 +99,7 @@ export default function ResponseLayout({ selection, sendUserInfo }: any) {
             <Button
               variant="text"
               onClick={() => {
-                sendUserInfo();
-                requestDoctor(1);
+                requestDoctor();
               }}
             >
               Yes
