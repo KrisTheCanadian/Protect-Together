@@ -51,6 +51,11 @@ export default function HeaderSymptoms({ id }: any) {
                   Follow our recommendation!
                 </Typography>
               )}
+              {id === '3' && (
+              <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                Update your symptoms
+              </Typography>
+              )}
             </Typography>
           </Container>
           <Button

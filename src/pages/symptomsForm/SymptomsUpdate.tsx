@@ -1,15 +1,36 @@
-import React from 'react';
-import { Box } from '@mui/material';
-// import UpdateSymptomsLayout from '../../components/UpdateFormLayout/UpdateSymptomsLayout';
-import SideBar from '../../components/layout/SideBar';
+import React, { useState } from 'react';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import HeaderSymptoms from '../../components/formLayout/HeaderSymptoms';
+import DrawerSymptoms from '../../components/formLayout/DrawerSymptoms';
+import UpdateSymptomsLayout from '../../components/formLayout/UpdateSymptomsLayout';
 
-export default function SymptomsUpdate() {
+export default function SymptomsForm() {
+  const theme = useTheme();
+  const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
+  const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const [status, setStatus] = useState('3');
+
   return (
     <div>
-      <div>
-        <Box>
-          {/* <UpdateSymptomsLayout /> */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {matchesMd && <HeaderSymptoms id={status} />}
+          {!matchesMd && <DrawerSymptoms id={status} />}
 
+          <div
+            style={{
+              justifyContent: 'center',
+              marginTop: matchesMd ? 30 : 0,
+              paddingTop: matchesSm ? 130 : 0,
+            }}
+          >
+            <UpdateSymptomsLayout changeState={setStatus} />
+          </div>
         </Box>
       </div>
     </div>
