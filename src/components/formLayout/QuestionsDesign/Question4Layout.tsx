@@ -17,7 +17,7 @@ export default function Question4Layout(
     count,
     changeCount,
     addUserAnswer,
-    addSymptoms,
+    changePoints,
   }: any,
 ) {
   const [id, setId] = useState(0);
@@ -38,8 +38,8 @@ export default function Question4Layout(
       setAnsTwo(false);
       setAnsThree(false);
       setError(false);
-      setPointValue(questions[id].p1);
-      setSymptoms(`Mild ${questions[id].label}`);
+      setPointValue(questions[selection[id]].p1);
+      setSymptoms(`Mild ${questions[selection[id]].label}`);
     } else {
       setAnsOne(false);
     }
@@ -51,8 +51,8 @@ export default function Question4Layout(
       setAnsOne(false);
       setAnsThree(false);
       setError(false);
-      setPointValue(questions[id].p2);
-      setSymptoms(`Moderate ${questions[id].label}`);
+      setPointValue(questions[selection[id]].p2);
+      setSymptoms(`Moderate ${questions[selection[id]].label}`);
     } else {
       setAnsTwo(false);
     }
@@ -64,8 +64,8 @@ export default function Question4Layout(
       setAnsOne(false);
       setAnsTwo(false);
       setError(false);
-      setPointValue(questions[id].p3);
-      setSymptoms(`Severe ${questions[id].label}`);
+      setPointValue(questions[selection[id]].p3);
+      setSymptoms(`Severe ${questions[selection[id]].label}`);
     } else {
       setAnsThree(false);
     }
@@ -85,12 +85,14 @@ export default function Question4Layout(
       setAnsTwo(false);
       setAnsThree(false);
       setCounter(counter + 1);
+      changePoints(pointValue);
       addUserAnswer(symptoms, pointValue);
       if (selection.length - 1 > id) {
         setId(id + 1);
+        addUserAnswer(symptoms, false);
       } else {
         changeCount(counter);
-        addSymptoms();
+        addUserAnswer(symptoms, pointValue, true);
         setValue('5');
       }
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Question1 from './QuestionsDesign/Question1Layout';
 import Question2 from './QuestionsDesign/Question2Layout';
@@ -12,12 +12,12 @@ import { UserContext } from '../../context/UserContext';
 
 export default function FormLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
+  const [symptomsDone, setSymptomsDone] = useState(false);
   const [count, setCount] = useState(4);
   const [points, setPoints] = useState(0);
   // For the Symptoms Update Form
   const [symptomsPoints, setSymptomsPoints] = useState(0);
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
-  // Array that has all user answers (useful for next sprint)
   const [userAnswer, setUserAnswer] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -32,21 +32,25 @@ export default function FormLayout({ changeState }: any) {
 
   const addToUserAnswer = (childData: any) => {
     setUserAnswer([...userAnswer, childData]);
+    console.log(userAnswer);
   };
 
-  const addToSymptoms = (childSymptom: any, childPoint: number) => {
+  useEffect(() => {
+    if (symptomsDone) {
+      const symptomsAnswer = { label: "Patient's symptoms", result: userSymptoms };
+      addToUserAnswer(symptomsAnswer);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symptomsDone, userSymptoms]);
+
+  const addToSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
     setSymptomsPoints(symptomsPoints + childPoint);
     if (userSymptoms.length === 0) {
       setUserSymptoms(childSymptom);
     } else {
       setUserSymptoms([...userSymptoms, childSymptom]);
     }
-  };
-
-  const addSymptomsToUserAnswer = () => {
-    const symptomsAnswer = { label: "Patient's symptoms", result: userSymptoms };
-    handlePoints(symptomsPoints);
-    addToUserAnswer(symptomsAnswer);
+    setSymptomsDone(symptomsStatus);
   };
 
   const requestDoctor = async () => {
@@ -100,7 +104,6 @@ export default function FormLayout({ changeState }: any) {
           changeCount={setCount}
           changePoints={handlePoints}
           addUserAnswer={addToSymptoms}
-          addSymptoms={addSymptomsToUserAnswer}
         />
       );
       break;

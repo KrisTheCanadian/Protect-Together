@@ -22,7 +22,7 @@ const styles = {
   },
 };
 
-export default function Question3Layout({ changeStatus, changeSymptoms, addUserAnswer }: any) {
+export default function Question3Layout({ changeStatus, changePoints, changeSymptoms, addUserAnswer }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
@@ -74,7 +74,8 @@ export default function Question3Layout({ changeStatus, changeSymptoms, addUserA
     if (checkedSymptoms.length === 0) {
       setError(true);
     } else {
-      addUserAnswer(symptomsArray, pointValue);
+      changePoints(pointValue);
+      addUserAnswer(symptomsArray, pointValue, false);
 
       if (nextQuestions.length !== 0) {
         setValue('4');
