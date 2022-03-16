@@ -65,9 +65,6 @@ function PatientDashboard() {
   const [recoveredCases, setRecoveredCases] = useState('');
   const [userInput, setUserInput] = useState('');
 
-  // get selected user doc
-  const userRef = firestore.collection('/users').doc(state.id);
-
   const setData = ({
     country,
     cases,
