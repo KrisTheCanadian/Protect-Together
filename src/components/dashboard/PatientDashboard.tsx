@@ -21,7 +21,7 @@ import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { DocumentData } from 'firebase/firestore';
+import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import Header from '../layout/Header';
 import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
@@ -100,13 +100,12 @@ function PatientDashboard() {
   };
 
   useEffect(() => {
-    const getUser = () => {
-      userRef.get().then((doc) => {
-        const userData = doc.data();
-        setUser(userData);
-      });
-    };
-    getUser();
+    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+      const data = docu.data();
+      if (data) {
+        setUser(data);
+      }
+    });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
