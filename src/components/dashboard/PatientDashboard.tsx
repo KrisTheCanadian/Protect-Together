@@ -16,7 +16,6 @@ import {
   Typography,
   Modal,
 } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
 import Avatar from '@mui/material/Avatar';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
@@ -55,6 +54,7 @@ function PatientDashboard() {
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
+  const [user, setUser] = useState<DocumentData>();
 
   const [country, setCountry] = useState('');
   const [cases, setCases] = useState('');
@@ -64,6 +64,9 @@ function PatientDashboard() {
   const [deathCases, setDeathCases] = useState('');
   const [recoveredCases, setRecoveredCases] = useState('');
   const [userInput, setUserInput] = useState('');
+
+  // get selected user doc
+  const userRef = firestore.collection('/users').doc(state.id);
 
   const setData = ({
     country,
@@ -96,11 +99,6 @@ function PatientDashboard() {
       });
   };
 
-  const [user, setUser] = useState<DocumentData>();
-
-  // get selected user doc
-  const userRef = firestore.collection('/users').doc(state.id);
-
   useEffect(() => {
     const getUser = () => {
       userRef.get().then((doc) => {
@@ -109,8 +107,8 @@ function PatientDashboard() {
       });
     };
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
