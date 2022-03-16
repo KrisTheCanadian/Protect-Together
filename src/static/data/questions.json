@@ -2,18 +2,21 @@
     {
       "id": 0,
       "title": "Are you an individual who is moderately to severely immunocompromised?",
+      "label": "Moderately to severely immunocompromised",
       "p1": 5,
       "p2": 0
   },
   {
     "id": 1,
     "title": "Are you fully vaccinated against COVID-19?",
+    "label": "Fully vaccinated against COVID-19",
     "p1": 0,
     "p2": 4
   },
   {
     "id": 3,
     "title": "Did you return from travel outside of Canada in the past 14 days?",
+    "label": "Travelled outside of Canada in the past 14 days",
     "p1": 3,
     "p2": 0
   }

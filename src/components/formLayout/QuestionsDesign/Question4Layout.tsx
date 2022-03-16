@@ -10,7 +10,16 @@ const styles = {
   },
 };
 
-export default function Question4Layout({ changeStatus, selection, count, changeCount, changePoints }: any) {
+export default function Question4Layout(
+  {
+    changeStatus,
+    selection,
+    count,
+    changeCount,
+    addUserAnswer,
+    addSymptoms,
+  }: any,
+) {
   const [id, setId] = useState(0);
   const [ansOne, setAnsOne] = useState(false);
   const [ansTwo, setAnsTwo] = useState(false);
@@ -21,6 +30,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
   const [pointValue, setPointValue] = useState(0);
   const theme = useTheme();
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const [symptoms, setSymptoms] = useState('');
 
   const handleClickOne = () => {
     if (ansOne !== true) {
@@ -29,6 +39,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsThree(false);
       setError(false);
       setPointValue(questions[id].p1);
+      setSymptoms(`Mild ${questions[id].label}`);
     } else {
       setAnsOne(false);
     }
@@ -41,6 +52,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsThree(false);
       setError(false);
       setPointValue(questions[id].p2);
+      setSymptoms(`Moderate ${questions[id].label}`);
     } else {
       setAnsTwo(false);
     }
@@ -53,6 +65,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsTwo(false);
       setError(false);
       setPointValue(questions[id].p3);
+      setSymptoms(`Severe ${questions[id].label}`);
     } else {
       setAnsThree(false);
     }
@@ -71,13 +84,13 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsTwo(false);
       setAnsThree(false);
+      setCounter(counter + 1);
+      addUserAnswer(symptoms, pointValue);
       if (selection.length - 1 > id) {
         setId(id + 1);
-        setCounter(counter + 1);
-        changePoints(pointValue);
       } else {
-        changeCount(counter + 1);
-        changePoints(pointValue);
+        changeCount(counter);
+        addSymptoms();
         setValue('5');
       }
     }

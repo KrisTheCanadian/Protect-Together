@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-export default function ResponseLayout({ selection }: any) {
+export default function ResponseLayout({ selection, sendUserInfo }: any) {
   const navigate = useNavigate();
 
   const users = firestore.collection('users');
@@ -123,6 +123,7 @@ export default function ResponseLayout({ selection }: any) {
             <Button
               variant="text"
               onClick={() => {
+                sendUserInfo();
                 requestDoctor(1);
               }}
             >

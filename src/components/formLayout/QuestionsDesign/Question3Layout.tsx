@@ -22,13 +22,14 @@ const styles = {
   },
 };
 
-export default function Question3Layout({ changeStatus, changePoints, changeSymptoms }: any) {
+export default function Question3Layout({ changeStatus, changeSymptoms, addUserAnswer }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
   const [value, setValue] = useState('false');
   const [checkedSymptoms, setCheckedSymptoms] = useState<number[]>([]);
   const [nextQuestions, setNextQuestions] = useState<number[]>([]);
+  const [symptomsArray, setSymptomsArray] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const [pointValue, setPointValue] = useState(0);
 
@@ -43,12 +44,16 @@ export default function Question3Layout({ changeStatus, changePoints, changeSymp
 
       if (nextQuestions.includes(symptom.next)) {
         setNextQuestions(nextQuestions.filter((item) => item !== symptom.next));
+      } else {
+        setSymptomsArray(symptomsArray.filter((item) => item !== symptom.label));
       }
     } else {
       setCheckedSymptoms([...checkedSymptoms, symptom.id]);
       setPointValue(pointValue + symptom.pt);
       if (symptom.next !== -1) {
         setNextQuestions([...nextQuestions, symptom.next]);
+      } else {
+        setSymptomsArray([...symptomsArray, symptom.label]);
       }
     }
   };
@@ -69,7 +74,8 @@ export default function Question3Layout({ changeStatus, changePoints, changeSymp
     if (checkedSymptoms.length === 0) {
       setError(true);
     } else {
-      changePoints(pointValue);
+      addUserAnswer(symptomsArray, pointValue);
+
       if (nextQuestions.length !== 0) {
         setValue('4');
         changeSymptoms(nextQuestions);

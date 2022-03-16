@@ -9,7 +9,7 @@ const styles = {
   },
 };
 
-export default function Question2Layout({ changeStatus, changePoints }: any) {
+export default function Question2Layout({ changeStatus, changePoints, addUserAnswer }: any) {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
   const [ansOne, setAnsOne] = useState(false);
@@ -17,6 +17,8 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
   const [ansThree, setAnsThree] = useState(false);
   const [error, setError] = useState(false);
   const [pointValue, setPointValue] = useState(0);
+  const [userAnswer, setUserAnswer] = useState({ label: "Patient's situation", result: '' });
+
   const handleClickOne = () => {
     if (ansOne !== true) {
       setAnsOne(true);
@@ -24,6 +26,7 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
       setAnsThree(false);
       setPointValue(2);
       setError(false);
+      setUserAnswer({ ...userAnswer, result: 'Been in contact with a person who has COVID-19' });
     } else {
       setAnsOne(false);
     }
@@ -36,6 +39,7 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
       setAnsThree(false);
       setError(false);
       setPointValue(5);
+      setUserAnswer({ ...userAnswer, result: 'COVID-19 positive' });
     } else {
       setAnsTwo(false);
     }
@@ -48,6 +52,7 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
       setAnsTwo(false);
       setError(false);
       setPointValue(4);
+      setUserAnswer({ ...userAnswer, result: 'One or more COVID-19 symptoms' });
     } else {
       setAnsThree(false);
     }
@@ -58,6 +63,7 @@ export default function Question2Layout({ changeStatus, changePoints }: any) {
       setError(true);
     } else {
       changePoints(pointValue);
+      addUserAnswer(userAnswer);
       changeStatus('3');
     }
   };
