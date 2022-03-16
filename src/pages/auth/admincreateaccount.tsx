@@ -12,10 +12,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
+import { medicalConstants } from '../../static/data/constants';
 
 type Props = {
   handleClose: any;
@@ -71,7 +71,12 @@ function AdminCreateAccount({ handleClose }: Props) {
       role: formData.role,
     };
     if (formData.role === 'medical') {
-      staffMember = { ...staffMember, availableSlots: 10, patientSlots: 10, filledSlots: 0 };
+      staffMember = {
+        ...staffMember,
+        availableSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
+        patientSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
+        filledSlots: 0,
+      };
     }
 
     await users.doc(uid).set(staffMember).then(() => {

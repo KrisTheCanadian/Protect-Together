@@ -2,6 +2,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import Firebase, { firestore } from '../../../../config/firebase_config';
+import { medicalConstants } from '../../../../static/data/constants';
 
 type Props = {
   handleClose: any;
@@ -17,7 +18,7 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
 
   const handleSubmit = () => {
     if (user) {
-      const newPatientSlots = parseInt(patientSlots, 10);
+      const newPatientSlots = parseInt(patientSlots, medicalConstants.PATIENT_DEFAULT_SLOTS);
       const newAvailableSlots = newPatientSlots - user.filledSlots;
       // adjust available slots
       userRef.update({ patientSlots: newPatientSlots, availableSlots: newAvailableSlots }).then(() => {
@@ -64,7 +65,7 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
         label="Patient Slots"
         value={patientSlots}
         onChange={(event) => {
-          const parsedInt = parseInt(event.target.value, 10);
+          const parsedInt = parseInt(event.target.value, medicalConstants.PATIENT_DEFAULT_SLOTS);
 
           if (parsedInt >= 0 || event.target.value === '') {
             setPatientSlots(event.target.value.toString());
