@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,11 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
+import { IconButton, Modal } from '@mui/material';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
+
+import theme from '../../../../static/style/theme';
+import { EditUser } from './EditUser';
 
 export interface EnhancedTableProps {
   numSelected: number;
@@ -24,7 +29,7 @@ export interface EnhancedTableProps {
 
 export interface EnhancedTableToolbarProps {
   numSelected: number;
-  onSearch: (event: any)=> void;
+  onSearch: (event: any) => void;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -43,9 +48,9 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string },
+  ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -67,11 +72,15 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 // CHANGE define the type of data for each row in the table
 export interface Data {
+  UID: string;
   name: string;
   role: string;
   patientSlots: number;
-  appointmentSlots: number;
+  availableSlots: number;
+  filledSlots: number;
   status: string;
+  modify: number;
+
 }
 
 // CHANGE define the header cell interface
@@ -86,7 +95,7 @@ export const headCells: readonly HeadCell[] = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Name',
   },
   {
@@ -102,7 +111,7 @@ export const headCells: readonly HeadCell[] = [
     label: 'Patient Slots',
   },
   {
-    id: 'appointmentSlots',
+    id: 'availableSlots',
     numeric: true,
     disablePadding: false,
     label: 'Appointment Slots',
@@ -113,17 +122,44 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Status',
   },
+  {
+    id: 'modify',
+    numeric: false,
+    disablePadding: false,
+    label: 'Modify',
+  },
 ];
 
+const modalStyle = {
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  display: 'flex',
+  flexDirection: 'column',
+
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function AdminTable() {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
+  // modal window for editing user
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState('');
+  const handleOpen = () => setModalOpen(true);
+
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof Data>('name');
   // can access selected rows here
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { state, update } = React.useContext(UserContext);
+  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { state, update } = useContext(UserContext);
+  const [searchText, setSearchText] = useState('');
 
   // Data rows for table, filteredRows represents searched data
   // rowData represents the unfiltered query data
@@ -133,23 +169,34 @@ export default function AdminTable() {
   // CHANGE function to convert query data to table format
 
   function createTableData(
+    UID: string,
     name: string,
     role: string,
     patientSlots: number,
-    appointmentSlots: number,
+    availableSlots: number,
+    filledSlots: number,
     status: string,
+    modify: number,
   ): Data {
     return {
+      UID,
       name,
       role,
       patientSlots,
-      appointmentSlots,
       status,
+      availableSlots,
+      filledSlots,
+      modify,
     };
   }
 
   const usersRef = firestore.collection('users').where('role', '!=', 'patient');
-
+  const filterTable = () => {
+    setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
+      || row.role.toLowerCase().includes(searchText.toLowerCase())
+      || row.status.toLowerCase().includes(searchText.toLowerCase())
+    )));
+  };
   // CHANGE Fetch data for table
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
@@ -158,12 +205,19 @@ export default function AdminTable() {
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
         const user = childSnapshot.data();
+        let patientSlots = 0;
+        let availableSlots = 0;
+        let filledSlots = 0;
+        if (user.role === 'medical') {
+          patientSlots = user.patientSlots;
+          availableSlots = user.availableSlots;
+          filledSlots = user.filledSlots;
+        }
+        const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const { role } = user;
-        const patientSlots = 10;
-        const appointmentSlots = 4;
         const status = 'active';
-        const tableEntry = createTableData(name, role, patientSlots, appointmentSlots, status);
+        const tableEntry = createTableData(UID, name, role, patientSlots, availableSlots, filledSlots, status, 0);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
@@ -191,8 +245,14 @@ export default function AdminTable() {
     setSelected([]);
   };
 
-  // this handles the click to select a row
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+  // this handles the click to click a row
+  const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
+    setModalOpen(true);
+    setSelectedUser(UID);
+  };
+  const handleCheck = (event: React.MouseEvent<unknown>, name: string) => {
+    event.preventDefault();
+    event.stopPropagation();
     const selectedIndex = selected.indexOf(name);
     let newSelected: readonly string[] = [];
 
@@ -228,11 +288,13 @@ export default function AdminTable() {
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = event.target.value;
-    setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
-       || row.role.toLowerCase().includes(searchText.toLowerCase())
-       || row.status.toLowerCase().includes(searchText.toLowerCase())
-    )));
+    setSearchText(event.target.value);
+    filterTable();
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+    filterTable();
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -268,34 +330,50 @@ export default function AdminTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.UID}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
+
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+
                       >
                         {row.name}
                       </TableCell>
                       <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="right">{row.patientSlots}</TableCell>
-                      <TableCell align="right">{row.appointmentSlots}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                      <TableCell align="left">
+                        {(row.role === 'medical' && row.filledSlots > row.patientSlots) && (
+                        // eslint-disable-next-line react/jsx-one-expression-per-line
+                        <span>{row.filledSlots}/{row.patientSlots}</span>
+                        )}
+                        {(row.role === 'medical' && row.filledSlots <= row.patientSlots) && (
+                        // eslint-disable-next-line react/jsx-one-expression-per-line
+                        <span>{row.filledSlots}/{row.patientSlots}</span>
+                        )}
+                        {(row.role !== 'medical') && (
+                          ' N/A'
+                        )}
+
+                      </TableCell>
+                      <TableCell align="left">N/A</TableCell>
+                      <TableCell align="left">{row.status}</TableCell>
+                      <TableCell align="right">
+                        {row.role === 'medical'
+                          && (
+                            <IconButton aria-label="edit" onClick={(event) => handleClick(event, row.UID)}>
+                              <EditOutlinedIcon />
+                            </IconButton>
+                          )}
+                        <IconButton aria-label="delete">
+                          <DeleteOutlinedIcon />
+                        </IconButton>
+
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -321,6 +399,17 @@ export default function AdminTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Modal
+        open={modalOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <EditUser handleClose={handleClose} selectedUser={selectedUser} />
+
+        </Box>
+      </Modal>
 
     </Box>
   );

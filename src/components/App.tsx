@@ -15,10 +15,9 @@ import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
 import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 import { LayoutContext } from '../context/LayoutContext';
-import { UserContext, UserProvider } from '../context/UserContext';
+import { UserProvider } from '../context/UserContext';
 
 function App() {
-  const { state, update } = React.useContext(UserContext);
   const [open, setOpen] = React.useState(false);
 
   return (

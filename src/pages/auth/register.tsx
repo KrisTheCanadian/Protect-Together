@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Alert, Avatar, Box, Button, Checkbox, FormControl, FormControlLabel, Grid, IconButton,
   InputAdornment, InputLabel, Link, MenuItem, MobileStepper, Select, TextField, Typography,
@@ -9,7 +8,6 @@ import {
 } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import validator from 'validator';
 import { auth, firestore } from '../../config/firebase_config';
 import Login from './login';
@@ -41,7 +39,6 @@ type FormError = {
 };
 
 function RegisterPage() {
-  const [registering, setRegistering] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmedPassword, setShowConfirmedPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -87,8 +84,6 @@ function RegisterPage() {
   }, [formData, formError.errorConfirmPassword, formError.errorEmail, formError.errorHeight,
     formError.errorPhoneNumber, formError.errorWeight, nextButtonStatus]);
 
-  const navigate = useNavigate();
-
   const addUserDataToSignUp = async (userCreds: any) => {
     const uid = userCreds?.user?.uid;
     const users = firestore.collection('users');
@@ -123,7 +118,6 @@ function RegisterPage() {
   const signUpWithEmailAndPassword = () => {
     if (error !== '') setError('');
 
-    setRegistering(true);
     auth.createUserWithEmailAndPassword(formData.email, formData.password)
       .then((userCreds) => {
         addUserDataToSignUp(userCreds);
@@ -136,7 +130,6 @@ function RegisterPage() {
         } else {
           setError('Unable to register. Please try again later.');
         }
-        setRegistering(false);
       });
   };
 

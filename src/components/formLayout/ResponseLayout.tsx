@@ -13,7 +13,7 @@ const styles = {
   },
 };
 
-export default function ResponseLayout({ selection }: any) {
+export default function ResponseLayout({ selection, requestDoctor }: any) {
   return (
     <div style={{ display: 'flex' }}>
       <Box
@@ -30,10 +30,26 @@ export default function ResponseLayout({ selection }: any) {
             justifyContent: 'center',
           }}
         >
-          <CardMedia sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {selection === 0 && <img src={Hospital} style={{ maxWidth: '50%' }} alt="Emergency Room" />}
-            {selection === 1 && <img src={Symptoms} style={{ maxWidth: '60%' }} alt="Symptoms" />}
-            {selection === 2 && <img src={Doctor} style={{ maxWidth: '40%' }} alt="Doctor" />}
+          <CardMedia
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {selection === 0 && (
+              <img
+                src={Hospital}
+                style={{ maxWidth: '50%' }}
+                alt="Emergency Room"
+              />
+            )}
+            {selection === 1 && (
+              <img src={Symptoms} style={{ maxWidth: '60%' }} alt="Symptoms" />
+            )}
+            {selection === 2 && (
+              <img src={Doctor} style={{ maxWidth: '40%' }} alt="Doctor" />
+            )}
           </CardMedia>
           <Container>
             <Typography
@@ -57,7 +73,6 @@ export default function ResponseLayout({ selection }: any) {
             >
               {data[selection]?.subTitle}
             </Typography>
-
           </Container>
           <Container
             sx={{
@@ -83,17 +98,15 @@ export default function ResponseLayout({ selection }: any) {
             </Typography>
             <Button
               variant="text"
+              onClick={() => {
+                requestDoctor();
+              }}
             >
               Yes
             </Button>
-            <Button
-              variant="text"
-            >
-              No
-            </Button>
+            <Button variant="text">No</Button>
           </Container>
         </Container>
-
       </Box>
     </div>
   );

@@ -10,7 +10,16 @@ const styles = {
   },
 };
 
-export default function Question4Layout({ changeStatus, selection, count, changeCount, changePoints }: any) {
+export default function Question4Layout(
+  {
+    changeStatus,
+    selection,
+    count,
+    changeCount,
+    addUserAnswer,
+    changePoints,
+  }: any,
+) {
   const [id, setId] = useState(0);
   const [ansOne, setAnsOne] = useState(false);
   const [ansTwo, setAnsTwo] = useState(false);
@@ -21,6 +30,7 @@ export default function Question4Layout({ changeStatus, selection, count, change
   const [pointValue, setPointValue] = useState(0);
   const theme = useTheme();
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const [symptoms, setSymptoms] = useState('');
 
   const handleClickOne = () => {
     if (ansOne !== true) {
@@ -28,7 +38,8 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsTwo(false);
       setAnsThree(false);
       setError(false);
-      setPointValue(questions[id].p1);
+      setPointValue(questions[selection[id]].p1);
+      setSymptoms(`Mild ${questions[selection[id]].label}`);
     } else {
       setAnsOne(false);
     }
@@ -40,7 +51,8 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsThree(false);
       setError(false);
-      setPointValue(questions[id].p2);
+      setPointValue(questions[selection[id]].p2);
+      setSymptoms(`Moderate ${questions[selection[id]].label}`);
     } else {
       setAnsTwo(false);
     }
@@ -52,7 +64,8 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsTwo(false);
       setError(false);
-      setPointValue(questions[id].p3);
+      setPointValue(questions[selection[id]].p3);
+      setSymptoms(`Severe ${questions[selection[id]].label}`);
     } else {
       setAnsThree(false);
     }
@@ -71,13 +84,15 @@ export default function Question4Layout({ changeStatus, selection, count, change
       setAnsOne(false);
       setAnsTwo(false);
       setAnsThree(false);
+      setCounter(counter + 1);
+      changePoints(pointValue);
+      addUserAnswer(symptoms, pointValue);
       if (selection.length - 1 > id) {
         setId(id + 1);
-        setCounter(counter + 1);
-        changePoints(pointValue);
+        addUserAnswer(symptoms, false);
       } else {
-        changeCount(counter + 1);
-        changePoints(pointValue);
+        changeCount(counter);
+        addUserAnswer(symptoms, pointValue, true);
         setValue('5');
       }
     }

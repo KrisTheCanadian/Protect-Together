@@ -12,11 +12,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
-import theme from '../../static/style/theme';
+import { medicalConstants } from '../../static/data/constants';
 
 type Props = {
   handleClose: any;
@@ -63,19 +62,29 @@ function AdminCreateAccount({ handleClose }: Props) {
     if (uid === undefined) {
       setError('An error has occured. Please try again later.');
     }
-    await users.doc(uid).set({
+    let staffMember: any = {
       UID: uid,
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       phone: formData.phoneNumber,
       role: formData.role,
-    }).then(() => {
+    };
+    if (formData.role === 'medical') {
+      staffMember = {
+        ...staffMember,
+        availableSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
+        patientSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
+        filledSlots: 0,
+      };
+    }
+
+    await users.doc(uid).set(staffMember).then(() => {
       auth.sendPasswordResetEmail(formData.email);
     });
   };
 
-  const signUpWithEmailAndPassword = () : boolean => {
+  const signUpWithEmailAndPassword = (): boolean => {
     const password = generatePassword();
     createUserFirebase.auth().createUserWithEmailAndPassword(formData.email, password)
       .then((userCreds) => {
@@ -96,6 +105,7 @@ function AdminCreateAccount({ handleClose }: Props) {
   const handleSubmit = (event: any) => {
     if (formError.errorEmail !== '' || formError.errorPhoneNumber !== '' || !signUpWithEmailAndPassword()) {
       event.preventDefault();
+      handleClose();
     }
   };
 
@@ -118,20 +128,18 @@ function AdminCreateAccount({ handleClose }: Props) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: '100vh' }}
     >
       <Box
         p={3}
         sx={{
-          bgcolor: 'secondary.main',
+          bgcolor: 'white',
           borderRadius: 2,
           boxShadow: 6,
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          width: '50%',
-          minWidth: '600px',
+          width: '100%',
+
         }}
       >
         <Avatar

@@ -10,13 +10,14 @@ const styles = {
   },
 };
 
-export default function Question5Layout({ changeStatus, count, changePoints }: any) {
+export default function Question5Layout({ changeStatus, count, changePoints, addUserAnswer }: any) {
   const [ansYes, setAnsYes] = useState(false);
   const [ansNo, setAnsNo] = useState(false);
   const [id, setId] = useState(0);
   const [counter, setCounter] = useState(count);
   const [pointValue, setPointValue] = useState(0);
   const [error, setError] = useState(false);
+  const [value, setValue] = useState('');
 
   const handleClickYes = () => {
     if (!ansYes) {
@@ -24,6 +25,7 @@ export default function Question5Layout({ changeStatus, count, changePoints }: a
       setAnsNo(false);
       setError(false);
       setPointValue(question[id].p1);
+      setValue('Yes');
     } else {
       setAnsYes(false);
     }
@@ -35,6 +37,7 @@ export default function Question5Layout({ changeStatus, count, changePoints }: a
       setAnsNo(true);
       setError(false);
       setPointValue(question[id].p2);
+      setValue('No');
     } else {
       setAnsNo(false);
     }
@@ -46,12 +49,12 @@ export default function Question5Layout({ changeStatus, count, changePoints }: a
     } else {
       setAnsNo(false);
       setAnsYes(false);
+      addUserAnswer({ label: question[id].label, result: value });
+      changePoints(pointValue);
       if (question.length - 1 > id) {
         setId(id + 1);
         setCounter(counter + 1);
-        changePoints(pointValue);
       } else {
-        changePoints(pointValue);
         changeStatus('response');
       }
     }

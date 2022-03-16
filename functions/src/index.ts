@@ -1,4 +1,5 @@
-import * as functions from "firebase-functions";
+export {requestDoctor, dispatchDoctor} from "./callable";
+
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript

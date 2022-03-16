@@ -20,8 +20,27 @@ import ResponseLayout from '../components/formLayout/ResponseLayout';
 import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 
 jest.mock('firebase/compat/app', () => {
+  // mock Firestore
+  const Firestore = () => ({
+    collection: () => ({
+      where: () => ({
+        onSnapshot: () => null,
+      }),
+      doc: () => ({
+        get: () => ({
+          then: () => null,
+        }),
+      }),
+    }),
+    // to mock attributes
+    FieldValue: {
+      serverTimestamp: jest.fn(),
+    },
+
+  });
+  const firestore = Firestore;
+
   const app = jest.requireActual('firebase/compat/app');
-  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
   const auth = () => ({
     onAuthStateChanged: jest.fn(),
     signInWithEmailAndPassword: (args : any) => new Promise<void>((resolve) => resolve()),
