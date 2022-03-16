@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
-import MailIcon from '@mui/icons-material/Mail';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 // eslint-disable-next-line import/no-unresolved
 import '../../static/style/CovidData.css';
@@ -22,9 +20,9 @@ import FolderIcon from '@mui/icons-material/Folder';
 import Avatar from '@mui/material/Avatar';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
-import { DocumentData } from 'firebase/firestore';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import { DocumentData } from 'firebase/firestore';
 import Header from '../layout/Header';
 import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
@@ -58,21 +56,6 @@ function PatientDashboard() {
   const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
 
-  const [user, setUser] = useState<DocumentData>();
-  // get selected user doc
-  const userRef = firestore.collection('/users').doc(state.id);
-
-  useEffect(() => {
-    const getUser = () => {
-      userRef.get().then((doc) => {
-        const userData = doc.data();
-        setUser(userData);
-      });
-    };
-    getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userRef]);
-
   const [country, setCountry] = useState('');
   const [cases, setCases] = useState('');
   const [recovered, setRecovered] = useState('');
@@ -100,17 +83,10 @@ function PatientDashboard() {
     setRecoveredCases(todayRecovered);
   };
 
-  useEffect(() => {
-    fetch('https://disease.sh/v3/covid-19/countries')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
   const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setUserInput(e.target.value);
   };
+
   const handleSubmit = (props: { preventDefault: () => void; }) => {
     props.preventDefault();
     fetch(`https://disease.sh/v3/covid-19/countries/${userInput}`)
@@ -119,6 +95,22 @@ function PatientDashboard() {
         setData(data);
       });
   };
+
+  const [user, setUser] = useState<DocumentData>();
+
+  // get selected user doc
+  const userRef = firestore.collection('/users').doc(state.id);
+
+  useEffect(() => {
+    const getUser = () => {
+      userRef.get().then((doc) => {
+        const userData = doc.data();
+        setUser(userData);
+      });
+    };
+    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRef]);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -143,8 +135,12 @@ function PatientDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Typography paragraph>{state.firstName}</Typography>
-        {user?.assignedDoctor ? user?.assignedDoctor : ''}
+        <Typography paragraph>
+          Medical Status (Doctor):
+          {' '}
+          {user?.assignedDoctor ? user?.assignedDoctor : ''}
+          {' '}
+        </Typography>
 
         <Typography
           variant="h4"
@@ -339,7 +335,6 @@ function PatientDashboard() {
             />
           </ListItem>
         </List>
-
       </MainContent>
 
       <Modal
