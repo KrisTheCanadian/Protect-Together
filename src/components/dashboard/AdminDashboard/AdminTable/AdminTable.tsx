@@ -348,15 +348,14 @@ export default function AdminTable() {
                       <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">
                         {(row.role === 'medical' && row.filledSlots > row.patientSlots) && (
-                          // eslint-disable-next-line react/jsx-one-expression-per-line
-                          <span style={{ color: 'red' }}>{row.filledSlots}/{row.patientSlots}</span>
+                        // eslint-disable-next-line react/jsx-one-expression-per-line
+                        <span>{row.filledSlots}/{row.patientSlots}</span>
                         )}
                         {(row.role === 'medical' && row.filledSlots <= row.patientSlots) && (
-                          // eslint-disable-next-line react/jsx-one-expression-per-line
-                          <span>{row.filledSlots}/{row.patientSlots}</span>
+                        // eslint-disable-next-line react/jsx-one-expression-per-line
+                        <span>{row.filledSlots}/{row.patientSlots}</span>
                         )}
                         {(row.role !== 'medical') && (
-                          // eslint-disable-next-line react/jsx-one-expression-per-line
                           ' N/A'
                         )}
 

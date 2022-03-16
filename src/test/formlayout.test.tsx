@@ -29,7 +29,6 @@ jest.mock('firebase/compat/app', () => {
       doc: () => ({
         get: () => ({
           then: () => null,
-
         }),
       }),
     }),
