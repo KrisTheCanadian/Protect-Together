@@ -62,6 +62,7 @@ function ForgotPassword() {
             required
             fullWidth
             id="email"
+            inputProps={{ 'data-testid': 'email' }}
             label="Email Address"
             name="email"
             autoComplete="email"

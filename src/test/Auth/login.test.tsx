@@ -2,13 +2,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
 import {
-  cleanup, findByText, fireEvent, render, waitFor,
+  cleanup, fireEvent, render, waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import firebase from 'firebase/compat';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import LoginPage from '../../pages/auth/login';
+import '@testing-library/jest-dom';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
@@ -36,19 +37,28 @@ jest.mock('firebase/compat/app', () => {
 
 afterEach(cleanup);
 
-test('Login Renders correctly', () => {
-  const { getByText } = render(<BrowserRouter><LoginPage /></BrowserRouter>);
-  expect(getByText('Welcome')).toBeTruthy();
-  expect(getByText('Email Address')).toBeTruthy();
-  expect(getByText('Password')).toBeTruthy();
-  expect(getByText('Forgot password?')).toBeTruthy();
-});
+test('Login Renders correctly', async () => {
+  const component = render(<BrowserRouter><LoginPage /></BrowserRouter>);
+  expect(component.getByText('Welcome')).toBeTruthy();
 
-test('Login requires email and password for sign', async () => {
-  const { getByText } = render(<BrowserRouter><LoginPage /></BrowserRouter>);
+  const emailInput = component.getByTestId('email');
+  expect(emailInput).toBeTruthy();
+  fireEvent.change(emailInput as HTMLInputElement, { target: { value: 'test@test.com' } });
+  expect((emailInput as HTMLInputElement).value).toBe('test@test.com');
 
-  const c = await waitFor(() => fireEvent.click(getByText('Welcome')), {
+  const passwordInput = component.getByTestId('password');
+  expect(passwordInput).toBeTruthy();
+  userEvent.type(passwordInput, 'test123');
+  expect((passwordInput as HTMLInputElement).value).toBe('test123');
+
+  expect(component.getByText('Forgot password?')).toBeTruthy();
+
+  const signInButton = component.getByText('Sign In');
+  expect(signInButton).toBeTruthy();
+
+  const c = await waitFor(() => fireEvent.click(signInButton), {
     timeout: 3000,
   });
-  expect(getByText('Welcome')).toBeTruthy();
+
+  expect(await component.getByText('Login Failed: Your email or password is incorrect'));
 });

@@ -1,8 +1,9 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
 import {
-  cleanup, fireEvent, queryByAttribute, render,
+  cleanup, fireEvent, queryByAttribute, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import firebase from 'firebase/compat';
@@ -13,9 +14,36 @@ import RegisterPage from '../../pages/auth/register';
 import '@testing-library/jest-dom';
 
 jest.mock('firebase/compat/app', () => {
+  const Firestore = () => ({
+    collection: () => ({
+      where: () => ({
+        onSnapshot: () => null,
+      }),
+      doc: () => ({
+        get: () => ({
+          then: () => null,
+
+        }),
+        set: () => ({
+          then: () => null,
+
+        }),
+      }),
+    }),
+    // to mock attributes
+    FieldValue: {
+      serverTimestamp: jest.fn(),
+    },
+
+  });
+
+  const firestore = Firestore;
   const app = jest.requireActual('firebase/compat/app');
-  const auth = () => jest.fn();
-  const firestore = (args : any) => new Promise<void>((resolve) => resolve());
+  const auth = () => ({
+    onAuthStateChanged: jest.fn(),
+    createUserWithEmailAndPassword: (args : any) => new Promise<void>((resolve) => resolve()),
+  });
+
   auth.GoogleAuthProvider = jest.fn();
   auth.signInWithEmailAndPassword = jest.fn();
 
@@ -74,12 +102,43 @@ test('Register renders correctly', async () => {
   fireEvent.click(button as HTMLElement);
 
   expect(component.getByText('Health Information')).toBeTruthy();
-  expect(component.getByText('Date of Birth *')).toBeTruthy();
+
+  const datepicker = screen.getByLabelText('Date of Birth *');
+  userEvent.type(datepicker, '2021-11-09');
+  const chosenDate = screen.getByRole('button', { name: 'Mar 29, 2022' });
+  fireEvent.click(chosenDate);
+  expect(chosenDate).toBeInTheDocument();
+
+  const okButton = screen.getByRole('button', { name: 'OK' });
+  expect(okButton).toBeTruthy();
+  fireEvent.click(okButton);
+
   expect(component.getByLabelText('Weight')).toBeTruthy();
-  expect(component.getByText('Height *')).toBeTruthy();
+
+  const height = component.getByLabelText('Height *');
+  expect(height).toBeTruthy();
+  userEvent.type(height, '125');
+  expect(height).toHaveAttribute('value', '125');
+
   expect(component.getByText('Sex')).toBeTruthy();
-  expect(component.getByText('Health Card Number *')).toBeTruthy();
+
+  const healthcareNumber = component.getByTestId('healthcare-number');
+  expect(healthcareNumber).toBeTruthy();
+  userEvent.type(healthcareNumber, 'test123');
+  expect(healthcareNumber).toHaveAttribute('value', 'test123');
+
   expect(component.getByLabelText('Medical Conditions')).toBeTruthy();
   expect(component.getByLabelText('Additional Notes')).toBeTruthy();
-  expect(component.getByText('I accept the privacy policy')).toBeTruthy();
+
+  const checkbox = component.getByTestId('accept-policy').querySelector('input[type="checkbox"]');
+  expect(checkbox).toBeTruthy();
+  fireEvent.click(checkbox as HTMLElement);
+  expect(checkbox).toHaveProperty('checked', true);
+
+  const registerButton = component.getByTestId('register-button');
+  expect(registerButton).toBeTruthy();
+
+  const c = await waitFor(() => fireEvent.click(registerButton), {
+    timeout: 3000,
+  });
 });

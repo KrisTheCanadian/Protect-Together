@@ -162,6 +162,7 @@ function AdminCreateAccount({ handleClose }: Props) {
                 label="Account Type"
                 required
                 id="role"
+                inputProps={{ 'data-testid': 'account-type' }}
                 value={formData.role}
                 onChange={(event) => setFormData({ ...formData, role: event.target.value })}
                 autoFocus
@@ -179,6 +180,7 @@ function AdminCreateAccount({ handleClose }: Props) {
               required
               fullWidth
               id="firstName"
+              inputProps={{ 'data-testid': 'first-name' }}
               label="First Name"
               value={formData.firstName}
               onChange={(event) => setFormData({ ...formData, firstName: event.target.value })}
@@ -190,6 +192,7 @@ function AdminCreateAccount({ handleClose }: Props) {
               required
               fullWidth
               id="lastName"
+              inputProps={{ 'data-testid': 'last-name' }}
               label="Last Name"
               name="lastName"
               autoComplete="family-name"
@@ -202,6 +205,7 @@ function AdminCreateAccount({ handleClose }: Props) {
               required
               fullWidth
               id="email"
+              inputProps={{ 'data-testid': 'email' }}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -223,6 +227,7 @@ function AdminCreateAccount({ handleClose }: Props) {
               required
               fullWidth
               id="phoneNumber"
+              inputProps={{ 'data-testid': 'phone-number' }}
               label="Phone Number"
               name="phoneNumber"
               autoComplete="phone-number"
