@@ -23,12 +23,14 @@ const styles = {
   },
 };
 
-export default function SymptomsUpdateQuestion({ changeStatus, changeSymptoms }: any) {
+export default function SymptomsUpdateQuestion({ changeStatus, changePoints, changeSymptoms, addUserAnswer }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
+  const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
   const [value, setValue] = useState('false');
   const [checkedSymptoms, setCheckedSymptoms] = useState<number[]>([]);
   const [nextQuestions, setNextQuestions] = useState<number[]>([]);
+  const [symptomsArray, setSymptomsArray] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const [pointValue, setPointValue] = useState(0);
 
@@ -43,12 +45,16 @@ export default function SymptomsUpdateQuestion({ changeStatus, changeSymptoms }:
 
       if (nextQuestions.includes(symptom.next)) {
         setNextQuestions(nextQuestions.filter((item) => item !== symptom.next));
+      } else {
+        setSymptomsArray(symptomsArray.filter((item) => item !== symptom.label));
       }
     } else {
       setCheckedSymptoms([...checkedSymptoms, symptom.id]);
       setPointValue(pointValue + symptom.pt);
       if (symptom.next !== -1) {
         setNextQuestions([...nextQuestions, symptom.next]);
+      } else {
+        setSymptomsArray([...symptomsArray, symptom.label]);
       }
     }
   };
@@ -68,11 +74,16 @@ export default function SymptomsUpdateQuestion({ changeStatus, changeSymptoms }:
   const handleSubmit = () => {
     if (checkedSymptoms.length === 0) {
       setError(true);
-    } else if (nextQuestions.length !== 0) {
-      setValue('2');
-      changeSymptoms(nextQuestions);
     } else {
-      setValue('response');
+      changePoints(pointValue);
+      addUserAnswer(symptomsArray, false);
+
+      if (nextQuestions.length !== 0) {
+        setValue('2');
+        changeSymptoms(nextQuestions);
+      } else {
+        setValue('response');
+      }
     }
   };
 
@@ -101,7 +112,7 @@ export default function SymptomsUpdateQuestion({ changeStatus, changeSymptoms }:
             }}
           >
             <Typography variant="h5" sx={{ marginTop: 1 }}>
-              In the last 10 days have you experienced any of these symptoms?
+              Have you noticed any changes in your symptoms?
             </Typography>
             <Typography variant="subtitle1" sx={{ fontWeight: 400, marginTop: 1, marginBottom: 3 }}>
               Choose any/all that are new, worsening,

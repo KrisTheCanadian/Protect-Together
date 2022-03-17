@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Typography, Box, useMediaQuery, useTheme, Paper, Grid } from '@mui/material';
-import questions from '../../static/data/formSymptomsIntensity.json';
+import questions from '../../../static/data/formSymptomsIntensity.json';
+import SymptomsUpdateQuestion from './SymptomsUpdateQuestion';
 
 const styles = {
   centered: {
@@ -20,9 +21,26 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const [symptomIntensityAnswer, setSymptomIntensityAnswer] = useState<string[]>([]);
+  const dict: any = {};
+  const [dictionaryState, setDictionaryState] = useState();
 
-  console.log(selection);
-  const handleClickOne = () => {
+  // eslint-disable-next-line array-callback-return
+  selection.map((id: any) => {
+    dict[id] = { Mild: false, Moderate: false, Severe: false };
+  });
+  console.log(dict);
+  setDictionaryState(dict);
+  console.log(dictionaryState);
+
+  const handleClickOne = (id: any) => {
+    if (!dict[id].Mild) {
+      setError(false);
+      dict[id].Mild = true;
+      dict[id].Moderate = false;
+      dict[id].Severe = false;
+    }
+    console.log(dict);
     if (ansOne !== true) {
       setAnsOne(true);
       setAnsTwo(false);
@@ -155,8 +173,8 @@ export default function SymptomsIntensity({ changeStatus, selection }: any) {
                     }}
                     >
                       <Button
-                        onClick={handleClickOne}
-                        variant={ansOne ? 'contained' : 'outlined'}
+                        onClick={() => handleClickOne(symptom)}
+                        variant={dict[symptom].Mild ? 'contained' : 'outlined'}
                         sx={{ marginRight: '0.5rem' }}
                       >
                         Mild

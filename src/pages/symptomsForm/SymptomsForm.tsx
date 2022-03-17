@@ -19,8 +19,8 @@ export default function SymptomsForm() {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {matchesMd && <HeaderSymptoms id={status} />}
-          {!matchesMd && <DrawerSymptoms id={status} />}
+          {matchesMd && <HeaderSymptoms id={status} content="symptomsForm" />}
+          {!matchesMd && <DrawerSymptoms id={status} content="symptomsForm" />}
 
           <div
             style={{

@@ -30,8 +30,6 @@ import UpdateTestResult from './patienttestresult';
 import theme from '../../static/style/theme';
 import { firestore } from '../../config/firebase_config';
 
-import UpdateSymptomsLayout from '../UpdateFormLayout/UpdateSymptomsLayout';
-
 const style = {
   position: 'absolute' as const,
   top: '50%',
@@ -115,9 +113,16 @@ function PatientDashboard() {
         <Button variant="contained" color="info" sx={{ mr: 1 }} onClick={handleTestOpen}>
           Add Covid-19 Test
         </Button>
+        {!user?.assignedDoctor && (
         <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>
           Ask for Help
         </Button>
+        )}
+        {user?.assignedDoctor && (
+        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsUpdate'); }}>
+          Update Your Symptoms
+        </Button>
+        )}
       </Header>
       <SideBar>
         <List>

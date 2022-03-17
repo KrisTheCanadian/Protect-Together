@@ -8,7 +8,7 @@ export default function SymptomsForm() {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const [status, setStatus] = useState('3');
+  const [status, setStatus] = useState('1');
 
   return (
     <div>
@@ -19,8 +19,8 @@ export default function SymptomsForm() {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {matchesMd && <HeaderSymptoms id={status} />}
-          {!matchesMd && <DrawerSymptoms id={status} />}
+          {matchesMd && <HeaderSymptoms id={status} content="updateForm" />}
+          {!matchesMd && <DrawerSymptoms id={status} content="updateForm" />}
 
           <div
             style={{

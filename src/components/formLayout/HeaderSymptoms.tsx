@@ -10,7 +10,8 @@ import {
   CssBaseline,
 } from '@mui/material';
 
-export default function HeaderSymptoms({ id }: any) {
+export default function HeaderSymptoms({ id, content }: any) {
+  console.log(content);
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,25 +39,38 @@ export default function HeaderSymptoms({ id }: any) {
               {' '}
               of 2
             </Button>
+            {content === 'symptomsForm' && (
             <Typography variant="h5" sx={{ marginRight: '3rem', marginTop: 1 }}>
               Covid-19 Assessment Test
-              {id === '1' && (
-                <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
-                  Answer a few quick questions to get a recommendation on what to do
-                  next!
-                </Typography>
-              )}
+                {id === '1' && (
+                  <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                    Answer a few quick questions to get a recommendation on what to do
+                    next!
+                  </Typography>
+                )}
               {id === '2' && (
-                <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
-                  Follow our recommendation!
-                </Typography>
-              )}
-              {id === '3' && (
               <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
-                Update your symptoms
+                Follow our recommendation!
               </Typography>
               )}
             </Typography>
+            )}
+            {content === 'updateForm' && (
+            <Typography variant="h5" sx={{ marginRight: '3rem', marginTop: 1 }}>
+              Update Your Symptoms
+              {id === '1' && (
+              <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                Answer the following questions about your symptoms.
+                This will allow your doctor to get a better understanding of your situation.
+              </Typography>
+              )}
+              {id === '2' && (
+              <Typography sx={{ fontSize: '1rem', color: '#ffff' }}>
+                Your symptoms have been successfully updated.
+              </Typography>
+              )}
+            </Typography>
+            )}
           </Container>
           <Button
             variant="contained"
