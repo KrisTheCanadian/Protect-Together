@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 
 export default function HeaderSymptoms({ id, content }: any) {
-  console.log(content);
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
