@@ -1,6 +1,5 @@
-import React from 'react';
-import MailIcon from '@mui/icons-material/Mail';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import React, { useState } from 'react';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import {
   Button,
@@ -21,6 +20,7 @@ import { UserContext } from '../../../context/UserContext';
 import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
 import AdminTable from './AdminTable/AdminTable';
 import theme from '../../../static/style/theme';
+import PatientTable from './PatientTable';
 
 const style = {
   position: 'absolute' as const,
@@ -38,7 +38,8 @@ const style = {
 };
 
 function AdminDashboard() {
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [view, setView] = useState('dashboard');
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
@@ -54,17 +55,24 @@ function AdminDashboard() {
       </Header>
       <SideBar>
         <List>
-          <ListItem button key="Dashboard">
+          <ListItem button onClick={() => { setView('dashboard'); }}>
             <ListItemIcon>
               <DashboardOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
+          <ListItem button onClick={() => { setView('patientList'); }}>
+            <ListItemIcon>
+              <EmojiPeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Unassigned Patients" />
+          </ListItem>
         </List>
         <Divider />
       </SideBar>
       <MainContent>
-        <AdminTable />
+        {view === 'dashboard' && <AdminTable />}
+        {view === 'patientList' && <PatientTable />}
       </MainContent>
 
       <Modal

@@ -2,8 +2,9 @@ import { Box, Toolbar } from '@mui/material';
 import * as React from 'react';
 
 const drawerWidth = 240;
+
 type Props = {
-  children: JSX.Element[] | JSX.Element,
+  children: JSX.Element[] | JSX.Element | any,
 };
 
 export default function MainContent({ children }: Props) {
