@@ -302,17 +302,13 @@ function MedicalDashboard({ PID } : Props) {
             </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
-            <Box sx={{ m: 2, p: 4, border: '1px solid grey', textAlign: 'center', height: '100%' }}>
-              <Typography component="h1" variant="h4">
-                Chat
-              </Typography>
+            <Box>
+              {/* <Typography component="h1" variant="h4">
+                Box
+              </Typography> */}
             </Box>
           </Grid>
         </Grid>
-        {/* <MedicalTable />
-        <Button sx={headerButtonStyle} variant="contained" color="info" onClick={handleOpen}>
-          View Apointments
-        </Button> */}
       </MainContent>
 
       <Modal
