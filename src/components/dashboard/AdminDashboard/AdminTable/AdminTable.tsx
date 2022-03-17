@@ -159,7 +159,6 @@ export default function AdminTable() {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { state, update } = useContext(UserContext);
-  const [searchText, setSearchText] = useState('');
 
   // Data rows for table, filteredRows represents searched data
   // rowData represents the unfiltered query data
@@ -191,10 +190,10 @@ export default function AdminTable() {
   }
 
   const usersRef = firestore.collection('users').where('role', '!=', 'patient');
-  const filterTable = () => {
+  const filterTable = (searchText: string) => {
     setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
       || row.role.toLowerCase().includes(searchText.toLowerCase())
-      || row.status.toLowerCase().includes(searchText.toLowerCase())
+      || row.status.toLowerCase().includes(searchText.toLowerCase()) || searchText === ''
     )));
   };
   // CHANGE Fetch data for table
@@ -287,14 +286,12 @@ export default function AdminTable() {
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
-    filterTable();
+  const handleSearch = async (event: any) => {
+    filterTable(event);
   };
 
   const handleClose = () => {
     setModalOpen(false);
-    filterTable();
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -348,12 +345,12 @@ export default function AdminTable() {
                       <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">
                         {(row.role === 'medical' && row.filledSlots > row.patientSlots) && (
-                        // eslint-disable-next-line react/jsx-one-expression-per-line
-                        <span>{row.filledSlots}/{row.patientSlots}</span>
+                          // eslint-disable-next-line react/jsx-one-expression-per-line
+                          <span>{row.filledSlots}/{row.patientSlots}</span>
                         )}
                         {(row.role === 'medical' && row.filledSlots <= row.patientSlots) && (
-                        // eslint-disable-next-line react/jsx-one-expression-per-line
-                        <span>{row.filledSlots}/{row.patientSlots}</span>
+                          // eslint-disable-next-line react/jsx-one-expression-per-line
+                          <span>{row.filledSlots}/{row.patientSlots}</span>
                         )}
                         {(row.role !== 'medical') && (
                           ' N/A'
