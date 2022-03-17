@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material';
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
+import { DocumentData } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import Firebase, { firestore } from '../../../../config/firebase_config';
 import { medicalConstants } from '../../../../static/data/constants';
