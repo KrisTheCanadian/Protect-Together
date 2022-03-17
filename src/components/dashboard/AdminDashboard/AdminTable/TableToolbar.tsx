@@ -47,7 +47,7 @@ export const TableToolbar = (props: EnhancedTableToolbarProps) => {
             id="outlined-basic"
             label="Search"
             variant="standard"
-            onChange={onSearch}
+            onChange={(event) => onSearch(event.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
