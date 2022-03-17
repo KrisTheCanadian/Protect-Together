@@ -1,0 +1,15 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "ignoreTestFiles": [
+    "**/1-getting-started/*",
+    "**/2-advanced-examples/*"
+  ],
+  "projectId": "tczjcg",
+  "chromeWebSecurity": false,
+  "retries": {
+    "runMode": 4,
+    "openMode": 1
+  },
+  "experimentalStudio": true,
+  "defaultCommandTimeout": 6000
+}
