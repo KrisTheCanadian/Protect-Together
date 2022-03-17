@@ -149,6 +149,7 @@ export default function AdminTable() {
   // modal window for editing user
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
+  const handleOpen = () => setModalOpen(true);
 
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Data>('name');
