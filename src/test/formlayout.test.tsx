@@ -89,11 +89,6 @@ test('Question 5 Renders correctly', () => {
   expect(getByText('Question')).toBeTruthy();
 });
 
-test('Covid-19 Assessment Test Renders correctly', () => {
-  const { getByText } = render(<BrowserRouter><DrawerSymptoms /></BrowserRouter>);
-  expect(getByText('Covid-19 Assessment Test')).toBeTruthy();
-});
-
 test('FormLayout Renders correctly', () => {
   render(<BrowserRouter><FormLayout /></BrowserRouter>);
 });

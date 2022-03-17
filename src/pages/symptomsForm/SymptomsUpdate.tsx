@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import HeaderSymptoms from '../../components/formLayout/HeaderSymptoms';
 import DrawerSymptoms from '../../components/formLayout/DrawerSymptoms';
-import FormLayout from '../../components/formLayout/FormLayout';
+import UpdateSymptomsLayout from '../../components/formLayout/UpdateSymptomsLayout';
 
 export default function SymptomsForm() {
   const theme = useTheme();
@@ -19,8 +19,8 @@ export default function SymptomsForm() {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {matchesMd && <HeaderSymptoms id={status} content="symptomsForm" />}
-          {!matchesMd && <DrawerSymptoms id={status} content="symptomsForm" />}
+          {matchesMd && <HeaderSymptoms id={status} content="updateForm" />}
+          {!matchesMd && <DrawerSymptoms id={status} content="updateForm" />}
 
           <div
             style={{
@@ -29,7 +29,7 @@ export default function SymptomsForm() {
               paddingTop: matchesSm ? 130 : 0,
             }}
           >
-            <FormLayout changeState={setStatus} />
+            <UpdateSymptomsLayout changeState={setStatus} />
           </div>
         </Box>
       </div>
