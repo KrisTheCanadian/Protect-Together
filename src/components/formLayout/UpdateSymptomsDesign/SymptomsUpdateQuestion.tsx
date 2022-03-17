@@ -23,7 +23,7 @@ const styles = {
   },
 };
 
-export default function SymptomsUpdateQuestion({ changeStatus, changePoints, changeSymptoms, addUserAnswer }: any) {
+export default function SymptomsUpdateQuestion({ changeStatus, changePoints, changeSymptoms, addToSymptoms }: any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
@@ -76,7 +76,9 @@ export default function SymptomsUpdateQuestion({ changeStatus, changePoints, cha
       setError(true);
     } else {
       changePoints(pointValue);
-      addUserAnswer(symptomsArray, false);
+      if (symptomsArray.length !== 0) {
+        addToSymptoms(symptomsArray, false);
+      }
 
       if (nextQuestions.length !== 0) {
         setValue('2');

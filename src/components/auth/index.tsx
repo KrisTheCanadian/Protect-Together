@@ -30,7 +30,7 @@ function getUserId() {
 
 const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
   const [user, setUser] = useState({ loggedIn: false });
-  const { state, update } = React.useContext(UserContext);
+  const { update } = React.useContext(UserContext);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);

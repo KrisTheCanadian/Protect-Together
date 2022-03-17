@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SymptomsQuestion from './UpdateSymptomsDesign/SymptomsUpdateQuestion';
 import SymptomsIntensity from './UpdateSymptomsDesign/IntensityQuestion';
 import SymptomsResponse from './UpdateSymptomsDesign/SymptomsUpdateResponse';
@@ -12,7 +12,6 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
   const [points, setPoints] = useState(0);
   // For the Symptoms Update Form
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
-  const [userAnswer, setUserAnswer] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
 
   let layout;
@@ -33,15 +32,26 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
     setPoints(points + childData);
   };
 
+  useEffect(() => {
+    if (symptomsDone) {
+      updateUserSymptoms();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symptomsDone]);
+
   const addToSymptoms = (childSymptom: any, symptomsStatus: boolean) => {
     if (userSymptoms.length === 0) {
-      setUserSymptoms(childSymptom);
+      if (Array.isArray(childSymptom)) {
+        setUserSymptoms(childSymptom);
+      } else {
+        const tempSymptomsArray = [childSymptom];
+        setUserSymptoms(tempSymptomsArray);
+      }
     } else {
       setUserSymptoms([...userSymptoms, childSymptom]);
     }
-    setSymptomsDone(symptomsStatus);
     if (symptomsStatus) {
-      updateUserSymptoms();
+      setSymptomsDone(symptomsStatus);
     }
   };
 
@@ -52,7 +62,7 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
           changePoints={handlePoints}
           changeStatus={setStatus}
           changeSymptoms={setSymptomsArray}
-          addUserAnswer={addToSymptoms}
+          addToSymptoms={addToSymptoms}
         />
       );
       break;
@@ -62,7 +72,7 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
           selection={symptomsArray}
           changeStatus={setStatus}
           changePoints={handlePoints}
-          addUserAnswer={addToSymptoms}
+          addToSymptoms={addToSymptoms}
         />
       );
       break;

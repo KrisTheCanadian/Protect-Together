@@ -42,10 +42,15 @@ export default function FormLayout({ changeState }: any) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symptomsDone, userSymptoms]);
 
-  const addToSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
+  const addSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
     setSymptomsPoints(symptomsPoints + childPoint);
     if (userSymptoms.length === 0) {
-      setUserSymptoms(childSymptom);
+      if (Array.isArray(childSymptom)) {
+        setUserSymptoms(childSymptom);
+      } else {
+        const tempSymptomsArray = [childSymptom];
+        setUserSymptoms(tempSymptomsArray);
+      }
     } else {
       setUserSymptoms([...userSymptoms, childSymptom]);
     }
@@ -65,6 +70,7 @@ export default function FormLayout({ changeState }: any) {
       .doc(state.id)
       .update({
         score: patientScore,
+        basePoints: points - symptomsPoints,
         assignedDoctor: 'requestedDoctor',
         initialPatientHelpFormData: userAnswer,
       })
@@ -90,7 +96,7 @@ export default function FormLayout({ changeState }: any) {
           changePoints={handlePoints}
           changeStatus={setStatus}
           changeSymptoms={setSymptomsArray}
-          addUserAnswer={addToSymptoms}
+          addSymptoms={addSymptoms}
         />
       );
       break;
@@ -102,7 +108,7 @@ export default function FormLayout({ changeState }: any) {
           changeStatus={setStatus}
           changeCount={setCount}
           changePoints={handlePoints}
-          addUserAnswer={addToSymptoms}
+          addSymptoms={addSymptoms}
         />
       );
       break;

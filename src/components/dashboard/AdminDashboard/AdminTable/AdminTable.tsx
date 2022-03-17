@@ -158,7 +158,6 @@ export default function AdminTable() {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { state, update } = useContext(UserContext);
 
   // Data rows for table, filteredRows represents searched data
   // rowData represents the unfiltered query data
@@ -346,7 +345,7 @@ export default function AdminTable() {
                       <TableCell align="left">
                         {(row.role === 'medical' && row.filledSlots > row.patientSlots) && (
                           // eslint-disable-next-line react/jsx-one-expression-per-line
-                          <span>{row.filledSlots}/{row.patientSlots}</span>
+                          <span style={{ color: 'red' }}>{row.filledSlots}/{row.patientSlots}</span>
                         )}
                         {(row.role === 'medical' && row.filledSlots <= row.patientSlots) && (
                           // eslint-disable-next-line react/jsx-one-expression-per-line

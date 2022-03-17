@@ -16,7 +16,7 @@ export default function Question4Layout(
     selection,
     count,
     changeCount,
-    addUserAnswer,
+    addSymptoms,
     changePoints,
   }: any,
 ) {
@@ -84,15 +84,14 @@ export default function Question4Layout(
       setAnsOne(false);
       setAnsTwo(false);
       setAnsThree(false);
-      setCounter(counter + 1);
       changePoints(pointValue);
-      addUserAnswer(symptoms, pointValue);
       if (selection.length - 1 > id) {
         setId(id + 1);
-        addUserAnswer(symptoms, false);
+        setCounter(counter + 1);
+        addSymptoms(symptoms, pointValue, false);
       } else {
-        changeCount(counter);
-        addUserAnswer(symptoms, pointValue, true);
+        changeCount(counter + 1);
+        addSymptoms(symptoms, pointValue, true);
         setValue('5');
       }
     }
