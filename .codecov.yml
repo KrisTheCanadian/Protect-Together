@@ -8,6 +8,7 @@ ignore:
   - "./build/" # Do not include build on coverage
   - ".github/" # Do not include github configs on coverage
   - ".firebase/" # Do not include firebase configs on coverage 
+  - "cypress/" # Do not include cypress system test on coverage 
 # configuration related to pull request comments
 coverage:
   range: 40..90 # coverage lower than 50 is red, higher than 90 green, between color code

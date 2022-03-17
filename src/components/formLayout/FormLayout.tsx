@@ -32,7 +32,6 @@ export default function FormLayout({ changeState }: any) {
 
   const addToUserAnswer = (childData: any) => {
     setUserAnswer([...userAnswer, childData]);
-    console.log(userAnswer);
   };
 
   useEffect(() => {

@@ -48,8 +48,6 @@ after(async () => {
       res.on('error', reject);
     });
   });
-
-  console.log(`View firestore rule coverage information at ${coverageFile}\n`);
 });
 
 async function createMockUser() {

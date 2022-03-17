@@ -44,10 +44,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:emulator": "firebase emulators:exec 'npm start'",
+    "dev:emulator": "firebase emulators:exec 'npm run dev'",
     "build": "react-scripts build",
+    "build:emulator": "firebase emulators:exec 'npm run build'",
     "test": "react-scripts test",
     "test-emulate-firestore": "firebase emulators:exec --only firestore 'mocha src/test/firebase_rules.test.mocha.js'",
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
+    "cy:open": "cypress open",
+    "cy:run": "CYPRESS_BASE_URL=http://localhost:3021 cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -70,6 +75,7 @@
     "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "cypress": "^9.5.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",
@@ -83,6 +89,7 @@
     "firestore-jest-mock": "^0.17.0",
     "jest": "^27.5.1",
     "node-fetch": ">=2.6.7",
+    "pify": "^5.0.0",
     "prettier": "^2.5.1",
     "prettier-eslint": "^13.0.0"
   }
