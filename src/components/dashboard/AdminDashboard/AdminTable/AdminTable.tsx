@@ -197,7 +197,6 @@ export default function AdminTable() {
   };
   // CHANGE Fetch data for table
   useEffect(() => {
-    console.log('im here');
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
       let tableData = new Array<Data>();
 
