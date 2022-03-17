@@ -81,7 +81,7 @@ const initPatientData: PatientData = {
   symptoms: '',
 };
 
-function MedicalDashboard({ PID } : Props) {
+function PatientInfo({ PID } : Props) {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -218,12 +218,12 @@ function MedicalDashboard({ PID } : Props) {
           </Grid>
           <Grid item md={4} sm={12}>
             <Button sx={headerButtonStyle} variant="contained" color="warning" onClick={handleCloseFile}>
-              Close Patinet&apos;s File
+              Close Patient&apos;s File
             </Button>
           </Grid>
           <Grid item md={4} sm={12}>
             <Button sx={headerButtonStyle} variant="contained" color="info" onClick={handleViewAppointments}>
-              View Apointments
+              View Appointments
             </Button>
           </Grid>
         </Grid>
@@ -326,4 +326,4 @@ function MedicalDashboard({ PID } : Props) {
     </Box>
   );
 }
-export default MedicalDashboard;
+export default PatientInfo;
