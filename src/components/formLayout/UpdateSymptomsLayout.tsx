@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { DocumentSnapshot } from 'firebase/firestore';
 import SymptomsQuestion from './UpdateSymptomsDesign/SymptomsUpdateQuestion';
-import SymptomsIntensity from './UpdateSymptomsDesign/IntensityQuestion';
+import SymptomsIntensity from './UpdateSymptomsDesign/SymptomsIntensityQuestion';
 import SymptomsResponse from './UpdateSymptomsDesign/SymptomsUpdateResponse';
 
 import Firebase, { firestore } from '../../config/firebase_config';
@@ -20,10 +21,14 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
 
   const updateUserSymptoms = async () => {
     const patientScore = ((points / 66) * 10);
+    console.log(userSymptoms);
+    users.doc(id).get()
+      .then((snapshot) => setUserDetails(snapshot.data()));
+
     await users
       .doc(state.id)
       .update({
-        score: patientScore,
+        score: (((basePoint + points) / 66) * 10),
         patientSymptoms: userSymptoms,
       });
   };
@@ -41,14 +46,9 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
 
   const addToSymptoms = (childSymptom: any, symptomsStatus: boolean) => {
     if (userSymptoms.length === 0) {
-      if (Array.isArray(childSymptom)) {
-        setUserSymptoms(childSymptom);
-      } else {
-        const tempSymptomsArray = [childSymptom];
-        setUserSymptoms(tempSymptomsArray);
-      }
+      setUserSymptoms(childSymptom);
     } else {
-      setUserSymptoms([...userSymptoms, childSymptom]);
+      setUserSymptoms(userSymptoms.concat(childSymptom));
     }
     if (symptomsStatus) {
       setSymptomsDone(symptomsStatus);
