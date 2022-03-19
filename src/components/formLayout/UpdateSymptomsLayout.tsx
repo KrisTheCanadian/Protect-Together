@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DocumentSnapshot } from 'firebase/firestore';
+import { arrayUnion } from 'firebase/firestore';
 import SymptomsQuestion from './UpdateSymptomsDesign/SymptomsUpdateQuestion';
 import SymptomsIntensity from './UpdateSymptomsDesign/SymptomsIntensityQuestion';
 import SymptomsResponse from './UpdateSymptomsDesign/SymptomsUpdateResponse';
@@ -11,25 +11,27 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
   const [symptomsDone, setSymptomsDone] = useState(false);
   const [points, setPoints] = useState(0);
-  // For the Symptoms Update Form
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
+  const date = new Date();
 
   let layout;
   const users = firestore.collection('users');
   const { state } = React.useContext(UserContext);
 
   const updateUserSymptoms = async () => {
-    const patientScore = ((points / 66) * 10);
-    console.log(userSymptoms);
-    users.doc(id).get()
-      .then((snapshot) => setUserDetails(snapshot.data()));
-
-    await users
-      .doc(state.id)
-      .update({
-        score: (((basePoint + points) / 66) * 10),
-        patientSymptoms: userSymptoms,
+    users
+      .doc(state.id).get()
+      .then(async (snapshot) => {
+        const data = snapshot.data();
+        if (data !== undefined) {
+          await users
+            .doc(state.id)
+            .update({
+              score: (((data.basePoints + points) / 66) * 10),
+              patientSymptoms: arrayUnion({ date, userSymptoms }),
+            });
+        }
       });
   };
 

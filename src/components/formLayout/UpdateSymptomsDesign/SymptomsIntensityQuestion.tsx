@@ -88,7 +88,9 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
         minHeight="95vh"
         width="100%"
         flexDirection="column"
-        sx={{ flexGrow: 1, margin: 'auto' }}
+        sx={{ flexGrow: 1,
+          margin: 'auto',
+          paddingTop: midSize ? 15 : 3 }}
         style={styles.centered}
       >
         <Paper
