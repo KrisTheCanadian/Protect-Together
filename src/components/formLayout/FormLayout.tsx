@@ -15,10 +15,9 @@ export default function FormLayout({ changeState }: any) {
   const [symptomsDone, setSymptomsDone] = useState(false);
   const [count, setCount] = useState(4);
   const [points, setPoints] = useState(0);
-  // For the Symptoms Update Form
   const [symptomsPoints, setSymptomsPoints] = useState(0);
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
-  const [userAnswer, setUserAnswer] = useState<string[]>([]);
+  const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ export default function FormLayout({ changeState }: any) {
   };
 
   const addToUserAnswer = (childData: any) => {
-    setUserAnswer([...userAnswer, childData]);
+    setUserAnswers([...userAnswers, childData]);
   };
 
   useEffect(() => {
@@ -72,7 +71,7 @@ export default function FormLayout({ changeState }: any) {
         score: patientScore,
         basePoints: points - symptomsPoints,
         assignedDoctor: 'requestedDoctor',
-        initialPatientHelpFormData: userAnswer,
+        initialPatientHelpFormData: userAnswers,
       })
       .then(() => {
         const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
