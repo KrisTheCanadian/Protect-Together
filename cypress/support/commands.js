@@ -17,7 +17,7 @@ Cypress.Commands.add('patientLogin', () => {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_PATIENT_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(1000)
+            cy.wait(2000)
         }
     })
 
@@ -31,7 +31,7 @@ Cypress.Commands.add('adminLogin', () => {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_ADMIN_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_ADMIN_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(1000)
+            cy.wait(2000)
         }
     })
 
@@ -45,7 +45,7 @@ Cypress.Commands.add('medicalLogin', () => {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_MEDICAL_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_MEDICAL_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(1000)
+            cy.wait(2000)
         }
     })
 

@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3000",
+  "baseUrl": "http://localhost:5000",
   "ignoreTestFiles": [
     "**/1-getting-started/*",
     "**/2-advanced-examples/*"

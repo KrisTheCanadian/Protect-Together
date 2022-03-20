@@ -43,7 +43,7 @@ jobs:
           # Cypress variables
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_BASE_URL: http://localhost:3000
+          CYPRESS_BASE_URL: http://localhost:5000
 
           # Cypress Tests variables
           CYPRESS_ADMIN_EMAIL: ${{ secrets.CYPRESS_ADMIN_EMAIL }}

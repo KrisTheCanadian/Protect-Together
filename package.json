@@ -52,7 +52,7 @@
     "test-emulate-firestore": "firebase emulators:exec --only firestore 'mocha src/test/firebase_rules.test.mocha.js'",
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
     "cy:open": "cypress open",
-    "cy:run": "CYPRESS_BASE_URL=http://localhost:3021 cypress run",
+    "cy:run": "CYPRESS_BASE_URL=http://localhost:5000 cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {
