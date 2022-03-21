@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:emulator": "firebase emulators:exec --import cypress/cypressDataset 'npm start'",
+    "start:emulator": "firebase emulators:exec --token $FIREBASE_TOKEN --import cypress/cypressDataset 'npm start'",
     "dev:emulator": "firebase emulators:exec 'npm run dev'",
     "build": "react-scripts build",
     "build:emulator": "firebase emulators:exec 'npm run build'",
@@ -56,8 +56,6 @@
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
     "cy:open": "cypress open",
     "cy:run": "CYPRESS_BASE_URL=http://localhost:5000 cypress run",
-    "start-emulator-cypress": "cross-var firebase emulators:start --token $FIREBASE_TOKEN --import cypress/cypressDataset",
-    "set-token": "cross-var firebase emulators:exec --import cypress/cypressDataset --token $FIREBASE_TOKEN 'npm start'",
     "eject": "react-scripts eject"
   },
   "browserslist": {
