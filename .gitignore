@@ -95,7 +95,6 @@ lint/tmp/
 /coverage
 /cypress/videos
 /cypress/screenshots
-/cypress/cypressDataset
 cypress.env.json
 
 # production

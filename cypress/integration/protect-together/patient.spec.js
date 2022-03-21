@@ -28,7 +28,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Yes').click()
         cy.contains('Continue').click()
         cy.contains('9-1-1')
-        // cy.contains('Back to Home').click()
+        cy.contains('Back to Home').click()
     });
 
     it('Ask for help - Monitor your symptoms', () => {
@@ -48,7 +48,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('No').click()
         cy.contains('Continue').click()
         cy.contains('Monitor your symptoms')
-        // cy.contains('Back to Home').click()
+        cy.contains('Back to Home').click()
     })
 
         it('Ask for help - You will be contacted by a doctor', () => {
@@ -79,7 +79,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Yes').click()
         cy.contains('Continue').click()
         cy.contains('You will be contacted by one of our doctors shortly.')
-        // cy.contains('Back to Home').click()
+        cy.contains('Back to Home').click()
     })
 
 

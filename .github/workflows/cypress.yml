@@ -35,7 +35,7 @@ jobs:
       with:
           browser: chrome
           build: npm run build
-          start: npm start start:emulator
+          start: npm run start-emulator-cypress
       env:
           # Authorization for running the firebase CLI (emulator)
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}
