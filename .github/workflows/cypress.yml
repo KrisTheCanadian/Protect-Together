@@ -38,7 +38,7 @@ jobs:
       continue-on-error: true
 
     - name: start Emulators
-      run: firebase emulators:exec --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }} --import cypress/cypressDataset 'npm start'
+      run: firebase emulators:exec --token \"${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}\" --import cypress/cypressDataset 'npm start'
       continue-on-error: true
 
       # and run all Cypress tests
