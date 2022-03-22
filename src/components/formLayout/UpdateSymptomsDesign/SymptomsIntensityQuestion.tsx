@@ -20,38 +20,14 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
   const tempSymptomsArr: string[] = [];
 
-  const handleClickOne = (id: number) => {
-    if (buttonMap.get(id) !== 'Mild') {
-      setButtonMap((prev) => new Map(prev).set(id, 'Mild'));
+  const handleClick = (id: number, v: string, pt: number) => {
+    if (buttonMap.get(id) !== v) {
+      setButtonMap((prev) => new Map(prev).set(id, v));
       setError(false);
-      setPointValue(pointValue + questions[id].p1);
+      setPointValue(pointValue + pt);
     } else {
       setButtonMap((prev) => new Map(prev).set(id, 'false'));
-      setPointValue(pointValue - questions[id].p1);
-      setError(true);
-    }
-  };
-
-  const handleClickTwo = (id: number) => {
-    if (buttonMap.get(id) !== 'Moderate') {
-      setButtonMap((prev) => new Map(prev).set(id, 'Moderate'));
-      setError(false);
-      setPointValue(pointValue + questions[id].p2);
-    } else {
-      setButtonMap((prev) => new Map(prev).set(id, 'false'));
-      setPointValue(pointValue - questions[id].p2);
-      setError(true);
-    }
-  };
-
-  const handleClickThree = (id: number) => {
-    if (buttonMap.get(id) !== 'Severe') {
-      setButtonMap((prev) => new Map(prev).set(id, 'Severe'));
-      setError(false);
-      setPointValue(pointValue + questions[id].p3);
-    } else {
-      setButtonMap((prev) => new Map(prev).set(id, 'false'));
-      setPointValue(pointValue - questions[id].p3);
+      setPointValue(pointValue - pt);
       setError(true);
     }
   };
@@ -161,21 +137,21 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
                     }}
                     >
                       <Button
-                        onClick={() => handleClickOne(symptomID)}
+                        onClick={() => handleClick(symptomID, 'Mild', questions[symptomID].p1)}
                         variant={buttonMap.get(symptomID) === 'Mild' ? 'contained' : 'outlined'}
                         sx={{ marginRight: '0.5rem' }}
                       >
                         Mild
                       </Button>
                       <Button
-                        onClick={() => handleClickTwo(symptomID)}
+                        onClick={() => handleClick(symptomID, 'Moderate', questions[symptomID].p2)}
                         variant={buttonMap.get(symptomID) === 'Moderate' ? 'contained' : 'outlined'}
                         sx={{ marginRight: '0.5rem' }}
                       >
                         Moderate
                       </Button>
                       <Button
-                        onClick={() => handleClickThree(symptomID)}
+                        onClick={() => handleClick(symptomID, 'Severe', questions[symptomID].p3)}
                         variant={buttonMap.get(symptomID) === 'Severe' ? 'contained' : 'outlined'}
                       >
                         Severe
