@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -21,6 +21,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test -- --coverage
+    - run: npx browserslist@latest --update-db
 
     - name: Save build folder
       uses: actions/upload-artifact@v2
@@ -35,17 +36,12 @@ jobs:
       working-directory: functions
 
 
-    - name: Start emulators
-      run: firebase emulators:exec --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }} --import=cypress/cypressDataset 'npm run start:emulator '
-      continue-on-error: true
-
       # and run all Cypress tests
     - name: Cypress run
       uses: cypress-io/github-action@v2
       with:
           browser: chrome
           build: npm run build
-#          start: firebase emulators:exec --token ${{steps.tk.outputs.token}} --import=cypress/cypressDataset 'npm start'
           start: npm run start:emulator
       env:
           # Authorization for running the firebase CLI (emulator)
