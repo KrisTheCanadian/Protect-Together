@@ -1,4 +1,5 @@
 ignore:
+  - "./src/context/LayoutContext.tsx"  # Do not count LayoutContext on coverage
   - "./src/index.tsx"  # Do not count index.tsx on coverage
   - "./src/components/layout/StyleGuide.tsx"  # Do not count coding styles on coverage
   - "./src/test/" # Do not count tests for coverage
@@ -11,7 +12,7 @@ ignore:
   - "cypress/" # Do not include cypress system test on coverage 
 # configuration related to pull request comments
 coverage:
-  range: 40..90 # coverage lower than 50 is red, higher than 90 green, between color code
+  range: 40..90 # coverage lower than 40 is red, higher than 90 green, between color code
   round: up
   precision: 2
   status:

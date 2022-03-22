@@ -35,7 +35,7 @@ function MedicalDashboard({ handlePatientClick }: Props) {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
         <Button variant="contained" color="info" onClick={handleOpen}>
-          View Apointments
+          View Appointments
         </Button>
       </Header>
       <MainContent>

@@ -10,12 +10,9 @@ import Paper from '@mui/material/Paper';
 import { IconButton, Modal } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { UserContext } from '../../../../context/UserContext';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
-
-import theme from '../../../../static/style/theme';
 import { EditUser } from './EditUser';
 
 export interface EnhancedTableProps {

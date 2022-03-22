@@ -24,7 +24,7 @@ describe('Sprint 3 Medical Suite', () => {
     it('Medical dashboard', () => {
         cy.visit('/')
         cy.contains('Welcome Dr. Demo')
-        cy.get('button').contains('View Apointments')
+        cy.get('button').contains('View Appointments')
         cy.get('[type="text"]').click().type('Cypress')
         cy.contains('Cypress System Tests')
     })

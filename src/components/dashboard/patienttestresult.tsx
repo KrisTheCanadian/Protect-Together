@@ -11,7 +11,6 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
-import useId from '@mui/material/utils/useId';
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -50,7 +49,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
   return (
     <Grid
       container
-      xs={12}
       sx={{
         bgcolor: 'primary.contrastText',
         borderRadius: 2,
@@ -65,7 +63,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
       <Grid
         container
         item
-        xs={12}
         rowSpacing={1.5}
         sx={{
           flexDirection: 'column',
@@ -75,7 +72,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
       >
         <Grid
           item
-          xs={12}
           sx={{
             width: '75%',
           }}
@@ -109,7 +105,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
         </Grid>
         <Grid
           item
-          xs={12}
           sx={{
             width: '75%',
           }}
@@ -171,7 +166,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
         </Grid>
         <Grid
           item
-          xs={12}
           sx={{
             width: '75%',
           }}
@@ -230,7 +224,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
               justifyContent: 'center',
             }}
           >
-            <Grid item xs={4}>
+            <Grid item>
               <Paper
                 sx={{
                   mt: 2,
@@ -249,7 +243,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                 </Button>
               </Paper>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item>
               <Paper
                 sx={{
                   mt: 2,
