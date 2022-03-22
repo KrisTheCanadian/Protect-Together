@@ -18,7 +18,7 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
   const [buttonMap, setButtonMap] = useState(new Map());
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down('md'));
-  const tempSymptomsArr: string[] = [];
+  const tempSymptomsArray: string[] = [];
 
   const handleClick = (id: number, v: string, pt: number) => {
     if (buttonMap.get(id) !== v) {
@@ -51,9 +51,9 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
     if (!error) {
       changePoints(pointValue);
       buttonMap.forEach((v, id) => {
-        tempSymptomsArr.push(`${v} ${questions[id].label}`);
+        tempSymptomsArray.push(`${v} ${questions[id].label}`);
       });
-      setSymptomsArray(tempSymptomsArr);
+      setSymptomsArray(tempSymptomsArray);
       setValue('response');
     }
   };
