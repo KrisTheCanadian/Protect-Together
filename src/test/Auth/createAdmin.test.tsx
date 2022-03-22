@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
@@ -38,26 +39,26 @@ test('AdminCreateAccount Test', async () => {
 
   const accountType = component.getByTestId('account-type');
   expect(accountType).toBeTruthy();
-  fireEvent.click(accountType as HTMLOptionElement, { target: { value: 'Admin' } });
+  await fireEvent.click(accountType as HTMLOptionElement, { target: { value: 'Admin' } });
   expect((accountType as HTMLOptionElement).value).toBe('Admin');
 
   const firstNameInput = component.getByTestId('first-name');
   expect(firstNameInput).toBeTruthy();
-  fireEvent.change(firstNameInput as HTMLInputElement, { target: { value: 'First Name' } });
+  await fireEvent.change(firstNameInput as HTMLInputElement, { target: { value: 'First Name' } });
   expect((firstNameInput as HTMLInputElement).value).toBe('First Name');
 
   const lastNameInput = component.getByTestId('last-name');
   expect(lastNameInput).toBeTruthy();
-  fireEvent.change(lastNameInput as HTMLInputElement, { target: { value: 'Last Name' } });
+  await fireEvent.change(lastNameInput as HTMLInputElement, { target: { value: 'Last Name' } });
   expect((lastNameInput as HTMLInputElement).value).toBe('Last Name');
 
   const emailInput = component.getByTestId('email');
   expect(emailInput).toBeTruthy();
-  fireEvent.change(emailInput as HTMLInputElement, { target: { value: 'test@test.com' } });
+  await fireEvent.change(emailInput as HTMLInputElement, { target: { value: 'test@test.com' } });
   expect((emailInput as HTMLInputElement).value).toBe('test@test.com');
 
   const phoneInput = component.getByTestId('phone-number');
   expect(phoneInput).toBeTruthy();
-  fireEvent.change(phoneInput as HTMLInputElement, { target: { value: '5143211234' } });
+  await fireEvent.change(phoneInput as HTMLInputElement, { target: { value: '5143211234' } });
   expect((phoneInput as HTMLInputElement).value).toBe('5143211234');
 });

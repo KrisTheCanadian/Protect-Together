@@ -47,7 +47,7 @@ test('Change Password Renders', async () => {
   expect((oldPasswordInput as HTMLInputElement).value).toBe('test123');
 
   const signInButton = component.getByText('Sign In');
-  const c = await waitFor(() => fireEvent.click(signInButton), {
+  await waitFor(() => fireEvent.click(signInButton), {
     timeout: 3000,
   });
 });

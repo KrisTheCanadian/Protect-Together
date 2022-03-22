@@ -37,7 +37,7 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
 
     // retrieve user data when we have id
     getUserId().then((id) => {
-      const unsub = onSnapshot(doc(firestore, 'users', `${id}`), (docu) => {
+      onSnapshot(doc(firestore, 'users', `${id}`), (docu) => {
         const data = docu.data();
         if (data) {
           update({
