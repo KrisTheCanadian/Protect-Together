@@ -19,6 +19,7 @@ export default function FormLayout({ changeState }: any) {
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
+  const date = new Date();
   const navigate = useNavigate();
 
   const users = firestore.collection('users');
@@ -32,14 +33,6 @@ export default function FormLayout({ changeState }: any) {
   const addToUserAnswer = (childData: any) => {
     setUserAnswers([...userAnswers, childData]);
   };
-
-  useEffect(() => {
-    if (symptomsDone) {
-      const symptomsAnswer = { label: "Patient's symptoms", result: userSymptoms };
-      addToUserAnswer(symptomsAnswer);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [symptomsDone, userSymptoms]);
 
   const addSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
     setSymptomsPoints(symptomsPoints + childPoint);
@@ -72,6 +65,7 @@ export default function FormLayout({ changeState }: any) {
         basePoints: points - symptomsPoints,
         assignedDoctor: 'requestedDoctor',
         initialPatientHelpFormData: userAnswers,
+        patientSymptoms: [{ date, userSymptoms }],
       })
       .then(() => {
         const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
