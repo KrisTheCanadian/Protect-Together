@@ -74,7 +74,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
         <Grid
           item
           sx={{
-            width: '75%',
+            width: '100%',
           }}
         >
           <Paper
@@ -84,30 +84,32 @@ function UpdateTestResult({ handleTestClose }: Props) {
               p: 4,
             }}
           >
-            <FormLabel
-              sx={{
-                fontSize: 18,
-                mb: 2,
-              }}
-            >
-              Test Date
-            </FormLabel>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Select Test Date"
-                value={testDate}
-                onChange={(newValue) => {
-                  setTestDate(newValue);
+            <FormControl>
+              <FormLabel
+                sx={{
+                  fontSize: 18,
                 }}
-                renderInput={(params) => <TextField {...params} sx={{ mr: 2, mt: 1 }} required />}
-              />
-            </LocalizationProvider>
+                focused={false}
+              >
+                Test Date
+              </FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Select Test Date"
+                  value={testDate}
+                  onChange={(newValue) => {
+                    setTestDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} sx={{ mr: 2, mt: 1, width: '100%' }} required />}
+                />
+              </LocalizationProvider>
+            </FormControl>
           </Paper>
         </Grid>
         <Grid
           item
           sx={{
-            width: '75%',
+            width: '100%',
           }}
         >
           <Paper
@@ -163,7 +165,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
         <Grid
           item
           sx={{
-            width: '75%',
+            width: '100%',
           }}
         >
           <Paper
@@ -174,14 +176,14 @@ function UpdateTestResult({ handleTestClose }: Props) {
               mb: 2,
             }}
           >
-            <FormLabel
-              sx={{
-                fontSize: 18,
-              }}
-            >
-              Test Result
-            </FormLabel>
             <FormControl>
+              <FormLabel
+                sx={{
+                  fontSize: 18,
+                }}
+              >
+                Test Result
+              </FormLabel>
               <RadioGroup
                 value={testResult}
                 onChange={(event) => setTestResult(event.target.value)}
