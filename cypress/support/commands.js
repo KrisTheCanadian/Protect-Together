@@ -54,7 +54,7 @@ Cypress.Commands.add('medicalLogin', () => {
 
 Cypress.Commands.add('logout', () => {
     cy.visit('/')
-    cy.wait(1000)
+    cy.wait(2000)
     cy.get('body').then(body => {
         if (body.find('nav').length === 1) {
             cy.get('nav').find('button').should("contain", 'Logout').click()
