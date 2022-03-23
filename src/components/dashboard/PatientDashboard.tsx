@@ -29,6 +29,7 @@ import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
+import TestResults from './TestResults';
 import theme from '../../static/style/theme';
 
 const style = {
@@ -52,8 +53,11 @@ function PatientDashboard() {
   const handleClose = () => setModalOpen(false);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
+  const [testROpen, setTestROpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
+  const handleTestROpen = () => setTestROpen(true);
+  const handleTestRClose = () => setTestROpen(false);
   const { state, update } = React.useContext(UserContext);
 
   const [country, setCountry] = useState('');
@@ -107,10 +111,13 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="info" sx={{ mr: 1, ml: 3 }} onClick={handleTestOpen}>
+        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={handleTestOpen}>
           Add Covid-19 Test
         </Button>
-        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 3 }} onClick={() => { navigate('/symptomsForm'); }}>
+        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={handleTestROpen}>
+          Covid-19 Test Results
+        </Button>
+        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
           Ask for Help
         </Button>
       </Header>
@@ -331,6 +338,16 @@ function PatientDashboard() {
       >
         <Box sx={style}>
           <UpdateTestResult handleTestClose={handleTestClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={testROpen}
+        onClose={handleTestRClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <TestResults handleTestRClose={handleTestRClose} />
         </Box>
       </Modal>
       <Modal
