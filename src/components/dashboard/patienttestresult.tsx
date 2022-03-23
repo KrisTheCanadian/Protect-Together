@@ -51,11 +51,15 @@ function UpdateTestResult({ handleTestClose }: Props) {
       container
       sx={{
         bgcolor: 'background.default',
-        borderRadius: 2,
-        boxShadow: 6,
-        padding: 6,
+        borderRadius: 1,
+        boxShadow: 4,
+        padding: 5,
         flexDirection: 'column',
-        width: '100%',
+        alignContent: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        ml: '5%',
+        mr: '5%',
         maxHeight: '100vh',
         overflow: 'scroll',
       }}
@@ -95,7 +99,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
               </FormLabel>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  label="Select Test Date"
+                  label="Select Date"
                   value={testDate}
                   onChange={(newValue) => {
                     setTestDate(newValue);

@@ -107,10 +107,10 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="info" sx={{ mr: 1 }} onClick={handleTestOpen}>
+        <Button variant="contained" color="info" sx={{ mr: 1, ml: 3 }} onClick={handleTestOpen}>
           Add Covid-19 Test
         </Button>
-        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>
+        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 3 }} onClick={() => { navigate('/symptomsForm'); }}>
           Ask for Help
         </Button>
       </Header>
@@ -131,6 +131,7 @@ function PatientDashboard() {
           sx={{
             color: 'rgba(0, 0, 0, 0.87)',
             paddingTop: 1,
+            mt: 3,
           }}
         >
           Covid-19 Statistics
