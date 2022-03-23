@@ -14,6 +14,13 @@ import {
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineDot from '@mui/lab/TimelineDot';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
 import { auth, firestore } from '../../config/firebase_config';
 
 type Props = {
@@ -56,25 +63,52 @@ function TestResults({ handleTestRClose }: Props) {
             width: '100%',
           }}
         >
-          <Paper
-            sx={{
-              borderRadius: 1,
-              bgcolor: 'primary.contrastText',
-              p: 4,
-            }}
-          >
-            <FormControl>
-              <FormLabel
-                sx={{
-                  fontSize: 18,
-                }}
-                focused={false}
-              >
-                Covid Test Results
-              </FormLabel>
-            </FormControl>
+          <Paper elevation={20} sx={{ padding: '20px', maxWidth: '100%' }}>
+            <Timeline>
+              <TimelineItem>
+                <TimelineOppositeContent color="text.secondary">
+                  2022-03-10
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>PCR Test: Positive</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineOppositeContent color="text.secondary">
+                  2022-03-08
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>PCR Test: Negative</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineOppositeContent color="text.secondary">
+                  2022-03-06
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Antibody Test: Negative</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineOppositeContent color="text.secondary">
+                  2022-03-05
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Antibody Test: Negative</TimelineContent>
+              </TimelineItem>
+            </Timeline>
           </Paper>
         </Grid>
+
         <Grid
           item
           sx={{
@@ -106,7 +140,7 @@ function TestResults({ handleTestRClose }: Props) {
                   fullWidth
                   variant="contained"
                 >
-                  Cancel
+                  Close
                 </Button>
               </Paper>
             </Grid>
