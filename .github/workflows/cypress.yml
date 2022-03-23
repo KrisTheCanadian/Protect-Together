@@ -41,6 +41,7 @@ jobs:
       with:
           browser: chrome
           build: npm run build
+          record: true
           start: npm run start:emulator
       env:
           # Authorization for running the firebase CLI (emulator)

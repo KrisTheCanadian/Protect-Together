@@ -7,7 +7,7 @@
   "projectId": "tczjcg",
   "chromeWebSecurity": false,
   "retries": {
-    "runMode": 4,
+    "runMode": 1,
     "openMode": 1
   },
   "experimentalStudio": true,
