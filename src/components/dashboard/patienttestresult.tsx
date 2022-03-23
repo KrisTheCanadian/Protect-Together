@@ -53,14 +53,13 @@ function UpdateTestResult({ handleTestClose }: Props) {
         bgcolor: 'background.default',
         borderRadius: 1,
         boxShadow: 4,
-        padding: 5,
+        padding: 6,
         flexDirection: 'column',
         alignContent: 'center',
         justifyContent: 'center',
         width: '90%',
-        ml: '5%',
-        mr: '5%',
-        maxHeight: '100vh',
+        m: '5%',
+        maxHeight: '95vh',
         overflow: 'scroll',
       }}
     >
