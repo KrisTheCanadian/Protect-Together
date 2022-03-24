@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import {
@@ -12,6 +12,7 @@ import {
   ListItemText,
   Typography,
   Modal,
+  Badge,
 } from '@mui/material';
 import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
@@ -20,7 +21,9 @@ import { UserContext } from '../../../context/UserContext';
 import AdminCreateAccount from '../../../pages/auth/admincreateaccount';
 import AdminTable from './AdminTable/AdminTable';
 import theme from '../../../static/style/theme';
-import PatientTable from './PatientTable';
+import UnassignedPatientTable from './UnassignedPatientTable';
+import NotificationsMenuItem from '../../layout/NotificationsMenuItem';
+import { firestore } from '../../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -37,13 +40,49 @@ const style = {
   p: 4,
 };
 
+interface UnassignedPatientTableData {
+  name: string,
+  score: number,
+  UID: string,
+}
+
+function createData(
+  name: string,
+  score: number,
+  UID: string,
+
+) {
+  return { name, score, UID };
+}
+
 function AdminDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [view, setView] = useState('dashboard');
+  const [nbUnassignedPatients, setNbUnassignedPatients] = useState<number>(0);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const [rows, setRows] = useState<UnassignedPatientTableData[]>([]);
+
+  const usersRef = firestore.collection('users').where('role', '==', 'patient')
+    .where('assignedDoctor', '==', 'requestedDoctor');
 
   const { state, update } = React.useContext(UserContext);
+
+  useEffect(() => {
+    usersRef.onSnapshot(async (snapshot) => {
+      let tableData = new Array<UnassignedPatientTableData>();
+      snapshot.forEach((childSnapshot) => {
+        const user = childSnapshot.data();
+        const name = `${user.firstName} ${user.lastName}`;
+        const newRow = createData(name, user.score, user.UID);
+        tableData = [newRow, ...tableData];
+      });
+      setRows(tableData);
+      setNbUnassignedPatients(tableData.length);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -63,16 +102,19 @@ function AdminDashboard() {
           </ListItem>
           <ListItem button onClick={() => { setView('patientList'); }}>
             <ListItemIcon>
-              <EmojiPeopleIcon />
+              <Badge badgeContent={nbUnassignedPatients} color="error">
+                <EmojiPeopleIcon />
+              </Badge>
             </ListItemIcon>
             <ListItemText primary="Unassigned Patients" />
           </ListItem>
+          <NotificationsMenuItem />
         </List>
         <Divider />
       </SideBar>
       <MainContent>
         {view === 'dashboard' && <AdminTable />}
-        {view === 'patientList' && <PatientTable />}
+        {view === 'patientList' && <UnassignedPatientTable rows={rows} />}
       </MainContent>
 
       <Modal
