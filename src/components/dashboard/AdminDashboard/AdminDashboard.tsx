@@ -23,7 +23,7 @@ import AdminTable from './AdminTable/AdminTable';
 import theme from '../../../static/style/theme';
 import UnassignedPatientTable from './UnassignedPatientTable';
 import NotificationsMenuItem from '../../layout/NotificationsMenuItem';
-import { firestore } from '../../../config/firebase_config';
+import Firebase, { firestore } from '../../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -68,6 +68,11 @@ function AdminDashboard() {
 
   const { state, update } = React.useContext(UserContext);
 
+  const handleNotifyTest = () => {
+    const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
+    dispatchDoctor({ title: 'Title Test', message: 'testing', userId: state.id });
+  };
+
   useEffect(() => {
     usersRef.onSnapshot(async (snapshot) => {
       let tableData = new Array<UnassignedPatientTableData>();
@@ -109,6 +114,12 @@ function AdminDashboard() {
             <ListItemText primary="Unassigned Patients" />
           </ListItem>
           <NotificationsMenuItem />
+          <ListItem button onClick={handleNotifyTest}>
+            <ListItemIcon>
+              <DashboardOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Notify Test" />
+          </ListItem>
         </List>
         <Divider />
       </SideBar>
