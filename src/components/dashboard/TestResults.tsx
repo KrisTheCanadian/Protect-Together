@@ -89,7 +89,7 @@ function TestResults({ handleTestRClose }: Props) {
       sx={{
         bgcolor: 'background.default',
         borderRadius: 1,
-        boxShadow: 4,
+        boxShadow: 3,
         padding: 6,
         flexDirection: 'column',
         alignContent: 'center',
