@@ -117,7 +117,12 @@ function PatientDashboard() {
         <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={handleTestROpen}>
           Covid-19 Test Results
         </Button>
-        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mr: 1, ml: 2, mb: 1 }}
+          onClick={() => { navigate('/symptomsForm'); }}
+        >
           Ask for Help
         </Button>
       </Header>
