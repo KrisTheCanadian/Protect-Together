@@ -60,7 +60,7 @@ const listStyle = {
 };
 
 interface TestResult {
-  testDate: Date
+  testDate: Timestamp;
   testResult: string;
   testType: string;
 }
@@ -108,46 +108,25 @@ function TestResults({ handleTestRClose }: Props) {
       />
       <Paper sx={{ bgcolor: 'white', padding: '20px', maxWidth: '100%' }}>
         <Timeline>
-          <TimelineItem>
-            <TimelineOppositeContent color="text.secondary">
-              2022-03-10
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>Test: Positive</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent color="text.secondary">
-              2022-03-08
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>Fatigue</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent color="text.secondary">
-              2022-03-06
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>Fever</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent color="text.secondary">
-              2022-03-05
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>Caugh</TimelineContent>
-          </TimelineItem>
+          {testResults.map((testResult) => (
+            <TimelineItem key={testResult.testDate.toString()}>
+              <TimelineOppositeContent color="text.secondary">
+                {testResult.testDate.toDate().toDateString()}
+              </TimelineOppositeContent>
+              <TimelineSeparator>
+                <TimelineDot />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                {testResult.testType}
+                :
+                {' '}
+                {testResult.testResult}
+              </TimelineContent>
+            </TimelineItem>
+
+          ))}
+
         </Timeline>
       </Paper>
       <Grid item>
