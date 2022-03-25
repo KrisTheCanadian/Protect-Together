@@ -6,6 +6,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase_config';
 import { useLayoutContext } from '../../context/LayoutContext';
+import { UserContext } from '../../context/UserContext';
 
 const drawerWidth = 240;
 type Props = {
