@@ -105,8 +105,8 @@ function AdminCreateAccount({ handleClose }: Props) {
   const handleSubmit = (event: any) => {
     if (formError.errorEmail !== '' || formError.errorPhoneNumber !== '' || !signUpWithEmailAndPassword()) {
       event.preventDefault();
-      handleClose();
     }
+    handleClose();
   };
 
   useEffect(() => {
