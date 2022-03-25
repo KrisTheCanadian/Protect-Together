@@ -24,7 +24,7 @@ export default function PatientTable() {
   const [rows, setRows] = useState<PatientTableData[]>([]);
 
   useEffect(() => {
-    usersRef.onSnapshot(async (snapshot) => {
+    const unsubscribe = usersRef.onSnapshot(async (snapshot) => {
       let tableData = new Array<PatientTableData>();
       snapshot.forEach((childSnapshot) => {
         const user = childSnapshot.data();
@@ -34,7 +34,9 @@ export default function PatientTable() {
       });
       setRows(tableData);
     });
-
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
