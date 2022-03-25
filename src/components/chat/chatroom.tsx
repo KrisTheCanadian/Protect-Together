@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import firebase, { firestore } from '../../config/firebase_config';
+import { Timestamp } from 'firebase/firestore';
+import { Avatar } from '@mui/material';
+import { auth, firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
 function ChatRoom() {
@@ -22,9 +24,9 @@ function ChatRoom() {
 
     await messagesRef.add({
       text: formValue,
-      // @ts-ignore
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      id,
+      createdAt: Timestamp.now(),
+      uid: id,
+      recipient: id,
     });
 
     setFormValue('');
@@ -72,7 +74,7 @@ function ChatMessage(props: any) {
 
   return (
     <div className={`message ${messageClass}`}>
-      <img src={`https://avatars.dicebear.com/api/initials/${user.state.firstName}.svg`} alt="Avatar-Icon" />
+      <Avatar src={`https://avatars.dicebear.com/api/initials/${user.state.firstName}.svg`} alt="Avatar-Icon" />
       <p>{text}</p>
     </div>
   );
