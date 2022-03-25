@@ -51,9 +51,12 @@ test('Patient Dashboard is rendering', () => {
 
 test('Add Covid-19 Test is rendering', async () => {
   const component = render(<BrowserRouter><PatientDashboard /></BrowserRouter>);
-  const covidButton = component.getByText('Add Covid-19 Test');
+  const covidButton = component.getAllByTestId('covidtest2');
   expect(covidButton).toBeTruthy();
-  await fireEvent.click(covidButton);
+  const TestResults = component.getAllByTestId('TestResults');
+  expect(TestResults).toBeTruthy();
+  const SymptomsUpdate = component.getAllByTestId('SymptomsUpdate2');
+  expect(SymptomsUpdate).toBeTruthy();
 });
 
 test('Ask for Help is rendering', async () => {

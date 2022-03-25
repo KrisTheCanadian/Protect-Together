@@ -143,24 +143,27 @@ function PatientDashboard() {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button key="Dashboard">
+          <ListItem button key="Dashboard2">
             <ListItemIcon>
               <CoronavirusIcon />
             </ListItemIcon>
-            <ListItemText primary="Add Covid-19 Test" onClick={handleTestOpen} />
+            <ListItemText data-testid="covidtest2" primary="Add Covid-19 Test" onClick={handleTestOpen} />
           </ListItem>
-          <ListItem button key="Dashboard">
+          <ListItem button key="Test">
             <ListItemIcon>
               <BiotechIcon />
             </ListItemIcon>
-            <ListItemText primary="Test Results" onClick={handleTestROpen} />
+            <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          <ListItem button key="Dashboard">
+          <ListItem button key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
             </ListItemIcon>
             {user?.assignedDoctor && (
-            <ListItemText primary="Syptoms Update" onClick={() => { navigate('/symptomsUpdate'); }} />
+            <ListItemText
+              primary="Symptoms Update"
+              onClick={() => { navigate('/symptomsUpdate'); }}
+            />
             )}
           </ListItem>
 
