@@ -104,93 +104,75 @@ function TestResults({ handleTestRClose }: Props) {
           width: '100%',
         }}
       />
-      <Grid
-        item
-        sx={{
-          width: '100%',
-        }}
-      >
-        <Grid
-          container
-          item
-          spacing={2}
+      <Paper sx={{ bgcolor: 'white', padding: '20px', maxWidth: '100%' }}>
+        <Timeline>
+          <TimelineItem>
+            <TimelineOppositeContent color="text.secondary">
+              2022-03-10 09:30 am
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>Test: Positive</TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineOppositeContent color="text.secondary">
+              2022-03-08 11:05 pm
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>Fatigue</TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineOppositeContent color="text.secondary">
+              2022-03-06 10:20 1m
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>Fever</TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineOppositeContent color="text.secondary">
+              2022-03-05 03:05 pm
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>Caugh</TimelineContent>
+          </TimelineItem>
+        </Timeline>
+      </Paper>
+      <Grid item>
+        <Paper
           sx={{
-            flexDirection: 'row',
-            display: 'flex',
-            justifyContent: 'center',
+            mt: 2,
           }}
         >
-          <Paper elevation={20} sx={{ bgcolor: 'white', padding: '20px', minWidth: '800px' }}>
-            <Timeline>
-              <TimelineItem>
-                <TimelineOppositeContent color="text.secondary">
-                  2022-03-10 09:30 am
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Test: Positive</TimelineContent>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineOppositeContent color="text.secondary">
-                  2022-03-08 11:05 pm
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Fatigue</TimelineContent>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineOppositeContent color="text.secondary">
-                  2022-03-06 10:20 1m
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Fever</TimelineContent>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineOppositeContent color="text.secondary">
-                  2022-03-05 03:05 pm
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Caugh</TimelineContent>
-              </TimelineItem>
-            </Timeline>
-          </Paper>
-          <Grid item>
-            <Paper
-              sx={{
-                mt: 2,
-              }}
-            >
-              <Button
-                type="button"
-                onClick={() => {
-                  handleTestRClose();
-                }}
-                color="warning"
-                fullWidth
-                variant="contained"
-              >
-                Close
-              </Button>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper
-              sx={{
-                mt: 2,
-              }}
-            />
-          </Grid>
-        </Grid>
+          <Button
+            type="button"
+            onClick={() => {
+              handleTestRClose();
+            }}
+            color="warning"
+            fullWidth
+            variant="contained"
+          >
+            Close
+          </Button>
+        </Paper>
+      </Grid>
+      <Grid item>
+        <Paper
+          sx={{
+            mt: 2,
+          }}
+        />
       </Grid>
     </Grid>
   );
