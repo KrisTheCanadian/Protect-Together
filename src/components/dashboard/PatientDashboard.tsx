@@ -5,6 +5,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import BiotechIcon from '@mui/icons-material/Biotech';
 // eslint-disable-next-line import/no-unresolved
 import '../../static/style/CovidData.css';
 import {
@@ -33,6 +35,7 @@ import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
 import TestResults from './TestResults';
 import theme from '../../static/style/theme';
+import { firestore } from '../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -70,6 +73,7 @@ function PatientDashboard() {
   const [deathCases, setDeathCases] = useState('');
   const [recoveredCases, setRecoveredCases] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [user, setUser] = useState<DocumentData>();
 
   const setData = ({
     country,
@@ -108,6 +112,15 @@ function PatientDashboard() {
         setData(data);
       });
   };
+  useEffect(() => {
+    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+      const data = docu.data();
+      if (data) {
+        setUser(data);
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -116,7 +129,7 @@ function PatientDashboard() {
         <Button
           variant="contained"
           color="primary"
-          sx={{ mr: 1, ml: 2, mb: 1 }}
+          sx={{ mr: 1 }}
           onClick={() => { navigate('/symptomsForm'); }}
         >
           Ask for Help
@@ -138,14 +151,29 @@ function PatientDashboard() {
           </ListItem>
           <ListItem button key="Dashboard">
             <ListItemIcon>
-              <ContentPasteIcon />
+              <BiotechIcon />
             </ListItemIcon>
             <ListItemText primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
+          <ListItem button key="Dashboard">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            {user?.assignedDoctor && (
+            <ListItemText primary="Syptoms Update" onClick={() => { navigate('/symptomsUpdate'); }} />
+            )}
+          </ListItem>
+
         </List>
         <Divider />
       </SideBar>
       <MainContent>
+        <Typography paragraph>
+          Medical Status (Doctor):
+          {' '}
+          {user?.assignedDoctor ? user?.assignedDoctor : ''}
+          {' '}
+        </Typography>
         <Typography
           variant="h4"
           sx={{
