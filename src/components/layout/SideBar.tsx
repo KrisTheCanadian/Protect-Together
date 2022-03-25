@@ -12,6 +12,7 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
 };
 export default function SideBar({ children }: Props) {
+  const { update } = React.useContext(UserContext);
   const { open, setOpen } = useLayoutContext();
   const navigate = useNavigate();
 
@@ -40,6 +41,12 @@ export default function SideBar({ children }: Props) {
   );
 
   const logout = () => {
+    update({
+      firstName: '',
+      lastName: '',
+      role: '',
+      id: '',
+    });
     auth.signOut().then(() => navigate('/'));
   };
 
