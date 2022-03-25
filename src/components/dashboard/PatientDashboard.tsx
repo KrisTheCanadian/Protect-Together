@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import CoronavirusIcon from '@mui/icons-material/Coronavirus';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 // eslint-disable-next-line import/no-unresolved
 import '../../static/style/CovidData.css';
 import {
@@ -111,12 +113,6 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={handleTestOpen}>
-          Add Covid-19 Test
-        </Button>
-        <Button variant="contained" color="primary" sx={{ mr: 1, ml: 2, mb: 1 }} onClick={handleTestROpen}>
-          Covid-19 Test Results
-        </Button>
         <Button
           variant="contained"
           color="primary"
@@ -133,6 +129,18 @@ function PatientDashboard() {
               <DashboardOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
+          </ListItem>
+          <ListItem button key="Dashboard">
+            <ListItemIcon>
+              <CoronavirusIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Covid-19 Test" onClick={handleTestOpen} />
+          </ListItem>
+          <ListItem button key="Dashboard">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
         </List>
         <Divider />
