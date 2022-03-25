@@ -70,16 +70,18 @@ function TestResults({ handleTestRClose }: Props) {
 
   const { state, update } = React.useContext(UserContext);
   const [notifications, setNotifications] = useState<TestResult[]>([]);
+  const [testResults, setTestResults] = useState<TestResult[]>([]);
 
-  // useEffect(() => {
-  //   onSnapshot(doc(firestore, 'users', ${state.id}), (docu) => {
-  //     const data = docu.data();
-  //     if (data && data.notifications) {
-  //       setNotifications(data.notifications);
-  //     }
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+      const data = docu.data();
+
+      if (data && data.testsResults) {
+        setTestResults(data.testsResults);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid
@@ -108,7 +110,7 @@ function TestResults({ handleTestRClose }: Props) {
         <Timeline>
           <TimelineItem>
             <TimelineOppositeContent color="text.secondary">
-              2022-03-10 09:30 am
+              2022-03-10
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
@@ -118,7 +120,7 @@ function TestResults({ handleTestRClose }: Props) {
           </TimelineItem>
           <TimelineItem>
             <TimelineOppositeContent color="text.secondary">
-              2022-03-08 11:05 pm
+              2022-03-08
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
@@ -128,7 +130,7 @@ function TestResults({ handleTestRClose }: Props) {
           </TimelineItem>
           <TimelineItem>
             <TimelineOppositeContent color="text.secondary">
-              2022-03-06 10:20 1m
+              2022-03-06
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
@@ -138,7 +140,7 @@ function TestResults({ handleTestRClose }: Props) {
           </TimelineItem>
           <TimelineItem>
             <TimelineOppositeContent color="text.secondary">
-              2022-03-05 03:05 pm
+              2022-03-05
             </TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
