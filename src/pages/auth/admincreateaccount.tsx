@@ -11,11 +11,13 @@ import {
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import validator from 'validator';
 import { auth, firestore, createUserFirebase } from '../../config/firebase_config';
 import generatePassword from '../../utils/generatePassword.js';
 import { medicalConstants } from '../../static/data/constants';
+import theme from '../../static/style/theme';
 
 type Props = {
   handleClose: any;
@@ -51,6 +53,7 @@ const formErrorDefaultValues: FormError = {
 
 // form state objects
 function AdminCreateAccount({ handleClose }: Props) {
+  const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
   const [formData, setFormData] = useState<FormData>(formDataDefaultValues);
   const [formError, setFormError] = useState<FormError>(formErrorDefaultValues);
   const [error, setError] = useState<string>('');
@@ -139,7 +142,10 @@ function AdminCreateAccount({ handleClose }: Props) {
           flexDirection: 'column',
           alignItems: 'center',
           width: '100%',
-
+          [theme.breakpoints.down('sm')]: {
+            width: '90%',
+            height: '600px',
+          },
         }}
       >
         <Avatar
@@ -153,7 +159,11 @@ function AdminCreateAccount({ handleClose }: Props) {
         <Typography component="h1" variant="h4">
           Create Account
         </Typography>
-        <Grid container spacing={3} mt={2}>
+        <Grid
+          container
+          spacing={phoneSize ? 2 : 3}
+          mt={2}
+        >
           <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel id="role">Account Type</InputLabel>
