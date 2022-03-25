@@ -38,6 +38,7 @@ afterEach(cleanup);
 
 test('Patient Results Renders correctly', () => {
   const handleTestClose = jest.fn;
-  const { getByText } = render(<BrowserRouter><UpdateTestResult handleTestClose={handleTestClose} /></BrowserRouter>);
-  expect(getByText('When did you take your test?')).toBeTruthy();
+  const component = render(<BrowserRouter><UpdateTestResult handleTestClose={handleTestClose} /></BrowserRouter>);
+  expect(component.getByText('Cancel')).toBeTruthy();
+  expect(component.getByText('Submit')).toBeTruthy();
 });
