@@ -6,15 +6,12 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase_config';
 import { useLayoutContext } from '../../context/LayoutContext';
-import { UserContext } from '../../context/UserContext';
 
 const drawerWidth = 240;
 type Props = {
   children: JSX.Element[] | JSX.Element;
 };
 export default function SideBar({ children }: Props) {
-  const [user, setUser] = React.useState({ loggedIn: false });
-  const { update } = React.useContext(UserContext);
   const { open, setOpen } = useLayoutContext();
   const navigate = useNavigate();
 
