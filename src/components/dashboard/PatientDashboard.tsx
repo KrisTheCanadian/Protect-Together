@@ -97,12 +97,15 @@ function PatientDashboard() {
   };
 
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
       }
     });
+    return () => {
+      unsubscribe();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
