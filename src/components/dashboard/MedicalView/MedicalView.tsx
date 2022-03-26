@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import SideBar from '../../layout/SideBar';
 import MedicalDashboard from './MedicalDashboard';
-import PatientInfo from './PatientInfo';
+import PatientInfo from './PatientInfo/PatientInfo';
 
 const style = {
   position: 'absolute' as const,
