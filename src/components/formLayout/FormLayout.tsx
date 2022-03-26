@@ -12,7 +12,6 @@ import { UserContext } from '../../context/UserContext';
 
 export default function FormLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
-  const [symptomsDone, setSymptomsDone] = useState(false);
   const [count, setCount] = useState(4);
   const [points, setPoints] = useState(0);
   const [symptomsPoints, setSymptomsPoints] = useState(0);
@@ -34,7 +33,7 @@ export default function FormLayout({ changeState }: any) {
     setUserAnswers([...userAnswers, childData]);
   };
 
-  const addSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
+  const addSymptoms = (childSymptom: any, childPoint: number) => {
     setSymptomsPoints(symptomsPoints + childPoint);
     if (userSymptoms.length === 0) {
       if (Array.isArray(childSymptom)) {
@@ -46,7 +45,6 @@ export default function FormLayout({ changeState }: any) {
     } else {
       setUserSymptoms([...userSymptoms, childSymptom]);
     }
-    setSymptomsDone(symptomsStatus);
   };
 
   const requestDoctor = async () => {
