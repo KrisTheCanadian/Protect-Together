@@ -43,12 +43,12 @@ test('Login Renders correctly', async () => {
 
   const emailInput = component.getByTestId('email');
   expect(emailInput).toBeTruthy();
-  fireEvent.change(emailInput as HTMLInputElement, { target: { value: 'test@test.com' } });
+  await fireEvent.change(emailInput as HTMLInputElement, { target: { value: 'test@test.com' } });
   expect((emailInput as HTMLInputElement).value).toBe('test@test.com');
 
   const passwordInput = component.getByTestId('password');
   expect(passwordInput).toBeTruthy();
-  userEvent.type(passwordInput, 'test123');
+  await userEvent.type(passwordInput, 'test123');
   expect((passwordInput as HTMLInputElement).value).toBe('test123');
 
   expect(component.getByText('Forgot password?')).toBeTruthy();
@@ -56,9 +56,9 @@ test('Login Renders correctly', async () => {
   const signInButton = component.getByText('Sign In');
   expect(signInButton).toBeTruthy();
 
-  const c = await waitFor(() => fireEvent.click(signInButton), {
+  await waitFor(() => fireEvent.click(signInButton), {
     timeout: 3000,
   });
 
-  expect(await component.getByText('Login Failed: Your email or password is incorrect'));
+  expect(component.getByText('Login Failed: Your email or password is incorrect'));
 });

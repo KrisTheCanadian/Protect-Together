@@ -11,7 +11,6 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
-import useId from '@mui/material/utils/useId';
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -50,85 +49,87 @@ function UpdateTestResult({ handleTestClose }: Props) {
   return (
     <Grid
       container
-      xs={12}
       sx={{
-        bgcolor: 'primary.contrastText',
-        borderRadius: 2,
-        boxShadow: 6,
+        bgcolor: 'background.default',
+        borderRadius: 1,
+        boxShadow: 4,
         padding: 6,
         flexDirection: 'column',
-        width: '100%',
-        maxHeight: '100vh',
+        alignContent: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        m: '5%',
+        maxHeight: '95vh',
         overflow: 'scroll',
       }}
     >
       <Grid
         container
         item
-        xs={12}
         rowSpacing={1.5}
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
           alignContent: 'center',
+          bgcolor: 'background.default',
         }}
       >
         <Grid
           item
-          xs={12}
           sx={{
-            width: '75%',
+            width: '100%',
           }}
         >
           <Paper
             sx={{
-              borderRadius: 4,
-              bgcolor: 'secondary.main',
-              p: 4,
-            }}
-          >
-            <FormLabel
-              sx={{
-                fontSize: 20,
-                mb: 2,
-              }}
-            >
-              When did you take your test?
-            </FormLabel>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Select Test Date"
-                value={testDate}
-                onChange={(newValue) => {
-                  setTestDate(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} sx={{ mr: 2 }} required />}
-              />
-            </LocalizationProvider>
-          </Paper>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            width: '75%',
-          }}
-        >
-          <Paper
-            sx={{
-              borderRadius: 4,
-              bgcolor: 'secondary.main',
+              borderRadius: 1,
+              bgcolor: 'primary.contrastText',
               p: 4,
             }}
           >
             <FormControl>
               <FormLabel
                 sx={{
-                  fontSize: 20,
+                  fontSize: 18,
                 }}
                 focused={false}
               >
-                Which test did you take?
+                Test Date
+              </FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Select Date"
+                  value={testDate}
+                  onChange={(newValue) => {
+                    setTestDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} sx={{ mr: 2, mt: 1, width: '100%' }} required />}
+                />
+              </LocalizationProvider>
+            </FormControl>
+          </Paper>
+        </Grid>
+        <Grid
+          item
+          sx={{
+            width: '100%',
+          }}
+        >
+          <Paper
+            sx={{
+              borderRadius: 1,
+              bgcolor: 'primary.contrastText',
+              p: 4,
+            }}
+          >
+            <FormControl>
+              <FormLabel
+                sx={{
+                  fontSize: 18,
+                }}
+                focused={false}
+              >
+                Test Type
               </FormLabel>
               <RadioGroup
                 value={testType}
@@ -139,10 +140,8 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   control={<Radio />}
                   label="PCR Test"
                   sx={{
-                    borderRadius: 4,
-                    bgcolor: 'primary.contrastText',
-                    mb: 2,
-                    mt: 2,
+                    borderRadius: 1,
+                    mt: 1,
                   }}
                 />
                 <FormControlLabel
@@ -150,9 +149,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   control={<Radio />}
                   label="Rapid Antigen Test"
                   sx={{
-                    borderRadius: 4,
-                    bgcolor: 'primary.contrastText',
-                    mb: 2,
+                    borderRadius: 1,
                     pr: 1,
                   }}
                 />
@@ -161,8 +158,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   control={<Radio />}
                   label="Antibody Test"
                   sx={{
-                    borderRadius: 4,
-                    bgcolor: 'primary.contrastText',
+                    borderRadius: 1,
                   }}
                 />
               </RadioGroup>
@@ -171,27 +167,26 @@ function UpdateTestResult({ handleTestClose }: Props) {
         </Grid>
         <Grid
           item
-          xs={12}
           sx={{
-            width: '75%',
+            width: '100%',
           }}
         >
           <Paper
             sx={{
-              borderRadius: 4,
-              bgcolor: 'secondary.main',
+              borderRadius: 1,
+              bgcolor: 'primary.contrastText',
               p: 4,
               mb: 2,
             }}
           >
-            <FormLabel
-              sx={{
-                fontSize: 20,
-              }}
-            >
-              What was your test result?
-            </FormLabel>
             <FormControl>
+              <FormLabel
+                sx={{
+                  fontSize: 18,
+                }}
+              >
+                Test Result
+              </FormLabel>
               <RadioGroup
                 value={testResult}
                 onChange={(event) => setTestResult(event.target.value)}
@@ -202,9 +197,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   label="Covid-19 Positive"
                   sx={{
                     borderRadius: 4,
-                    bgcolor: 'primary.contrastText',
-                    mb: 2,
-                    mt: 2,
+                    mt: 1,
                   }}
                 />
                 <FormControlLabel
@@ -213,7 +206,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   label="Covid-19 Negative"
                   sx={{
                     borderRadius: 4,
-                    bgcolor: 'primary.contrastText',
                     pr: 1,
                   }}
                 />
@@ -230,7 +222,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
               justifyContent: 'center',
             }}
           >
-            <Grid item xs={4}>
+            <Grid item>
               <Paper
                 sx={{
                   mt: 2,
@@ -249,7 +241,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                 </Button>
               </Paper>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item>
               <Paper
                 sx={{
                   mt: 2,

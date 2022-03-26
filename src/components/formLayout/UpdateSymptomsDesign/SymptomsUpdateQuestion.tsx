@@ -76,14 +76,16 @@ export default function SymptomsUpdateQuestion({ changeStatus, changePoints, cha
       setError(true);
     } else {
       changePoints(pointValue);
-      if (symptomsArray.length !== 0) {
-        addToSymptoms(symptomsArray, false);
-      }
-
       if (nextQuestions.length !== 0) {
+        if (symptomsArray.length !== 0) {
+          addToSymptoms(symptomsArray, false);
+        }
         setValue('2');
         changeSymptoms(nextQuestions);
       } else {
+        if (symptomsArray.length !== 0) {
+          addToSymptoms(symptomsArray, true);
+        }
         setValue('response');
       }
     }
@@ -95,6 +97,8 @@ export default function SymptomsUpdateQuestion({ changeStatus, changePoints, cha
         sx={{
           margin: 'auto',
           padding: 4,
+          marginTop: phoneSize ? 4 : 3,
+          paddingTop: midSize ? 20 : 3,
         }}
       >
         <Box

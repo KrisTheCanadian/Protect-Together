@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
+import MailIcon from '@mui/icons-material/Mail';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import CoronavirusIcon from '@mui/icons-material/Coronavirus';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import BiotechIcon from '@mui/icons-material/Biotech';
 // eslint-disable-next-line import/no-unresolved
 import '../../static/style/CovidData.css';
 import {
@@ -16,17 +22,18 @@ import {
   Typography,
   Modal,
 } from '@mui/material';
+import FolderIcon from '@mui/icons-material/Folder';
 import Avatar from '@mui/material/Avatar';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import Header from '../layout/Header';
 import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
+import TestResults from './TestResults';
 import theme from '../../static/style/theme';
 import { firestore } from '../../config/firebase_config';
 
@@ -51,10 +58,12 @@ function PatientDashboard() {
   const handleClose = () => setModalOpen(false);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
+  const [testROpen, setTestROpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
+  const handleTestROpen = () => setTestROpen(true);
+  const handleTestRClose = () => setTestROpen(false);
   const { state, update } = React.useContext(UserContext);
-  const [user, setUser] = useState<DocumentData>();
 
   const [country, setCountry] = useState('');
   const [cases, setCases] = useState('');
@@ -64,6 +73,7 @@ function PatientDashboard() {
   const [deathCases, setDeathCases] = useState('');
   const [recoveredCases, setRecoveredCases] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [user, setUser] = useState<DocumentData>();
 
   const setData = ({
     country,
@@ -83,10 +93,17 @@ function PatientDashboard() {
     setRecoveredCases(todayRecovered);
   };
 
+  useEffect(() => {
+    fetch('https://disease.sh/v3/covid-19/countries')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+
   const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setUserInput(e.target.value);
   };
-
   const handleSubmit = (props: { preventDefault: () => void; }) => {
     props.preventDefault();
     fetch(`https://disease.sh/v3/covid-19/countries/${userInput}`)
@@ -95,14 +112,16 @@ function PatientDashboard() {
         setData(data);
       });
   };
-
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
       }
     });
+    return () => {
+      unsubscribe();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -110,19 +129,14 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="info" sx={{ mr: 1 }} onClick={handleTestOpen}>
-          Add Covid-19 Test
-        </Button>
-        {!user?.assignedDoctor && (
-        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mr: 1 }}
+          onClick={() => { navigate('/symptomsForm'); }}
+        >
           Ask for Help
         </Button>
-        )}
-        {user?.assignedDoctor && (
-        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsUpdate'); }}>
-          Update Your Symptoms
-        </Button>
-        )}
       </Header>
       <SideBar>
         <List>
@@ -132,6 +146,30 @@ function PatientDashboard() {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
+          <ListItem button key="Dashboard2">
+            <ListItemIcon>
+              <CoronavirusIcon />
+            </ListItemIcon>
+            <ListItemText data-testid="covidtest2" primary="Add Covid-19 Test" onClick={handleTestOpen} />
+          </ListItem>
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <BiotechIcon />
+            </ListItemIcon>
+            <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
+          </ListItem>
+          <ListItem button key="Results" data-testid="SymptomsUpdate2">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            {user?.assignedDoctor && (
+            <ListItemText
+              primary="Symptoms Update"
+              onClick={() => { navigate('/symptomsUpdate'); }}
+            />
+            )}
+          </ListItem>
+
         </List>
         <Divider />
       </SideBar>
@@ -142,12 +180,12 @@ function PatientDashboard() {
           {user?.assignedDoctor ? user?.assignedDoctor : ''}
           {' '}
         </Typography>
-
         <Typography
           variant="h4"
           sx={{
             color: 'rgba(0, 0, 0, 0.87)',
             paddingTop: 1,
+            mt: 3,
           }}
         >
           Covid-19 Statistics
@@ -336,6 +374,7 @@ function PatientDashboard() {
             />
           </ListItem>
         </List>
+
       </MainContent>
 
       <Modal
@@ -346,6 +385,16 @@ function PatientDashboard() {
       >
         <Box sx={style}>
           <UpdateTestResult handleTestClose={handleTestClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={testROpen}
+        onClose={handleTestRClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <TestResults handleTestRClose={handleTestRClose} />
         </Box>
       </Modal>
       <Modal

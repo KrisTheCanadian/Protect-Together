@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { arrayUnion } from 'firebase/firestore';
 import SymptomsQuestion from './UpdateSymptomsDesign/SymptomsUpdateQuestion';
-import SymptomsIntensity from './UpdateSymptomsDesign/IntensityQuestion';
+import SymptomsIntensity from './UpdateSymptomsDesign/SymptomsIntensityQuestion';
 import SymptomsResponse from './UpdateSymptomsDesign/SymptomsUpdateResponse';
 
 import Firebase, { firestore } from '../../config/firebase_config';
@@ -10,21 +11,27 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
   const [symptomsDone, setSymptomsDone] = useState(false);
   const [points, setPoints] = useState(0);
-  // For the Symptoms Update Form
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
+  const date = new Date();
 
   let layout;
   const users = firestore.collection('users');
   const { state } = React.useContext(UserContext);
 
   const updateUserSymptoms = async () => {
-    const patientScore = ((points / 66) * 10);
-    await users
-      .doc(state.id)
-      .update({
-        score: patientScore,
-        patientSymptoms: userSymptoms,
+    users
+      .doc(state.id).get()
+      .then(async (snapshot) => {
+        const data = snapshot.data();
+        if (data !== undefined) {
+          await users
+            .doc(state.id)
+            .update({
+              score: (((data.basePoints + points) / 66) * 10),
+              patientSymptoms: arrayUnion({ date, userSymptoms }),
+            });
+        }
       });
   };
 
@@ -41,14 +48,9 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
 
   const addToSymptoms = (childSymptom: any, symptomsStatus: boolean) => {
     if (userSymptoms.length === 0) {
-      if (Array.isArray(childSymptom)) {
-        setUserSymptoms(childSymptom);
-      } else {
-        const tempSymptomsArray = [childSymptom];
-        setUserSymptoms(tempSymptomsArray);
-      }
+      setUserSymptoms(childSymptom);
     } else {
-      setUserSymptoms([...userSymptoms, childSymptom]);
+      setUserSymptoms(userSymptoms.concat(childSymptom));
     }
     if (symptomsStatus) {
       setSymptomsDone(symptomsStatus);

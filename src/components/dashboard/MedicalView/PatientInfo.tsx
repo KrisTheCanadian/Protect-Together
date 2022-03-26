@@ -318,8 +318,8 @@ function PatientInfo({ PID } : Props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          { modalContent === 0 && 'apointments'}
-          { modalContent === 1 && 'apointments'}
+          { modalContent === 0 && 'appointments'}
+          { modalContent === 1 && 'appointments'}
           { modalContent === 2 && timeline}
         </Box>
       </Modal>

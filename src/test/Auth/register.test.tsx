@@ -17,7 +17,7 @@ jest.mock('firebase/compat/app', () => {
   const Firestore = () => ({
     collection: () => ({
       where: () => ({
-        onSnapshot: () => null,
+        onSnapshot: () => jest.fn(),
       }),
       doc: () => ({
         get: () => ({
@@ -69,22 +69,22 @@ test('Register renders correctly', async () => {
 
   const firstNameInput = component.getByTestId('first-name');
   expect(firstNameInput).toBeTruthy();
-  userEvent.type(firstNameInput, 'first name');
+  await userEvent.type(firstNameInput, 'first name');
   expect(firstNameInput).toHaveAttribute('value', 'first name');
 
   const lastNameInput = component.getByTestId('last-name');
   expect(lastNameInput).toBeTruthy();
-  userEvent.type(lastNameInput, 'last name');
+  await userEvent.type(lastNameInput, 'last name');
   expect(lastNameInput).toHaveAttribute('value', 'last name');
 
   const emailInput = component.getByTestId('email');
   expect(emailInput).toBeTruthy();
-  userEvent.type(emailInput, 'test@test.com');
+  await userEvent.type(emailInput, 'test@test.com');
   expect(emailInput).toHaveAttribute('value', 'test@test.com');
 
   const phoneInput = component.getByTestId('phone-number');
   expect(phoneInput).toBeTruthy();
-  userEvent.type(phoneInput, '5143211234');
+  await userEvent.type(phoneInput, '5143211234');
   expect(phoneInput).toHaveAttribute('value', '5143211234');
 
   const passwordInput = component.getByTestId('password');
@@ -94,37 +94,37 @@ test('Register renders correctly', async () => {
 
   const confirmInput = component.getByTestId('confirm-password');
   expect(confirmInput).toBeTruthy();
-  userEvent.type(confirmInput, 'password');
+  await userEvent.type(confirmInput, 'password');
   expect(confirmInput).toHaveAttribute('value', 'password');
 
   const button = getById(component.container, 'next-1');
   expect(button?.closest('button')?.disabled).toBeFalsy();
-  fireEvent.click(button as HTMLElement);
+  await fireEvent.click(button as HTMLElement);
 
   expect(component.getByText('Health Information')).toBeTruthy();
 
   const datepicker = screen.getByLabelText('Date of Birth *');
-  userEvent.type(datepicker, '2021-11-09');
+  await userEvent.type(datepicker, '2021-11-09');
   const chosenDate = screen.getByRole('button', { name: 'Mar 29, 2022' });
-  fireEvent.click(chosenDate);
+  await fireEvent.click(chosenDate);
   expect(chosenDate).toBeInTheDocument();
 
   const okButton = screen.getByRole('button', { name: 'OK' });
   expect(okButton).toBeTruthy();
-  fireEvent.click(okButton);
+  await fireEvent.click(okButton);
 
   expect(component.getByLabelText('Weight')).toBeTruthy();
 
   const height = component.getByLabelText('Height *');
   expect(height).toBeTruthy();
-  userEvent.type(height, '125');
+  await userEvent.type(height, '125');
   expect(height).toHaveAttribute('value', '125');
 
   expect(component.getByText('Sex')).toBeTruthy();
 
   const healthcareNumber = component.getByTestId('healthcare-number');
   expect(healthcareNumber).toBeTruthy();
-  userEvent.type(healthcareNumber, 'test123');
+  await userEvent.type(healthcareNumber, 'test123');
   expect(healthcareNumber).toHaveAttribute('value', 'test123');
 
   expect(component.getByLabelText('Medical Conditions')).toBeTruthy();
@@ -132,7 +132,7 @@ test('Register renders correctly', async () => {
 
   const checkbox = component.getByTestId('accept-policy').querySelector('input[type="checkbox"]');
   expect(checkbox).toBeTruthy();
-  fireEvent.click(checkbox as HTMLElement);
+  await fireEvent.click(checkbox as HTMLElement);
   expect(checkbox).toHaveProperty('checked', true);
 
   const registerButton = component.getByTestId('register-button');
