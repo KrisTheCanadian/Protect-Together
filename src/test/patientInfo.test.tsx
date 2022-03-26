@@ -2,7 +2,7 @@
 import React from 'react';
 import { cleanup, findByText, fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import PatientInfo from '../components/dashboard/MedicalView/PatientInfo';
+import PatientInfo from '../components/dashboard/MedicalView/PatientInfo/PatientInfo';
 
 jest.mock('firebase/compat/app', () => {
   // mock Firestore
@@ -53,17 +53,16 @@ test('Patient Info Renders correctly', async () => {
   expect(closeButton).toBeTruthy();
   await fireEvent.click(closeButton);
 
-  const priorityButton = component.getByLabelText('Priority');
-  expect(priorityButton).toBeTruthy();
-  await fireEvent.click(priorityButton);
+  // const priorityButton = component.getByLabelText('Priority');
+  // expect(priorityButton).toBeTruthy();
+  // await fireEvent.click(priorityButton);
 
   const appointmentButton = component.getByText('View Appointments');
   expect(appointmentButton).toBeTruthy();
   await fireEvent.click(appointmentButton);
 
-  expect(component.getByText('Vaccine Info')).toBeTruthy();
-  expect(component.getByText('Risk Factors')).toBeTruthy();
-  expect(component.getByText('Symptoms')).toBeTruthy();
+  expect(component.getByText('Patient&apos; Info')).toBeTruthy();
+  expect(component.getByText('Latest Symptoms')).toBeTruthy();
 
   const historyButton = component.getByText('History');
   expect(historyButton).toBeTruthy();
