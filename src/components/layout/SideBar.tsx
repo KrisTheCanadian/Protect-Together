@@ -2,7 +2,7 @@ import {
   Button, Typography, Toolbar, Drawer, Box,
 } from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
-import * as React from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase_config';
 import { useLayoutContext } from '../../context/LayoutContext';
@@ -15,6 +15,7 @@ type Props = {
 export default function SideBar({ children }: Props) {
   const { update } = React.useContext(UserContext);
   const { open, setOpen } = useLayoutContext();
+  const { state, update } = React.useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
