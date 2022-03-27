@@ -12,7 +12,14 @@ export default function MainContent({ children }: Props) {
 
     <Box
       component="main"
-      sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)`, overflowX: 'auto' } }}
+      sx={{ flexGrow: 1,
+        p: 3,
+        width: {
+          sm: `calc(100% - ${drawerWidth}px)`,
+          overflowX: 'auto',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column' } }}
     >
       <Toolbar
         style={{
