@@ -1,6 +1,6 @@
 name: Cypress Tests
 
-on: [push]
+on: [pull_request]
 
 jobs:
   cypress-run:
@@ -63,7 +63,6 @@ jobs:
         npm install -g firebase-tools
         npm ci
         npm run build
-        npx browserslist@latest --update-db
       working-directory: functions
 
     - name: Update browsers
@@ -87,10 +86,8 @@ jobs:
           # Cypress Tests variables
           CYPRESS_ADMIN_EMAIL: ${{ secrets.CYPRESS_ADMIN_EMAIL }}
           CYPRESS_ADMIN_PASSWORD: ${{ secrets.CYPRESS_ADMIN_PASSWORD }}
-
           CYPRESS_MEDICAL_EMAIL: ${{ secrets.CYPRESS_MEDICAL_EMAIL }}
           CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
-
           CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
           CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
 
