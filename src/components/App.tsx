@@ -17,7 +17,6 @@ import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 import SymptomsUpdate from '../pages/symptomsForm/SymptomsUpdate';
 import { LayoutContext } from '../context/LayoutContext';
 import { UserProvider } from '../context/UserContext';
-import Chat from './chat';
 
 function App() {
   const [open, setOpen] = React.useState(false);
