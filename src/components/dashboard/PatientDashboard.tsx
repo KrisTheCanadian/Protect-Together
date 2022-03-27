@@ -93,14 +93,6 @@ function PatientDashboard() {
     setRecoveredCases(todayRecovered);
   };
 
-  useEffect(() => {
-    fetch('https://disease.sh/v3/covid-19/countries')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
   const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setUserInput(e.target.value);
   };
