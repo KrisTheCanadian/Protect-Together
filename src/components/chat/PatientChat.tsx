@@ -27,14 +27,16 @@ function PatientChat() {
   const [user, setUser] = useState<DocumentData>();
 
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
       }
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      unsubscribe();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
