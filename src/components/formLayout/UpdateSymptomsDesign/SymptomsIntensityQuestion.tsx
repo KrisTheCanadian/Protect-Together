@@ -88,6 +88,7 @@ export default function SymptomsIntensity({ changeStatus, selection, changePoint
             </Typography>
             {selection.map((symptomID: number) => (
               <Container
+                key={Math.random()}
                 sx={{
                   justifyContent: 'center',
                   margin: 0,

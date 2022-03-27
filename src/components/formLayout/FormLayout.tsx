@@ -12,13 +12,14 @@ import { UserContext } from '../../context/UserContext';
 
 export default function FormLayout({ changeState }: any) {
   const [status, setStatus] = useState('1');
-  const [symptomsDone, setSymptomsDone] = useState(false);
   const [count, setCount] = useState(4);
   const [points, setPoints] = useState(0);
+  const [urgentState, setUrgentState] = useState(false);
   const [symptomsPoints, setSymptomsPoints] = useState(0);
   const [symptomsArray, setSymptomsArray] = useState<number[]>([]);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [userSymptoms, setUserSymptoms] = useState<string[]>([]);
+  const date = new Date();
   const navigate = useNavigate();
 
   const users = firestore.collection('users');
@@ -33,15 +34,7 @@ export default function FormLayout({ changeState }: any) {
     setUserAnswers([...userAnswers, childData]);
   };
 
-  useEffect(() => {
-    if (symptomsDone) {
-      const symptomsAnswer = { label: "Patient's symptoms", result: userSymptoms };
-      addToUserAnswer(symptomsAnswer);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [symptomsDone, userSymptoms]);
-
-  const addSymptoms = (childSymptom: any, childPoint: number, symptomsStatus: boolean) => {
+  const addSymptoms = (childSymptom: any, childPoint: number) => {
     setSymptomsPoints(symptomsPoints + childPoint);
     if (userSymptoms.length === 0) {
       if (Array.isArray(childSymptom)) {
@@ -50,16 +43,16 @@ export default function FormLayout({ changeState }: any) {
         const tempSymptomsArray = [childSymptom];
         setUserSymptoms(tempSymptomsArray);
       }
+    } else if (Array.isArray(childSymptom)) {
+      setUserSymptoms(userSymptoms.concat(childSymptom));
     } else {
       setUserSymptoms([...userSymptoms, childSymptom]);
     }
-    setSymptomsDone(symptomsStatus);
   };
 
   const requestDoctor = async () => {
     let patientScore = 0;
-
-    if (status === 'response 0') {
+    if (urgentState) {
       patientScore = 10;
     } else {
       patientScore = ((points / 66) * 10);
@@ -72,6 +65,7 @@ export default function FormLayout({ changeState }: any) {
         basePoints: points - symptomsPoints,
         assignedDoctor: 'requestedDoctor',
         initialPatientHelpFormData: userAnswers,
+        patientSymptoms: [{ date, userSymptoms }],
       })
       .then(() => {
         const getDoctor = Firebase.functions().httpsCallable('requestDoctor');
@@ -80,11 +74,15 @@ export default function FormLayout({ changeState }: any) {
       });
   };
 
+  const changeHeaderState = (childData: any) => {
+    setTimeout(() => changeState(childData), 0);
+  };
+
   let layout;
 
   switch (status) {
     case '1':
-      layout = <Question1 changeStatus={setStatus} addUserAnswer={addToUserAnswer} />;
+      layout = <Question1 changeStatus={setStatus} addSymptoms={addSymptoms} setUrgentState={setUrgentState} />;
       break;
     case '2':
       layout = <Question2 changePoints={handlePoints} changeStatus={setStatus} addUserAnswer={addToUserAnswer} />;
@@ -123,8 +121,15 @@ export default function FormLayout({ changeState }: any) {
 
       break;
     case 'response0':
-      layout = <ResponseLayout selection={0} requestDoctor={requestDoctor} />;
-      setTimeout(() => changeState('2'), 0);
+      layout = (
+        <ResponseLayout
+          selection={0}
+          requestDoctor={requestDoctor}
+          changeStatus={setStatus}
+          changeHeaderState={changeHeaderState}
+        />
+      );
+      changeHeaderState('2');
       break;
     case 'response':
       if (points < 15) {
@@ -132,7 +137,7 @@ export default function FormLayout({ changeState }: any) {
       } else {
         layout = <ResponseLayout selection={2} requestDoctor={requestDoctor} />;
       }
-      setTimeout(() => changeState('2'), 0);
+      changeHeaderState('2');
       break;
     default:
       layout = '';
