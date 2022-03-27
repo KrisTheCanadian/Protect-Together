@@ -61,7 +61,7 @@ test('Patient Info Renders correctly', async () => {
   expect(appointmentButton).toBeTruthy();
   await fireEvent.click(appointmentButton);
 
-  expect(component.getByText('Patient&apos; Info')).toBeTruthy();
+  expect(component.getByText("Patient's Info")).toBeTruthy();
   expect(component.getByText('Latest Symptoms')).toBeTruthy();
 
   const historyButton = component.getByText('History');
