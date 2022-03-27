@@ -33,6 +33,7 @@ import MainContent from '../layout/MainContent';
 import SideBar from '../layout/SideBar';
 import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
+import TestResults from './TestResults';
 import theme from '../../static/style/theme';
 import { firestore } from '../../config/firebase_config';
 
@@ -59,8 +60,11 @@ function PatientDashboard() {
   const handleClose = () => setModalOpen(false);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
+  const [testROpen, setTestROpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
+  const handleTestROpen = () => setTestROpen(true);
+  const handleTestRClose = () => setTestROpen(false);
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
 
@@ -105,13 +109,15 @@ function PatientDashboard() {
   };
 
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
       }
     });
-
+    return () => {
+      unsubscribe();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -135,6 +141,30 @@ function PatientDashboard() {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
+          <ListItem button key="Dashboard2">
+            <ListItemIcon>
+              <CoronavirusIcon />
+            </ListItemIcon>
+            <ListItemText data-testid="covidtest2" primary="Add Covid-19 Test" onClick={handleTestOpen} />
+          </ListItem>
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <BiotechIcon />
+            </ListItemIcon>
+            <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
+          </ListItem>
+          <ListItem button key="Results" data-testid="SymptomsUpdate2">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            {user?.assignedDoctor && (
+            <ListItemText
+              primary="Symptoms Update"
+              onClick={() => { navigate('/symptomsUpdate'); }}
+            />
+            )}
+          </ListItem>
+
         </List>
         <Divider />
       </SideBar>
@@ -396,6 +426,16 @@ function PatientDashboard() {
       >
         <Box sx={style}>
           <UpdateTestResult handleTestClose={handleTestClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={testROpen}
+        onClose={handleTestRClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <TestResults handleTestRClose={handleTestRClose} />
         </Box>
       </Modal>
       <Modal
