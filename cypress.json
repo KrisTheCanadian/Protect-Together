@@ -10,5 +10,6 @@
     "openMode": 1
   },
   "experimentalStudio": true,
-  "defaultCommandTimeout": 6000
+  "defaultCommandTimeout": 6000,
+  "chromeWebSecurity": false
 }
