@@ -58,6 +58,7 @@ test('Medical Dashboard Renders Test', () => {
   expect(component.getByText('Age')).toBeTruthy();
   expect(component.getByText('Appointment Dates')).toBeTruthy();
   expect(component.getByText('Severity')).toBeTruthy();
+  expect(component.getByText('Latest Symptoms')).toBeTruthy();
 });
 
 test('Medical Dashboard Renders View Appointments', () => {
@@ -67,4 +68,5 @@ test('Medical Dashboard Renders View Appointments', () => {
   expect(component.getByText('Age')).toBeTruthy();
   expect(component.getByText('Appointment Dates')).toBeTruthy();
   expect(component.getByText('Severity')).toBeTruthy();
+  expect(component.getByText('Latest Symptoms')).toBeTruthy();
 });
