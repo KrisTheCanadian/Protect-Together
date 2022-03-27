@@ -8,7 +8,7 @@ describe('Admin Authentication', () => {
                 cy.get('[name="password"]').type(Cypress.env('CYPRESS_ADMIN_PASSWORD'), {log: false})
                 cy.get('button').click();
                 cy.url().should("contain", '/dashboard')
-                cy.contains('Welcome admin')
+                cy.contains('Welcome Admin')
                 cy.get('nav').find('button').should("contain", 'Logout').click()
             }
         })
@@ -24,7 +24,7 @@ describe('Sprint 3 Admin Suite', () => {
 
     it('Admin dashboard', () => {
         cy.visit('/')
-        cy.contains('Welcome admin')
+        cy.contains('Welcome Admin')
         cy.get('button').contains('Add Account')
         cy.get('[type="text"]').click().type('Cypress')
         cy.contains('Cypress Admin')
