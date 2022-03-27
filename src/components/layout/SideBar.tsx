@@ -13,7 +13,6 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
 };
 export default function SideBar({ children }: Props) {
-  const { update } = React.useContext(UserContext);
   const { open, setOpen } = useLayoutContext();
   const { state, update } = React.useContext(UserContext);
   const navigate = useNavigate();

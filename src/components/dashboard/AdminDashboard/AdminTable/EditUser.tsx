@@ -24,7 +24,11 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
       userRef.update({ patientSlots: newPatientSlots, availableSlots: newAvailableSlots }).then(() => {
         // check if patients need to be assigned to doctor
         const dispatchDoctor = Firebase.functions().httpsCallable('dispatchDoctor');
-        dispatchDoctor({ medicalID: user.UID, availableSlots: newAvailableSlots, filledSlots: user.filledSlots });
+        dispatchDoctor({ medicalID: user.UID,
+          availableSlots: newAvailableSlots,
+          filledSlots: user.filledSlots,
+          firstName: user.firstName,
+          lastName: user.lastName });
       });
     }
 
