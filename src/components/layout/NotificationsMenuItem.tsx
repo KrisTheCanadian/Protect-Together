@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-len
 import { Dialog, DialogContent, DialogTitle, Badge, List, ListItem, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { UserContext } from '../../context/UserContext';
