@@ -39,10 +39,6 @@ function App() {
                 path="/change"
                 element={<AuthRequired component={<ChangePassword />} />}
               />
-              <Route
-                path="/chat"
-                element={<AuthRequired component={<Chat />} />}
-              />
               <Route path="/styleguide" element={<StyleGuide />} />
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
               <Route path="/symptomsUpdate" element={<AuthRequired component={<SymptomsUpdate />} />} />
