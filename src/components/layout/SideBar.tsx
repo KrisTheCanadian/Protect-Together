@@ -13,8 +13,8 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
 };
 export default function SideBar({ children }: Props) {
+  const { update } = React.useContext(UserContext);
   const { open, setOpen } = useLayoutContext();
-  const { state, update } = React.useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -42,10 +42,13 @@ export default function SideBar({ children }: Props) {
   );
 
   const logout = () => {
-    auth.signOut().then(() => {
-      update({ firstName: '', lastName: '', role: '', id: '' }); // reset user context
-      navigate('/');
+    update({
+      firstName: '',
+      lastName: '',
+      role: '',
+      id: '',
     });
+    auth.signOut().then(() => navigate('/'));
   };
 
   return (

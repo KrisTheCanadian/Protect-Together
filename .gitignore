@@ -1,7 +1,7 @@
 # firestore-coverage.html
 firestore-coverage.html
 
-cypress.env.json
+
 # Built application files
 *.apk
 *.aar
@@ -98,6 +98,8 @@ lint/tmp/
 # testing
 /coverage
 /cypress/videos
+/cypress/screenshots
+cypress.env.json
 
 # production
 /build

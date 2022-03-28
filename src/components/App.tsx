@@ -15,6 +15,7 @@ import ChangePassword from '../pages/auth/change';
 import ForgotPassword from '../pages/auth/forgot';
 import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 import SymptomsUpdate from '../pages/symptomsForm/SymptomsUpdate';
+import PatientChat from './chat/PatientChat';
 import { LayoutContext } from '../context/LayoutContext';
 import { UserProvider } from '../context/UserContext';
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/styleguide" element={<StyleGuide />} />
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
               <Route path="/symptomsUpdate" element={<AuthRequired component={<SymptomsUpdate />} />} />
+              <Route path="/connect" element={<AuthRequired component={<PatientChat />} />} />
               <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
             </Routes>
           </UserProvider>
