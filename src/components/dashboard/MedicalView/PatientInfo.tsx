@@ -62,7 +62,7 @@ type Props = {
   PID: string,
 };
 
-type PatientData = {
+export type PatientData = {
   PID: string;
   name: string;
   age: number;
@@ -304,7 +304,7 @@ function PatientInfo({ PID } : Props) {
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Box>
-              <Chat />
+              <Chat {...patientData} />
             </Box>
           </Grid>
         </Grid>

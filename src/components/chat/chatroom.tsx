@@ -7,10 +7,7 @@ import { Avatar } from '@mui/material';
 import firebase from 'firebase/compat/app';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
-
-interface Patient {
-  id: string,
-}
+import { PatientData } from '../dashboard/MedicalView/PatientInfo';
 
 interface Message {
   message: string,
@@ -18,13 +15,14 @@ interface Message {
   ownerID: string,
 };
 
-function ChatRoom(props: Patient) {
+function ChatRoom(props: PatientData) {
   const { state } = React.useContext(UserContext);
   const [formValue, setFormValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
 
   // define reference to chat
-  const chatRef = firestore.collection('chats').doc(props.id);
+  console.log(props);
+  const chatRef = firestore.collection('chats').doc(state.id);
 
   // save message to firestore
   const sendMessage = async (e: any) => {
@@ -85,7 +83,7 @@ function ChatRoom(props: Patient) {
   );
 }
 
-function Chat(props: Patient) {
+function Chat(props: PatientData) {
   return (
     <div className="Chat">
       <header>
