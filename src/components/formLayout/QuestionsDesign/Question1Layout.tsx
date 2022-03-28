@@ -20,7 +20,7 @@ const styles = {
   },
 };
 
-export default function Question1Layout({ changeStatus, addUserAnswer }: any) {
+export default function Question1Layout({ changeStatus, addSymptoms, setUrgentState }: any) {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
   const [ansYes, setAnsYes] = useState(false);
@@ -57,10 +57,8 @@ export default function Question1Layout({ changeStatus, addUserAnswer }: any) {
       setError(true);
     } else {
       if (value === 'response0') {
-        addUserAnswer('Experiencing one or more of the following symptoms: \n'
-      + '- Severe difficulty breathing (struggling to breathe or speaking in single words\n'
-      + '- Severe chest pain (constant tightness or crushing sensation)\n'
-      + '- Losing consciousness');
+        addSymptoms(['Severe difficulty breathing', 'Severe chest pain', 'Losing consciousness'], 0);
+        setUrgentState(true);
       }
       changeStatus(value);
     }

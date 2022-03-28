@@ -13,7 +13,7 @@ const styles = {
   },
 };
 
-export default function ResponseLayout({ selection, requestDoctor }: any) {
+export default function ResponseLayout({ selection, requestDoctor, changeStatus, changeHeaderState }: any) {
   return (
     <div style={{ display: 'flex' }}>
       <Box
@@ -96,15 +96,30 @@ export default function ResponseLayout({ selection, requestDoctor }: any) {
             >
               Would you like to be contacted by one of our doctors?
             </Typography>
-            <Button
-              variant="text"
-              onClick={() => {
-                requestDoctor();
-              }}
-            >
-              Yes
-            </Button>
-            <Button variant="text">No</Button>
+            {selection === 0 && (
+              <Button
+                variant="text"
+                onClick={() => {
+                  changeStatus('2');
+                  changeHeaderState('1');
+                }}
+              >
+                Continue Assessment Test
+              </Button>
+            )}
+            {selection !== 0 && (
+              <div>
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    requestDoctor();
+                  }}
+                >
+                  Yes
+                </Button>
+                <Button variant="text">No</Button>
+              </div>
+            )}
           </Container>
         </Container>
       </Box>

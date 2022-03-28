@@ -217,8 +217,8 @@ export default function AdminTable() {
         setRowData(tableData);
         setFilteredRows(tableData);
       });
-      return () => unsubscribe();
     });
+    return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
