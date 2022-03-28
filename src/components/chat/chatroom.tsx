@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { Avatar } from '@mui/material';
-import firebase from 'firebase/compat';
+import firebase from 'firebase/compat/app';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
@@ -22,6 +22,11 @@ function ChatRoom(props: Patient) {
   const { state } = React.useContext(UserContext);
   const [formValue, setFormValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+
+  // define reference to chat
+  const chatRef = firestore.collection('chats').doc(props.id);
+
+  // save message to firestore
   const sendMessage = async (e: any) => {
     e.preventDefault();
 
@@ -32,28 +37,32 @@ function ChatRoom(props: Patient) {
       ownerID: state.id,
     };
 
-    const document = await firestore.collection('chats').doc(props.id).get();
-    // check if chat exists
-    if (document && document.exists) {
-      // update chat
-      await document.ref.update({
-        // append message
-        messages: firebase.firestore.FieldValue.arrayUnion(message),
-      });
-    } else {
-      // create chat
-      await document.ref.set({
-        messages: [message],
-      });
-    }
+    // add message to messages array
+    await chatRef.update({
+      // append message
+      messages: firebase.firestore.FieldValue.arrayUnion(message),
+    });
+
     setFormValue('');
   };
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(firestore, 'chats', `${state.id}`), (docu) => {
-      const data = docu.data();
-      if (data) {
-        setMessages(data.messages);
+    // create chat if does not exist
+    chatRef.get()
+      .then((chatDocument) => {
+        if (!chatDocument.exists) {
+          // create chat
+          chatRef.set({
+            messages: [],
+          });
+        }
+      });
+
+    // subscribe to changes in chat
+    const unsubscribe = chatRef.onSnapshot((chatSnapshot) => {
+      const chatData = chatSnapshot.data();
+      if (chatSnapshot.exists && chatData) {
+        setMessages(chatData.messages);
       }
     });
     return () => {
