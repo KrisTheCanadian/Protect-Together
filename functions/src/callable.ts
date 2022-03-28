@@ -68,3 +68,29 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
     return null;
   }
 });
+
+// send Notification to user
+export const sendNotification = functions.https.onCall(async (_data) => {
+  // get doctor with available slots
+  const message: UserNotification = {
+    title: _data.title,
+    message: _data.message,
+    date: admin.firestore.Timestamp.now(),
+    read: false,
+  };
+  const userId = _data.userId;
+  const userRef = db.doc(`users/${userId}`);
+  const userSnap = await userRef.get();
+
+  return userSnap.ref.update({
+    notifications: admin.firestore.FieldValue.arrayUnion(message),
+  });
+});
+
+interface UserNotification {
+  title: string;
+  message: string;
+  date: admin.firestore.Timestamp;
+  read: boolean;
+}
+
