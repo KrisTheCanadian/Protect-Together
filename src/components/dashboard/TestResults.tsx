@@ -19,28 +19,6 @@ type Props = {
   handleTestRClose: any;
 };
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  boxShadow: 0,
-  margin: 0,
-  p: 4,
-};
-
-const listHeaderStyle = {
-  backgroundColor: '#E6E6E6',
-  color: 'black',
-  fontWeight: 'bold',
-  marginTop: '16px',
-};
-
-const listStyle = {
-  backgroundColor: 'white',
-};
-
 interface TestResult {
   testDate: Timestamp;
   testResult: string;
@@ -48,10 +26,7 @@ interface TestResult {
 }
 
 function TestResults({ handleTestRClose }: Props) {
-  const [status, setStatus] = useState<boolean>(true);
-
-  const { state, update } = React.useContext(UserContext);
-  const [notifications, setNotifications] = useState<TestResult[]>([]);
+  const { state } = React.useContext(UserContext);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
 
   useEffect(() => {
