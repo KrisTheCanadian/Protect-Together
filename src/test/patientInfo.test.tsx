@@ -8,6 +8,7 @@ jest.mock('firebase/compat/app', () => {
   // mock Firestore
   const Firestore = () => ({
     collection: () => ({
+
       where: () => ({
         onSnapshot: () => null,
         where: () => ({
@@ -15,6 +16,7 @@ jest.mock('firebase/compat/app', () => {
         }),
       }),
       doc: () => ({
+        onSnapshot: () => null,
         get: () => ({
           then: () => null,
         }),
