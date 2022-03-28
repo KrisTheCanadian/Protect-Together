@@ -9,7 +9,10 @@ jest.mock('firebase/compat/app', () => {
   const Firestore = () => ({
     collection: () => ({
       where: () => ({
-        onSnapshot: () => jest.fn(),
+        onSnapshot: () => null,
+        where: () => ({
+          onSnapshot: () => null,
+        }),
       }),
       doc: () => ({
         get: () => ({
@@ -44,6 +47,8 @@ jest.mock('firebase/compat/app', () => {
   };
 });
 
+jest.mock('firebase/firestore');
+
 afterEach(cleanup);
 
 test('Patient Info Renders correctly', async () => {
@@ -52,10 +57,6 @@ test('Patient Info Renders correctly', async () => {
   const closeButton = component.getByText("Close Patient's File");
   expect(closeButton).toBeTruthy();
   await fireEvent.click(closeButton);
-
-  // const priorityButton = component.getByLabelText('Priority');
-  // expect(priorityButton).toBeTruthy();
-  // await fireEvent.click(priorityButton);
 
   const appointmentButton = component.getByText('View Appointments');
   expect(appointmentButton).toBeTruthy();

@@ -8,19 +8,17 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  Typography,
   TextField,
 } from '@mui/material';
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { auth, firestore } from '../../config/firebase_config';
+import { auth, firestore } from '../../../config/firebase_config';
 
 type Props = {
   handleTestClose: any;
 };
 function UpdateTestResult({ handleTestClose }: Props) {
-  const [error, setError] = useState<string>('');
   const [testDate, setTestDate] = useState<Date | null>(null);
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
@@ -264,7 +262,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
           </Grid>
         </Grid>
       </Grid>
-
     </Grid>
   );
 }
