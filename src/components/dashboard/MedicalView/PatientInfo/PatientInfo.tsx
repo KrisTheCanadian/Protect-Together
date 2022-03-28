@@ -155,7 +155,7 @@ function PatientInfo({ PID }: Props) {
         const patientId = patient.UID;
         const name = [patient.firstName, patient.lastName].join(' ');
         const age = Math.floor(((Date.now() - patient.dateOfBirth.toDate()) / 31536000000));
-        const { sex, healthCardNumber, testsResults, priority, medicalConditions, phone } = patient;
+        const { sex, healthCardNumber, priority, medicalConditions, phone } = patient;
         const appointmentDate = format(new Date(1646707969351), 'Pp');
         const status = patient.testsResults !== undefined
           ? (patient.testsResults[patient.testsResults.length - 1]).testResult : '';
@@ -164,7 +164,7 @@ function PatientInfo({ PID }: Props) {
         const pSymptoms = patient.patientSymptoms;
         pSymptoms.sort((a: Symptoms, b: Symptoms) => b.date.seconds - a.date.seconds);
         const latestSymptoms = patient.patientSymptoms !== undefined
-          ? patient.patientSymptoms[patient.patientSymptoms.length - 1] : undefined;
+          ? patient.patientSymptoms[0] : undefined;
         const history: Events[] = [];
         if (patient.patientSymptoms !== undefined) {
           patient.patientSymptoms.forEach((elem: Symptoms) => (
@@ -349,7 +349,6 @@ function PatientInfo({ PID }: Props) {
                 </ListItem>
                 {extendedInfo && extendedInfo()}
               </List>
-
               <PatientInfoList
                 listTitle="Latest Symptoms"
                 listItems={patientData.latestSymptoms?.userSymptoms.map((elem) => ({ primary: elem, secondary: '' }))}
