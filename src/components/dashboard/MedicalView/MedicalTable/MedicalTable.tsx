@@ -215,9 +215,6 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         const appointmentDate = format(new Date(1646707969351), 'Pp');
         // eslint-disable-next-line max-len
         const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
-        const symptoms = 'Severe fever';
-        const latestSymptoms = user.patientSymptoms !== undefined
-          ? user.patientSymptoms[user.patientSymptoms.length - 1] : undefined;
         const severity = caseSeverity(user.score);
         const userHasUpdates = Math.round(Math.random()) === 1;
         if (userHasUpdates) hasUpdatesData.push(user.UID);
@@ -227,8 +224,8 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         setFilteredRows(tableData);
       });
       sethasUpdates(hasUpdatesData);
-      return () => unsubscribe();
     });
+    return () => unsubscribe();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

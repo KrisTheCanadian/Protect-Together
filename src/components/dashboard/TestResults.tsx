@@ -1,28 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
   Paper,
-  Modal,
-  Typography,
-  Select,
-  MenuItem,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  Divider,
 } from '@mui/material';
-import { arrayUnion, doc, setDoc, Timestamp, onSnapshot } from 'firebase/firestore';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import Box from '@mui/material/Box';
-import TableRow from '@mui/material/TableRow';
-import { format } from 'date-fns';
+import { doc, Timestamp, onSnapshot } from 'firebase/firestore';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
@@ -31,7 +13,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import { UserContext } from '../../context/UserContext';
-import { auth, firestore } from '../../config/firebase_config';
+import { firestore } from '../../config/firebase_config';
 
 type Props = {
   handleTestRClose: any;
@@ -73,13 +55,14 @@ function TestResults({ handleTestRClose }: Props) {
   const [testResults, setTestResults] = useState<TestResult[]>([]);
 
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
 
       if (data && data.testsResults) {
         setTestResults(data.testsResults);
       }
     });
+    return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
