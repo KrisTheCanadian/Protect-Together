@@ -1,6 +1,6 @@
 name: Cypress Tests
 
-on: [pull_request]
+on: [push]
 
 jobs:
   cypress-run:
@@ -63,6 +63,7 @@ jobs:
         npm install -g firebase-tools
         npm ci
         npm run build
+        npx browserslist@latest --update-db
       working-directory: functions
 
     - name: Update browsers
