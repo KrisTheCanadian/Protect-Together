@@ -8,7 +8,6 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  Typography,
   TextField,
 } from '@mui/material';
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
@@ -20,7 +19,6 @@ type Props = {
   handleTestClose: any;
 };
 function UpdateTestResult({ handleTestClose }: Props) {
-  const [error, setError] = useState<string>('');
   const [testDate, setTestDate] = useState<Date | null>(null);
   const [testType, setTestType] = useState<string>('');
   const [testResult, setTestResult] = useState<string>('');
@@ -264,7 +262,6 @@ function UpdateTestResult({ handleTestClose }: Props) {
           </Grid>
         </Grid>
       </Grid>
-
     </Grid>
   );
 }

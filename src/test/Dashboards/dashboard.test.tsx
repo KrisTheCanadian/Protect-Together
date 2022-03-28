@@ -59,8 +59,6 @@ jest.mock('firebase/compat/app', () => {
 
 jest.mock('firebase/firestore');
 
-jest.mock('firebase/firestore');
-
 afterEach(cleanup);
 
 test('Admin Dashboard is rendering', () => {

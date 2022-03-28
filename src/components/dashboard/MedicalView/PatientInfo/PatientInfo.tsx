@@ -120,7 +120,7 @@ export function caseSeverity(score: number | undefined): string {
   return ('-');
 }
 
-function PatientInfo({ PID } : Props) {
+function PatientInfo({ PID }: Props) {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -149,25 +149,22 @@ function PatientInfo({ PID } : Props) {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const patientDataSnapshot = await patientRef.get();
+    const unsubscribe = patientRef.onSnapshot(async (patientDataSnapshot: any) => {
       const patient = patientDataSnapshot.data();
       if (patient) {
         const patientId = patient.UID;
         const name = [patient.firstName, patient.lastName].join(' ');
         const age = Math.floor(((Date.now() - patient.dateOfBirth.toDate()) / 31536000000));
-        const { sex } = patient;
-        const { healthCardNumber } = patient;
+        const { sex, healthCardNumber, testsResults, priority, medicalConditions, phone } = patient;
         const appointmentDate = format(new Date(1646707969351), 'Pp');
-        // eslint-disable-next-line max-len
-        const status = patient.testsResults !== undefined ? (patient.testsResults[patient.testsResults.length - 1]).testResult : '';
-        // eslint-disable-next-line max-len
-        const latestTestResult = patient.testsResults !== undefined ? patient.testsResults[patient.testsResults.length - 1] : undefined;
-        const { testsResults } = patient;
+        const status = patient.testsResults !== undefined
+          ? (patient.testsResults[patient.testsResults.length - 1]).testResult : '';
+        const latestTestResult = patient.testsResults !== undefined
+          ? patient.testsResults[patient.testsResults.length - 1] : undefined;
         const pSymptoms = patient.patientSymptoms;
         pSymptoms.sort((a: Symptoms, b: Symptoms) => b.date.seconds - a.date.seconds);
-        // eslint-disable-next-line max-len
-        const latestSymptoms = patient.patientSymptoms !== undefined ? patient.patientSymptoms[patient.patientSymptoms.length - 1] : undefined;
+        const latestSymptoms = patient.patientSymptoms !== undefined
+          ? patient.patientSymptoms[patient.patientSymptoms.length - 1] : undefined;
         const history: Events[] = [];
         if (patient.patientSymptoms !== undefined) {
           patient.patientSymptoms.forEach((elem: Symptoms) => (
@@ -181,9 +178,6 @@ function PatientInfo({ PID } : Props) {
         }
         history.sort((a: Events, b: Events) => b.date.seconds - a.date.seconds);
         const symptoms = pSymptoms;
-        const { priority } = patient;
-        const { medicalConditions } = patient;
-        const { phone } = patient;
         const height = Number(patient.height);
         const weight = Number(patient.weight);
         const bmi = (4535.9237 * weight) / (height * height);
@@ -207,16 +201,13 @@ function PatientInfo({ PID } : Props) {
           score,
           initHelpFormData,
         });
-        if (patient.hasUpdates === undefined || patient.hasUpdates) {
-          // await patientRef.update({ hasUpdates: false });
-        }
       }
-    };
-    fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const extendedInfo = () : JSX.Element[] => {
+  const extendedInfo = (): JSX.Element[] => {
     if (!expandInfo) {
       return ([
         <ListItem key="collapse" sx={{ justifyContent: 'center' }}>
@@ -294,29 +285,7 @@ function PatientInfo({ PID } : Props) {
             item
             md={4}
             sm={12}
-          >
-            {/* <FormControl fullWidth>
-              <InputLabel id="patient-priority-label">Priority</InputLabel>
-              <Select
-                labelId="patient-priority-label"
-                id="patient-priority"
-                value={patientPriority}
-                label="Priority"
-                onChange={(event) => setPatientPriority(Number(event.target.value))}
-              >
-                <MenuItem value={10}>10 - Highest</MenuItem>
-                <MenuItem value={9}>9</MenuItem>
-                <MenuItem value={8}>8</MenuItem>
-                <MenuItem value={7}>7</MenuItem>
-                <MenuItem value={6}>6</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={1}>1 - Lowest</MenuItem>
-              </Select>
-            </FormControl> */}
-          </Grid>
+          />
           <Grid item md={4} sm={12}>
             <Button sx={headerButtonStyle} variant="contained" color="warning" onClick={handleCloseFile}>
               Close Patient&apos;s File
@@ -350,9 +319,9 @@ function PatientInfo({ PID } : Props) {
                     secondary={(
                       <Typography
                         style={
-                            patientData.latestTestResult?.testResult === 'positive'
-                              ? { color: theme.palette.warning.contrastText } : { color: theme.palette.info.main }
-                          }
+                          patientData.latestTestResult?.testResult === 'positive'
+                            ? { color: theme.palette.warning.contrastText } : { color: theme.palette.info.main }
+                        }
                       >
                         {`${patientData.latestTestResult?.testResult} (${patientData.latestTestResult?.testType})`}
                       </Typography>
@@ -366,12 +335,12 @@ function PatientInfo({ PID } : Props) {
                     secondary={(
                       <Typography
                         style={
-                            // eslint-disable-next-line no-nested-ternary
-                            caseSeverity(patientData.score) === 'Severe'
-                              ? { color: theme.palette.warning.contrastText }
-                              : (caseSeverity(patientData.score) === 'Mild'
-                                ? { color: theme.palette.info.main } : { color: 'inherit' })
-                          }
+                          // eslint-disable-next-line no-nested-ternary
+                          caseSeverity(patientData.score) === 'Severe'
+                            ? { color: theme.palette.warning.contrastText }
+                            : (caseSeverity(patientData.score) === 'Mild'
+                              ? { color: theme.palette.info.main } : { color: 'inherit' })
+                        }
                       >
                         {caseSeverity(patientData.score)}
                       </Typography>
@@ -391,11 +360,7 @@ function PatientInfo({ PID } : Props) {
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
-            <Box>
-              {/* <Typography component="h1" variant="h4">
-                Box
-              </Typography> */}
-            </Box>
+            <Box />
           </Grid>
         </Grid>
       </MainContent>
@@ -407,9 +372,9 @@ function PatientInfo({ PID } : Props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          { modalContent === 0 && 'appointments'}
-          { modalContent === 1 && 'appointments'}
-          { modalContent === 2 && <PatientTimeline events={patientData.history} />}
+          {modalContent === 0 && 'appointments'}
+          {modalContent === 1 && 'appointments'}
+          {modalContent === 2 && <PatientTimeline events={patientData.history} />}
         </Box>
       </Modal>
     </Box>
