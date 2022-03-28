@@ -8,8 +8,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthRequired from '../../components/auth';
 import AdminDashboard from '../../components/dashboard/AdminDashboard';
 import MedicalView from '../../components/dashboard/MedicalView/MedicalView';
-import PatientDashboard from '../../components/dashboard/PatientDashboard';
-import ThirdPartyDashboard from '../../components/dashboard/ThirdPartyDashboard';
+import PatientDashboard from '../../components/dashboard/PatientView/PatientDashboard';
+import ThirdPartyDashboard from '../../components/dashboard/ThirdPartyView/ThirdPartyDashboard';
 import Dashboard from '../../pages/dashboard/dashboard';
 
 jest.mock('firebase/compat/app', () => {
@@ -76,7 +76,7 @@ test('Medical Dashboard is rendering', () => {
 });
 
 test('Patient Dashboard is rendering', () => {
-  render(<BrowserRouter><PatientDashboard /></BrowserRouter>);
+  render(<BrowserRouter><PatientDashboard setContentId={0} /></BrowserRouter>);
 });
 
 test('Dashboard is rendering', () => {

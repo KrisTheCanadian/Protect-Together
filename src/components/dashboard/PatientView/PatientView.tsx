@@ -1,13 +1,7 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-import React, { useEffect, useState } from 'react';
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import CoronavirusIcon from '@mui/icons-material/Coronavirus';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import BiotechIcon from '@mui/icons-material/Biotech';
+import React, { useState, useEffect, useContext } from 'react';
 // eslint-disable-next-line import/no-unresolved
-import '../../static/style/CovidData.css';
+import '../../../static/style/CovidData.css';
 import {
-  Button,
   Box,
   CssBaseline,
   Divider,
@@ -15,50 +9,46 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Modal,
   useMediaQuery,
   useTheme,
+  Modal,
 } from '@mui/material';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import CoronavirusIcon from '@mui/icons-material/Coronavirus';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import BiotechIcon from '@mui/icons-material/Biotech';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
-import Header from '../layout/Header';
-import MainContent from '../layout/MainContent';
-import SideBar from '../layout/SideBar';
-import { UserContext } from '../../context/UserContext';
-import { firestore } from '../../config/firebase_config';
-import UpdateTestResult from '../dashboard/patienttestresult';
-import TestResults from '../dashboard/TestResults';
-import theme from '../../static/style/theme';
+import { UserContext } from '../../../context/UserContext';
+import SideBar from '../../layout/SideBar';
+import UpdateTestResult from './UpdateTestResult';
+import TestResults from './TestResults';
+import { firestore } from '../../../config/firebase_config';
+import PatientDashboard from './PatientDashboard';
+import PatientMedicalConnect from './PatientMedicalConnect';
 
 const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    padding: 0,
-  },
+  width: '50%',
   boxShadow: 0,
   margin: 0,
   p: 4,
 };
 
-function PatientChat() {
+function PatientView() {
+  const [contentId, setContentId] = useState<number>(0);
   const navigate = useNavigate();
-  const theme = useTheme();
-  const { state, update } = React.useContext(UserContext);
-  const [user, setUser] = useState<DocumentData>();
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpenQuiz = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
+  const { state } = useContext(UserContext);
+  const [user, setUser] = useState<DocumentData>();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
@@ -70,27 +60,19 @@ function PatientChat() {
     return () => {
       unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
-      <Header title={`Chat with Dr. ${user?.doctorName}`}>
-        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsUpdate'); }}>
-          Update Your Symptoms
-        </Button>
-      </Header>
       <SideBar>
         <List>
-          <ListItem button key="Dashboard">
+          <ListItem button key="Dashboard" onClick={() => setContentId(0)}>
             <ListItemIcon>
               <DashboardOutlinedIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="Dashboard"
-              onClick={() => { navigate('/dashboard'); }}
-            />
+            <ListItemText primary="Dashboard" />
           </ListItem>
           <ListItem button key="Dashboard2">
             <ListItemIcon>
@@ -104,24 +86,22 @@ function PatientChat() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          <ListItem button key="Results" data-testid="SymptomsUpdate2">
-            <ListItemIcon>
-              <ContentPasteIcon />
-            </ListItemIcon>
-            {user?.assignedDoctor && (
-            <ListItemText
-              primary="Symptoms Update"
-              onClick={() => { navigate('/symptomsUpdate'); }}
-            />
-            )}
-          </ListItem>
-
+          {user?.assignedDoctor && (
+            <ListItem button key="Results" data-testid="SymptomsUpdate2">
+              <ListItemIcon>
+                <ContentPasteIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Symptoms Update"
+                onClick={() => { navigate('/symptomsUpdate'); }}
+              />
+            </ListItem>
+          )}
         </List>
         <Divider />
       </SideBar>
-      <MainContent>
-        Chat
-      </MainContent>
+      {contentId === 0 && <PatientDashboard setContentId={setContentId} />}
+      {contentId === 1 && <PatientMedicalConnect />}
       <Modal
         open={testOpen}
         onClose={handleTestClose}
@@ -142,17 +122,8 @@ function PatientChat() {
           <TestResults handleTestRClose={handleTestRClose} />
         </Box>
       </Modal>
-      <Modal
-        open={modalOpen}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          quiz
-        </Box>
-      </Modal>
     </Box>
   );
 }
-export default PatientChat;
+
+export default PatientView;

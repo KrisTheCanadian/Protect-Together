@@ -12,8 +12,8 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
-import { UserContext } from '../../context/UserContext';
-import { firestore } from '../../config/firebase_config';
+import { UserContext } from '../../../context/UserContext';
+import { firestore } from '../../../config/firebase_config';
 
 type Props = {
   handleTestRClose: any;

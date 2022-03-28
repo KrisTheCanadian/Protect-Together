@@ -14,7 +14,7 @@ import {
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { auth, firestore } from '../../config/firebase_config';
+import { auth, firestore } from '../../../config/firebase_config';
 
 type Props = {
   handleTestClose: any;
