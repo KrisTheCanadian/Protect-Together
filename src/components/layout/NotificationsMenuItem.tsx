@@ -32,12 +32,15 @@ function NotificationsMenuItem() {
   };
 
   useEffect(() => {
-    onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
+    const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data && data.notifications) {
         setNotifications(data.notifications);
       }
     });
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

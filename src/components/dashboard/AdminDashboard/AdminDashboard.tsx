@@ -74,7 +74,7 @@ function AdminDashboard() {
   };
 
   useEffect(() => {
-    usersRef.onSnapshot(async (snapshot) => {
+    const unsubscribe = usersRef.onSnapshot(async (snapshot) => {
       let tableData = new Array<UnassignedPatientTableData>();
       snapshot.forEach((childSnapshot) => {
         const user = childSnapshot.data();
@@ -85,6 +85,10 @@ function AdminDashboard() {
       setRows(tableData);
       setNbUnassignedPatients(tableData.length);
     });
+
+    return () => {
+      unsubscribe();
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
