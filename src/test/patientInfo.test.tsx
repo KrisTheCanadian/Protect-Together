@@ -8,10 +8,15 @@ jest.mock('firebase/compat/app', () => {
   // mock Firestore
   const Firestore = () => ({
     collection: () => ({
+
       where: () => ({
-        onSnapshot: () => jest.fn(),
+        onSnapshot: () => null,
+        where: () => ({
+          onSnapshot: () => null,
+        }),
       }),
       doc: () => ({
+        onSnapshot: () => null,
         get: () => ({
           then: () => null,
         }),
@@ -44,6 +49,8 @@ jest.mock('firebase/compat/app', () => {
   };
 });
 
+jest.mock('firebase/firestore');
+
 afterEach(cleanup);
 
 test('Patient Info Renders correctly', async () => {
@@ -53,16 +60,14 @@ test('Patient Info Renders correctly', async () => {
   expect(closeButton).toBeTruthy();
   await fireEvent.click(closeButton);
 
-  // const priorityButton = component.getByLabelText('Priority');
-  // expect(priorityButton).toBeTruthy();
-  // await fireEvent.click(priorityButton);
-
   const appointmentButton = component.getByText('View Appointments');
   expect(appointmentButton).toBeTruthy();
   await fireEvent.click(appointmentButton);
 
   expect(component.getByText("Patient's Info")).toBeTruthy();
   expect(component.getByText('Latest Symptoms')).toBeTruthy();
+  expect(component.getByText('Latest Covid Test')).toBeTruthy();
+  expect(component.getByText('Case Severity')).toBeTruthy();
 
   const historyButton = component.getByText('History');
   expect(historyButton).toBeTruthy();
