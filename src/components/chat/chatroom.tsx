@@ -30,14 +30,16 @@ function ChatRoom(props: PatientData) {
 
     // creating message object
     const message: Message = {
-      message: e.value,
+      message: formValue,
       createdAt: Timestamp.now(),
       ownerID: state.id,
     };
 
     // add message to messages array
+    console.log(message);
     await chatRef.update({
       // append message
+
       messages: firebase.firestore.FieldValue.arrayUnion(message),
     });
 
@@ -99,15 +101,15 @@ function Chat(props: PatientData) {
 }
 
 function ChatMessage(props: any) {
-  const { text, uid } = props.message;
+  const { message, ownerID } = props.message;
   const user = React.useContext(UserContext);
 
-  const messageClass = uid === user.state.id ? 'sent' : 'received';
+  const messageClass = ownerID === user.state.id ? 'sent' : 'received';
 
   return (
     <div className={`message ${messageClass}`}>
       <Avatar src={`https://avatars.dicebear.com/api/initials/${user.state.firstName}.svg`} alt="Avatar-Icon" />
-      <p>{text}</p>
+      <p>{message}</p>
     </div>
   );
 }
