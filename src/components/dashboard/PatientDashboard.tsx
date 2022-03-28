@@ -153,18 +153,17 @@ function PatientDashboard() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
+          {user?.assignedDoctor && (
           <ListItem button key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
             </ListItemIcon>
-            {user?.assignedDoctor && (
             <ListItemText
               primary="Symptoms Update"
               onClick={() => { navigate('/symptomsUpdate'); }}
             />
-            )}
           </ListItem>
-
+          )}
         </List>
         <Divider />
       </SideBar>
