@@ -63,7 +63,6 @@ jobs:
         npm install -g firebase-tools
         npm ci
         npm run build
-        npx browserslist@latest --update-db
       working-directory: functions
 
     - name: Update browsers
