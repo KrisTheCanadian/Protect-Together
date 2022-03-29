@@ -14,7 +14,6 @@ import {
   ListItemText,
   ListItemAvatar,
   Typography,
-  Toolbar,
   Modal,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -111,46 +110,16 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button
-          variant="contained"
-          color="info"
-          sx={{
-            mr: 1,
-            [theme.breakpoints.down('sm')]: {
-              width: '90%',
-              mb: 1,
-            },
-          }}
-          onClick={handleTestOpen}
-        >
+        <Button variant="contained" color="info" onClick={handleTestOpen}>
           Add Covid-19 Test
         </Button>
         {!user?.assignedDoctor && (
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              width: '90%',
-              mb: 1,
-            },
-          }}
-          onClick={() => { navigate('/symptomsForm'); }}
-        >
+        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsForm'); }}>
           Ask for Help
         </Button>
         )}
         {user?.assignedDoctor && (
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              width: '90%',
-            },
-          }}
-          onClick={() => { navigate('/symptomsUpdate'); }}
-        >
+        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsUpdate'); }}>
           Update Your Symptoms
         </Button>
         )}
@@ -167,7 +136,6 @@ function PatientDashboard() {
         <Divider />
       </SideBar>
       <MainContent>
-        <Toolbar />
         <Typography paragraph>
           Medical Status (Doctor):
           {' '}
