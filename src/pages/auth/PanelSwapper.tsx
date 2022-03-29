@@ -28,6 +28,7 @@ export default function PanelSwapper(props: any) {
 
   return (
     <LoginPanel
+      verySmallSize={props.panelVerySmallSize}
       smallSize={props.panelSmallSize}
       medSize={props.panelMedSize}
       blob={blobs[currentIndex]}

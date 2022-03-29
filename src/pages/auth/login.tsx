@@ -117,7 +117,7 @@ export default function LoginPage() {
           </Box>
         </Box>
       </Grid>
-      <PanelSwapper panelSmallSize={6} panelMedSize={7} />
+      <PanelSwapper panelVerySmallSize={400} panelSmallSize={6} panelMedSize={7} />
     </Grid>
   );
 }

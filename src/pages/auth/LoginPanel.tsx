@@ -101,10 +101,7 @@ const LoginPanel = (props: any) => {
           sm={6}
           md={3}
           sx={{
-            // [theme.breakpoints.between(0, props.verySmallScreen)]: {
-            //   display: 'none',
-            // },
-            [theme.breakpoints.between(0, 550)]: {
+            [theme.breakpoints.between(0, props.verySmallSize)]: {
               display: 'none',
             },
           }}
@@ -152,6 +149,11 @@ const LoginPanel = (props: any) => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{
+            [theme.breakpoints.between(0, props.verySmallSize)]: {
+              alignItems: 'flex-end',
+            },
+          }}
         >
           <img
             src={props.illustration}
