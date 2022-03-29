@@ -7,6 +7,7 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 const LoginPanel = (props: any) => {
   const theme = useTheme();
   const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
+  const midSize = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   return (
     <Grid
@@ -43,7 +44,17 @@ const LoginPanel = (props: any) => {
           justifyContent="center"
         >
           <SentimentSatisfiedAltIcon
-            style={{ color: '#FFFFFF', marginRight: '5px', fontSize: phoneSize ? '30px' : '40px' }}
+            sx={{
+              color: '#FFFFFF',
+              marginRight: '5px',
+              fontSize: '40px',
+              [theme.breakpoints.between('xs', 'sm')]: {
+                fontSize: '30px',
+              },
+              [theme.breakpoints.between('sm', 'md')]: {
+                fontSize: '35px',
+              },
+            }}
           />
         </Grid>
         <Grid
@@ -61,8 +72,11 @@ const LoginPanel = (props: any) => {
             component="div"
             color="#FFFFFF"
             sx={{
-              [theme.breakpoints.down('sm')]: {
+              [theme.breakpoints.between('xs', 'sm')]: {
                 fontSize: '1.7rem',
+              },
+              [theme.breakpoints.between('sm', 'md')]: {
+                fontSize: '1.8rem',
               },
             }}
           >
@@ -83,7 +97,17 @@ const LoginPanel = (props: any) => {
           display="flex"
           alignItems="flex-end"
           justifyContent="center"
-          sm={3}
+          xs={3}
+          sm={6}
+          md={3}
+          sx={{
+            // [theme.breakpoints.between(0, props.verySmallScreen)]: {
+            //   display: 'none',
+            // },
+            [theme.breakpoints.between(0, 550)]: {
+              display: 'none',
+            },
+          }}
         >
           <Typography
             variant="h5"
@@ -92,8 +116,11 @@ const LoginPanel = (props: any) => {
             fontSize="2rem"
             width="100%"
             sx={{
-              [theme.breakpoints.down('sm')]: {
+              [theme.breakpoints.between('xs', 'sm')]: {
                 fontSize: '1.5rem',
+              },
+              [theme.breakpoints.between('sm', 'md')]: {
+                fontSize: '1.8rem',
               },
             }}
           >
@@ -105,8 +132,11 @@ const LoginPanel = (props: any) => {
               fontSize="2.5rem"
               fontWeight="700"
               sx={{
-                [theme.breakpoints.down('sm')]: {
+                [theme.breakpoints.between('xs', 'sm')]: {
                   fontSize: '1.7rem',
+                },
+                [theme.breakpoints.between('sm', 'md')]: {
+                  fontSize: '2rem',
                 },
               }}
             >
@@ -116,18 +146,18 @@ const LoginPanel = (props: any) => {
         </Grid>
         <Grid
           item
-          sm={9}
+          xs={9}
+          sm={6}
+          md={9}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              marginTop: 3,
-              alignItems: 'flex-end',
-            },
-          }}
         >
-          <img src={props.illustration} alt="hospital" style={{ width: '60%' }} />
+          <img
+            src={props.illustration}
+            alt="hospital"
+            style={{ width: midSize ? '90%' : '50%' }}
+          />
         </Grid>
       </Grid>
     </Grid>

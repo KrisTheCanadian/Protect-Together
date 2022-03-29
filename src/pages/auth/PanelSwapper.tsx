@@ -9,7 +9,7 @@ import LoginPanel from './LoginPanel';
 
 const blobs = [Blob, Blob2, Blob3];
 const sentences = ['Connect with a Doctor from', 'Keep Up with the Latest Covid-19', 'Monitor and Update Your'];
-const boldWords = ['Anywhere.', 'Statistics', 'Symptoms.'];
+const boldWords = ['Anywhere.', 'Statistics.', 'Symptoms.'];
 const illustrations = [ProtectTogether, Statistics, Monitor];
 
 export default function PanelSwapper(props: any) {
