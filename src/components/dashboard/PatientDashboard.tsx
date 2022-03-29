@@ -110,7 +110,7 @@ function PatientDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
-        <Button variant="contained" color="info" onClick={handleTestOpen}>
+        <Button variant="contained" color="info" sx={{ mr: 1 }} onClick={handleTestOpen}>
           Add Covid-19 Test
         </Button>
         {!user?.assignedDoctor && (
