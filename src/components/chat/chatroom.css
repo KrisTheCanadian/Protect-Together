@@ -1,0 +1,24 @@
+.received{
+    display: flex;
+    align-items: center;
+}
+.message p{
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: #e5e5e5;
+    border-radius: 17px;
+}
+.sent p{
+    background: #434ce6;
+    color:white;
+}
+
+.sent{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}

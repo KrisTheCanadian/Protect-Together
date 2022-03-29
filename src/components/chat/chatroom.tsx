@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
-import { Avatar } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import firebase from 'firebase/compat/app';
+import SendIcon from '@mui/icons-material/Send';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
-import { PatientData } from '../dashboard/MedicalView/PatientInfo';
+import { PatientData } from '../dashboard/MedicalView/PatientInfo/PatientInfo';
+import './chatroom.css';
 
 interface Message {
   message: string,
@@ -19,9 +21,34 @@ function ChatRoom(props: PatientData) {
   const { state } = React.useContext(UserContext);
   const [formValue, setFormValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const messageRef = useRef<HTMLInputElement>(null);
+  const [messagesLoaded, setMessagesLoaded] = useState(0);
+
+  // scroll messsages on send
+  useEffect(() => {
+    if (messageRef.current) {
+      if (messagesLoaded < 2) {
+        messageRef.current.scrollIntoView(
+          {
+            behavior: 'auto',
+            block: 'end',
+            inline: 'nearest',
+          },
+        );
+        setMessagesLoaded(messagesLoaded + 1);
+      } else {
+        messageRef.current.scrollIntoView(
+          {
+            behavior: 'smooth',
+            block: 'end',
+            inline: 'nearest',
+          },
+        );
+      }
+    }
+  }, [messages]);
 
   // define reference to chat
-  console.log(props);
   const chatRef = firestore.collection('chats').doc(state.id);
 
   // save message to firestore
@@ -36,7 +63,6 @@ function ChatRoom(props: PatientData) {
     };
 
     // add message to messages array
-    console.log(message);
     await chatRef.update({
       // append message
 
@@ -65,6 +91,7 @@ function ChatRoom(props: PatientData) {
         setMessages(chatData.messages);
       }
     });
+
     return () => {
       unsubscribe();
     };
@@ -73,13 +100,42 @@ function ChatRoom(props: PatientData) {
 
   return (
     <>
-      <main>
-        {messages && messages.map((msg) => <ChatMessage key={msg.createdAt} message={msg} />)}
-      </main>
+      <Box sx={{ flex: 1, overflow: 'scroll' }}>
+        {messages && messages.map((msg, index) => {
+          let showAvatar = true;
+          if (messages[index - 1] && messages[index - 1].ownerID === msg.ownerID) {
+            showAvatar = false;
+          }
+          return (<ChatMessage key={msg.createdAt} message={msg} showAvatar={showAvatar} />);
+        })}
+        <div ref={messageRef} />
+      </Box>
 
-      <form onSubmit={sendMessage}>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
-        <button type="submit" disabled={!formValue}>🕊️</button>
+      <form onSubmit={sendMessage} style={{ position: 'relative' }}>
+        <input
+          style={{ padding: '10px',
+            width: '100%',
+            borderRadius: '5px',
+            border: '1px solid gainsboro' }}
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button
+          type="submit"
+          disabled={!formValue}
+          style={{ position: 'absolute',
+            background: 'none',
+            border: 'none',
+            right: '3px',
+            top: '5px',
+            color: '#434ce6',
+
+          }}
+        >
+          <SendIcon />
+
+        </button>
       </form>
     </>
   );
@@ -87,28 +143,48 @@ function ChatRoom(props: PatientData) {
 
 function Chat(props: PatientData) {
   return (
-    <div className="Chat">
+    <Box
+      className="Chat"
+      sx={{ maxHeight: 'calc(100vh - 136px)',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column' }}
+    >
       <header>
-        <h1>⚛️🔥💬</h1>
+        <h3>Messages</h3>
       </header>
 
-      <section>
-        <ChatRoom {...props} />
-      </section>
+      <ChatRoom {...props} />
 
-    </div>
+    </Box>
   );
 }
 
 function ChatMessage(props: any) {
   const { message, ownerID } = props.message;
+  const { showAvatar } = props;
+  console.log(showAvatar);
   const user = React.useContext(UserContext);
 
   const messageClass = ownerID === user.state.id ? 'sent' : 'received';
 
   return (
     <div className={`message ${messageClass}`}>
-      <Avatar src={`https://avatars.dicebear.com/api/initials/${user.state.firstName}.svg`} alt="Avatar-Icon" />
+      {showAvatar && (
+      <Avatar
+        sx={{ bgcolor: 'grey' }}
+        alt="Avatar-Icon"
+      >
+        {user.state.firstName[0] + user.state.lastName[0]}
+
+      </Avatar>
+      )}
+      {!showAvatar && (
+      <Box
+        sx={{ width: '42px' }}
+      />
+      )}
+
       <p>{message}</p>
     </div>
   );

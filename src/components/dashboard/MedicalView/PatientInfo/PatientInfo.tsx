@@ -22,6 +22,7 @@ import PatientTimeline from './PatientTimeline';
 import PatientInfoList from './PatientInfoList';
 import { firestore } from '../../../../config/firebase_config';
 import theme from '../../../../static/style/theme';
+import Chat from '../../../chat';
 
 const style = {
   position: 'absolute' as const,
@@ -74,7 +75,7 @@ type HelpFormData = {
   result: string,
 }
 
-type PatientData = {
+export type PatientData = {
   PID: string,
   name: string,
   age: number,
@@ -349,7 +350,7 @@ function PatientInfo({ PID }: Props) {
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Box>
-              {/* chat goes here */}
+              <Chat {...patientData} />
             </Box>
           </Grid>
         </Grid>
