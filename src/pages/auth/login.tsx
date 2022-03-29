@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+// import TextField from '@mui/material/TextField';
+// import Link from '@mui/material/Link';
+// import Box from '@mui/material/Box';
+// import Paper from '@mui/material/Paper';
+// import Grid from '@mui/material/Grid';
+// import Typography from '@mui/material/Typography';
 import {
-  useTheme,
+  Alert, Avatar, Box, Button, Grid, Link, TextField, Typography, ButtonGroup, Paper, useTheme,
 } from '@mui/material';
+// import {
+//   useTheme,
+// } from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 import { useNavigate } from 'react-router-dom';
@@ -115,6 +118,7 @@ export default function LoginPage() {
               </Grid>
             </Grid>
           </Box>
+          {error && <Alert severity="error">{error}</Alert>}
         </Box>
       </Grid>
       <PanelSwapper panelVerySmallSize={550} panelSmallSize={6} panelMedSize={7} />
