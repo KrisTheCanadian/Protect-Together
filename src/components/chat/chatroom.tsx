@@ -100,7 +100,7 @@ function ChatRoom(props: PatientData) {
 
   return (
     <>
-      <Box sx={{ flex: 1, overflow: 'scroll' }}>
+      <Box className="messages-container" sx={{ flex: 1, overflow: 'scroll' }}>
         {messages && messages.map((msg, index) => {
           let showAvatar = true;
           if (messages[index - 1] && messages[index - 1].ownerID === msg.ownerID) {
@@ -113,10 +113,7 @@ function ChatRoom(props: PatientData) {
 
       <form onSubmit={sendMessage} style={{ position: 'relative' }}>
         <input
-          style={{ padding: '10px',
-            width: '100%',
-            borderRadius: '5px',
-            border: '1px solid gainsboro' }}
+          className="message-input"
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder="Type a message"
@@ -124,14 +121,7 @@ function ChatRoom(props: PatientData) {
         <button
           type="submit"
           disabled={!formValue}
-          style={{ position: 'absolute',
-            background: 'none',
-            border: 'none',
-            right: '3px',
-            top: '5px',
-            color: '#434ce6',
-
-          }}
+          className="send-message-button"
         >
           <SendIcon />
 

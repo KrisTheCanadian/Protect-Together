@@ -22,3 +22,29 @@
     align-items: center;
     flex-direction: row-reverse;
 }
+.message-input{
+    padding: 20px;
+    width: 100%;
+    border-radius: 20px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0;
+    border: 1px solid transparent;
+    background: #ffffff;
+    border-top: 1px solid #e7e7e7;
+    outline: none;
+}
+.messages-container{
+    background: white;
+    border-radius: 20px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0;
+}
+.send-message-button{
+    position:absolute;
+    background: none;
+    right:3px;
+    top:15px;
+    color: #434ce6;
+    border:none;
+}
+
