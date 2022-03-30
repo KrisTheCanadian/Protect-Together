@@ -50,7 +50,7 @@ function ChatRoom(props: PatientData) {
   }, [messages]);
 
   // define reference to chat
-  const chatRef = firestore.collection('chats').doc(state.id);
+  const chatRef = firestore.collection('chats').doc(props.PID);
 
   // save message to firestore
   const sendMessage = async (e: any) => {
@@ -136,7 +136,7 @@ function Chat(props: PatientData) {
   return (
     <Box
       className="Chat"
-      sx={{ maxHeight: 'calc(100vh - 136px)',
+      sx={{ height: 'calc(100vh - 136px)',
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -145,7 +145,7 @@ function Chat(props: PatientData) {
 
       }}
     >
-      <Box sx={{ padding: '20px', borderBottom: '1px solid #e7e7e7' }}>
+      <Box sx={{ padding: '15px 20px 15px 20px', borderBottom: '1px solid #e7e7e7' }}>
         <Grid
           container
           spacing={24}

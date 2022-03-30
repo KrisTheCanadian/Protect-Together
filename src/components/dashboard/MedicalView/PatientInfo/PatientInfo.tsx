@@ -91,23 +91,6 @@ export type PatientData = {
   initHelpFormData: HelpFormData[],
 }
 
-const initPatientData: PatientData = {
-  PID: '',
-  name: '',
-  age: 0,
-  sex: '',
-  healthCardNumber: '',
-  status: '',
-  latestTestResult: undefined,
-  latestSymptoms: undefined,
-  history: undefined,
-  medicalConditions: undefined,
-  phone: undefined,
-  bmi: 0,
-  score: undefined,
-  initHelpFormData: [],
-};
-
 export function caseSeverity(score: number | undefined): string {
   if (score !== undefined) {
     if (score > 2.5) return ('Severe');
@@ -118,6 +101,22 @@ export function caseSeverity(score: number | undefined): string {
 }
 
 function PatientInfo({ PID }: Props) {
+  const initPatientData: PatientData = {
+    PID,
+    name: '',
+    age: 0,
+    sex: '',
+    healthCardNumber: '',
+    status: '',
+    latestTestResult: undefined,
+    latestSymptoms: undefined,
+    history: undefined,
+    medicalConditions: undefined,
+    phone: undefined,
+    bmi: 0,
+    score: undefined,
+    initHelpFormData: [],
+  };
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
