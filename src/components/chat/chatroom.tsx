@@ -22,6 +22,7 @@ function ChatRoom(props: PatientData) {
   const [formValue, setFormValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const messageRef = useRef<HTMLInputElement>(null);
+  // ensure scrolls fast to bottom on load and smooth for new message
   const [messagesLoaded, setMessagesLoaded] = useState(0);
 
   // scroll messsages on send
@@ -138,11 +139,12 @@ function Chat(props: PatientData) {
       sx={{ maxHeight: 'calc(100vh - 136px)',
         overflowY: 'auto',
         display: 'flex',
-        flexDirection: 'column' }}
+        flexDirection: 'column',
+        background: 'white',
+        borderRadius: '20px',
+
+      }}
     >
-      <header>
-        <h3>Messages</h3>
-      </header>
 
       <ChatRoom {...props} />
 

@@ -39,7 +39,6 @@ const listHeaderStyle = {
   backgroundColor: '#E6E6E6',
   color: 'black',
   fontWeight: 'bold',
-  marginTop: '16px',
 };
 
 const listStyle = {
