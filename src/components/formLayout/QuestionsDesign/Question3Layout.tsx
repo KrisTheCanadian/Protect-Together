@@ -75,16 +75,13 @@ export default function Question3Layout({ changeStatus, changePoints, changeSymp
       setError(true);
     } else {
       changePoints(pointValue);
+      if (symptomsArray.length !== 0) {
+        addSymptoms(symptomsArray, pointValue);
+      }
       if (nextQuestions.length !== 0) {
-        if (symptomsArray.length !== 0) {
-          addSymptoms(symptomsArray, pointValue, false);
-        }
         setValue('4');
         changeSymptoms(nextQuestions);
       } else {
-        if (symptomsArray.length !== 0) {
-          addSymptoms(symptomsArray, pointValue, true);
-        }
         setValue('5');
       }
     }

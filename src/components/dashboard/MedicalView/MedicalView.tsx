@@ -11,18 +11,7 @@ import {
 } from '@mui/material';
 import SideBar from '../../layout/SideBar';
 import MedicalDashboard from './MedicalDashboard';
-import PatientInfo from './PatientInfo';
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  boxShadow: 0,
-  margin: 0,
-  p: 4,
-};
+import PatientInfo from './PatientInfo/PatientInfo';
 
 function MedicalView() {
   // contentId

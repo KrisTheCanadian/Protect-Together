@@ -85,13 +85,12 @@ export default function Question4Layout(
       setAnsTwo(false);
       setAnsThree(false);
       changePoints(pointValue);
+      addSymptoms(symptoms, pointValue);
       if (selection.length - 1 > id) {
         setId(id + 1);
         setCounter(counter + 1);
-        addSymptoms(symptoms, pointValue, false);
       } else {
         changeCount(counter + 1);
-        addSymptoms(symptoms, pointValue, true);
         setValue('5');
       }
     }

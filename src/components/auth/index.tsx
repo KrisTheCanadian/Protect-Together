@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
@@ -34,10 +35,10 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
-
+    let unsubFirestore = () => {};
     // retrieve user data when we have id
     getUserId().then((id) => {
-      onSnapshot(doc(firestore, 'users', `${id}`), (docu) => {
+      unsubFirestore = onSnapshot(doc(firestore, 'users', `${id}`), (docu) => {
         const data = docu.data();
         if (data) {
           update({
@@ -51,6 +52,7 @@ const AuthRequired: React.FC<IAuthRouteProps> = ({ component }) => {
     });
     return () => {
       unsubscribe();
+      unsubFirestore();
     };
   }, []);
 

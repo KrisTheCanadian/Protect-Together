@@ -8,7 +8,7 @@ import firebase from 'firebase/compat';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
-import UpdateTestResult from '../components/dashboard/patienttestresult';
+import UpdateTestResult from '../components/dashboard/PatientView/UpdateTestResult';
 
 jest.mock('firebase/compat/app', () => {
   const app = jest.requireActual('firebase/compat/app');
@@ -38,6 +38,7 @@ afterEach(cleanup);
 
 test('Patient Results Renders correctly', () => {
   const handleTestClose = jest.fn;
-  const { getByText } = render(<BrowserRouter><UpdateTestResult handleTestClose={handleTestClose} /></BrowserRouter>);
-  expect(getByText('When did you take your test?')).toBeTruthy();
+  const component = render(<BrowserRouter><UpdateTestResult handleTestClose={handleTestClose} /></BrowserRouter>);
+  expect(component.getByText('Cancel')).toBeTruthy();
+  expect(component.getByText('Submit')).toBeTruthy();
 });

@@ -8,7 +8,7 @@ describe('Patient Authentication', () => {
                 cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT_PASSWORD'), {log: false})
                 cy.get('button').click();
                 cy.url().should("contain", '/dashboard')
-                cy.contains('Welcome Cypress')
+                cy.contains('Welcome Patient')
                 cy.get('nav').find('button').should("contain", 'Logout').click()
             }
         })
@@ -31,7 +31,27 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Back to Home').click()
     });
 
-    it('Ask for help - You will be contacted by a doctor', () => {
+    it('Ask for help - Monitor your symptoms', () => {
+        cy.visit('/');
+        cy.contains('Ask for Help').click()
+        cy.contains('Yes')
+        cy.contains('No').click()
+        cy.contains('Continue').click()
+        cy.contains('I have been in contact with a person who has COVID-19.').click()
+        cy.contains('Continue').click()
+        cy.contains('None of the above').click()
+        cy.contains('Continue').click()
+        cy.contains('No').click()
+        cy.contains('Continue').click()
+        cy.contains('Yes').click()
+        cy.contains('Continue').click()
+        cy.contains('No').click()
+        cy.contains('Continue').click()
+        cy.contains('Monitor your symptoms')
+        cy.contains('Back to Home').click()
+    })
+
+        it('Ask for help - You will be contacted by a doctor', () => {
         cy.visit('/');
         cy.contains('Ask for Help').click()
         cy.contains('Yes')
@@ -62,27 +82,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Back to Home').click()
     })
 
-    it('Ask for help - Monitor your symptoms', () => {
-        cy.visit('/');
-        cy.contains('Ask for Help').click()
-        cy.contains('Yes')
-        cy.contains('No').click()
-        cy.contains('Continue').click()
-        cy.contains('I have been in contact with a person who has COVID-19.').click()
-        cy.contains('Continue').click()
-        cy.contains('None of the above').click()
-        cy.contains('Continue').click()
-        cy.contains('No').click()
-        cy.contains('Continue').click()
-        cy.contains('Yes').click()
-        cy.contains('Continue').click()
-        cy.contains('No').click()
-        cy.contains('Continue').click()
-        cy.contains('Monitor your symptoms')
-        cy.contains('Back to Home').click()
-    })
-    
-    // To be fixed
+    // To be fixied
     // it('Add Covid-19 Test', () => {
     //     cy.visit('/')
     //     cy.contains('Add Covid-19 Test').click()
