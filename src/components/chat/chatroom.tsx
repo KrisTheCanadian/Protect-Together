@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
 import firebase from 'firebase/compat/app';
 import SendIcon from '@mui/icons-material/Send';
 import { firestore } from '../../config/firebase_config';
@@ -145,6 +145,21 @@ function Chat(props: PatientData) {
 
       }}
     >
+      <Box sx={{ padding: '20px', borderBottom: '1px solid #e7e7e7' }}>
+        <Grid
+          container
+          spacing={24}
+          justifyContent="space-between"
+        >
+          <Grid item>
+            <Typography variant="h6" component="div">Messages</Typography>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="secondary">Book Appointment</Button>
+
+          </Grid>
+        </Grid>
+      </Box>
 
       <ChatRoom {...props} />
 
