@@ -77,6 +77,8 @@ type HelpFormData = {
 export type PatientData = {
   PID: string,
   name: string,
+  firstName: string,
+  lastName: string,
   age: number,
   sex: string,
   healthCardNumber: string,
@@ -104,6 +106,8 @@ function PatientInfo({ PID }: Props) {
   const initPatientData: PatientData = {
     PID,
     name: '',
+    firstName: '',
+    lastName: '',
     age: 0,
     sex: '',
     healthCardNumber: '',
@@ -176,6 +180,8 @@ function PatientInfo({ PID }: Props) {
         setPatientData({
           PID: patientId,
           name,
+          firstName: patient.firstName,
+          lastName: patient.lastname,
           age,
           sex,
           healthCardNumber,
@@ -348,7 +354,11 @@ function PatientInfo({ PID }: Props) {
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Box>
-              <Chat {...patientData} />
+              <Chat
+                patientID={patientData.PID}
+                recipientFirstName={patientData.firstName}
+                recipientLastName={patientData.lastName}
+              />
             </Box>
           </Grid>
         </Grid>

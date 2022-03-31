@@ -13,6 +13,7 @@ import MainContent from '../../layout/MainContent';
 import { UserContext } from '../../../context/UserContext';
 import { firestore } from '../../../config/firebase_config';
 import theme from '../../../static/style/theme';
+import Chat from '../../chat';
 
 const style = {
   position: 'absolute' as const,
@@ -55,7 +56,7 @@ function PatientMedicalConnect() {
         </Button>
       </Header>
       <MainContent>
-        Chat
+        <Chat patientID={state.id} recipientFirstName="D" recipientLastName={user?.doctorName} />
       </MainContent>
     </Box>
   );

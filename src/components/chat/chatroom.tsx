@@ -17,7 +17,15 @@ interface Message {
   ownerID: string,
 };
 
-function ChatRoom(props: PatientData) {
+interface ChatInfo{
+  patientID: string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recipientFirstName: string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recipientLastName: string,
+}
+
+function ChatRoom(props: ChatInfo) {
   const { state } = React.useContext(UserContext);
   const [formValue, setFormValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -50,7 +58,7 @@ function ChatRoom(props: PatientData) {
   }, [messages]);
 
   // define reference to chat
-  const chatRef = firestore.collection('chats').doc(props.PID);
+  const chatRef = firestore.collection('chats').doc(props.patientID);
 
   // save message to firestore
   const sendMessage = async (e: any) => {
@@ -107,9 +115,9 @@ function ChatRoom(props: PatientData) {
           if (messages[index - 1] && messages[index - 1].ownerID === msg.ownerID) {
             showAvatar = false;
           }
-          return (<ChatMessage key={msg.createdAt} message={msg} showAvatar={showAvatar} />);
+          return (<ChatMessage key={msg.createdAt} message={msg} showAvatar={showAvatar} chatInfo={props} />);
         })}
-        <div ref={messageRef} />
+        <div className="scroll-to" ref={messageRef} />
       </Box>
 
       <form onSubmit={sendMessage} style={{ position: 'relative' }}>
@@ -132,7 +140,7 @@ function ChatRoom(props: PatientData) {
   );
 }
 
-function Chat(props: PatientData) {
+function Chat(props: ChatInfo) {
   return (
     <Box
       className="Chat"
@@ -170,7 +178,7 @@ function Chat(props: PatientData) {
 function ChatMessage(props: any) {
   const { message, ownerID } = props.message;
   const { showAvatar } = props;
-  console.log(showAvatar);
+  const { chatInfo } = props;
   const user = React.useContext(UserContext);
 
   const messageClass = ownerID === user.state.id ? 'sent' : 'received';
@@ -182,7 +190,8 @@ function ChatMessage(props: any) {
         sx={{ bgcolor: 'grey' }}
         alt="Avatar-Icon"
       >
-        {user.state.firstName[0] + user.state.lastName[0]}
+        {messageClass === 'sent' && user.state.firstName[0] + user.state.lastName[0]}
+        {messageClass === 'received' && chatInfo.recipientFirstName[0] + chatInfo.recipientLastName[0]}
 
       </Avatar>
       )}
