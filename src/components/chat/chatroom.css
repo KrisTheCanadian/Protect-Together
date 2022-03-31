@@ -15,9 +15,16 @@
 .sent p{
     background: #434ce6;
     color:white;
-    margin:5px;
-}
 
+}
+p{
+    margin:0px;
+    margin-bottom: 3px;
+    margin-right:5px;
+}
+.no-avatar-spacing{
+    margin-bottom: 5px;
+}
 .sent{
     display: flex;
     align-items: center;

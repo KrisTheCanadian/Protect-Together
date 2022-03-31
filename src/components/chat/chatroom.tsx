@@ -200,8 +200,8 @@ function ChatMessage(props: any) {
         sx={{ width: '42px' }}
       />
       )}
-
-      <p>{message}</p>
+      {showAvatar && <p>{message}</p>}
+      {!showAvatar && <p className="no-avatar-spacing">{message}</p>}
     </div>
   );
 }
