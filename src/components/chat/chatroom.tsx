@@ -44,7 +44,7 @@ function ChatRoom(props: ChatInfo) {
             inline: 'nearest',
           },
         );
-        setMessagesLoaded(messagesLoaded + 1);
+        setMessagesLoaded((m) => m + 1);
       } else {
         messageRef.current.scrollIntoView(
           {
