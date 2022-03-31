@@ -7,7 +7,7 @@ import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
 import firebase from 'firebase/compat/app';
 import SendIcon from '@mui/icons-material/Send';
-import { firestore } from '../../config/firebase_config';
+import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 import { PatientData } from '../dashboard/MedicalView/PatientInfo/PatientInfo';
 import './chatroom.css';
@@ -77,6 +77,14 @@ function ChatRoom(props: ChatInfo) {
       // append message
       messages: firebase.firestore.FieldValue.arrayUnion(message),
       unreadUserIds: firebase.firestore.FieldValue.arrayUnion(props.recipientID),
+    });
+
+    const sendNotification = Firebase.functions().httpsCallable('sendNotificationForConversation');
+    sendNotification({
+      title: 'New Message',
+      message: `Unread message from ${state.firstName} ${state.lastName}`,
+      recipientID: props.recipientID,
+      conversationID: props.patientID,
     });
 
     setFormValue('');
