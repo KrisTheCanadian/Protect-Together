@@ -29,6 +29,7 @@ import { UserContext } from '../../context/UserContext';
 import UpdateTestResult from './patienttestresult';
 import theme from '../../static/style/theme';
 import { firestore } from '../../config/firebase_config';
+import BookingSystem from '../../pages/booking/bookingSystem';
 
 const style = {
   position: 'absolute' as const,
@@ -51,6 +52,8 @@ function PatientDashboard() {
   const handleClose = () => setModalOpen(false);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const handleBookingClose = () => setBookingOpen(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
@@ -142,7 +145,7 @@ function PatientDashboard() {
           {user?.assignedDoctor ? user?.assignedDoctor : ''}
           {' '}
         </Typography>
-
+        <Button onClick={() => setBookingOpen(true)}>Booking</Button>
         <Typography
           variant="h4"
           sx={{
@@ -346,6 +349,14 @@ function PatientDashboard() {
       >
         <Box sx={style}>
           <UpdateTestResult handleTestClose={handleTestClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={bookingOpen}
+        onClose={handleBookingClose}
+      >
+        <Box sx={style}>
+          <BookingSystem handleBookingClose={handleBookingClose} />
         </Box>
       </Modal>
       <Modal

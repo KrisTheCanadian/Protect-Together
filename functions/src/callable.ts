@@ -21,6 +21,7 @@ export const dispatchDoctor = functions.https.onCall( (_data)=> {
         // assign patients
         querySnap.docs.forEach((doc)=>{
           batch.update(doc.ref, "assignedDoctor", _data.medicalID);
+          batch.update(doc.ref, "doctorName", `${_data.firstName} ${_data.lastName}`);
         });
         batch.commit().then(()=>{
           // adjust doctor slots
@@ -54,8 +55,9 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
 
   // assign user to doctor
   if (availableDoctorRef) {
+    const availableDoc = availableDoctorRef.data();
     return userSnap.ref
-        .update({assignedDoctor: availableDoctorRef.data().UID}).then(()=>{
+    .update({assignedDoctor: availableDoc.UID, doctorName: `${availableDoc.firstName} ${_data.lastName}`}).then(()=>{
           // decrement available Slots
           const newfilledSlots = availableDoctorRef.data().filledSlots +1;
           const newAvailableSlots = availableDoctorRef.data().patientSlots - newfilledSlots;
