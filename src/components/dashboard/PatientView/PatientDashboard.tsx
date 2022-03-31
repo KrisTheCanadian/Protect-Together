@@ -17,6 +17,7 @@ import {
   Avatar,
   useMediaQuery,
   useTheme,
+  Modal,
 } from '@mui/material';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
@@ -25,12 +26,18 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import { UserContext } from '../../../context/UserContext';
 import { firestore } from '../../../config/firebase_config';
+import BookingSystem from '../../../pages/booking/bookingSystem';
 
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
-  const { state } = useContext(UserContext);
+  const [testOpen, setTestOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const handleBookingClose = () => setBookingOpen(false);
+  const handleTestOpen = () => setTestOpen(true);
+  const handleTestClose = () => setTestOpen(false);
+  const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
 
   const [country, setCountry] = useState('');
@@ -346,6 +353,14 @@ function PatientDashboard(props: { setContentId: any }) {
           </ListItem>
         </List>
       </MainContent>
+      <Modal
+        open={bookingOpen}
+        onClose={handleBookingClose}
+      >
+        <Box>
+          <BookingSystem handleBookingClose={handleBookingClose} />
+        </Box>
+      </Modal>
     </Box>
   );
 }
