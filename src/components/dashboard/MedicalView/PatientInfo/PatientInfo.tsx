@@ -151,6 +151,8 @@ function PatientInfo({ PID }: Props) {
       if (patient) {
         const patientId = patient.UID;
         const name = [patient.firstName, patient.lastName].join(' ');
+        const { firstName } = patient;
+        const { lastName } = patient;
         const age = Math.floor(((Date.now() - patient.dateOfBirth.toDate()) / 31536000000));
         const { sex, healthCardNumber, priority, medicalConditions, phone } = patient;
         const appointmentDate = format(new Date(1646707969351), 'Pp');
@@ -180,8 +182,8 @@ function PatientInfo({ PID }: Props) {
         setPatientData({
           PID: patientId,
           name,
-          firstName: patient.firstName,
-          lastName: patient.lastname,
+          firstName,
+          lastName,
           age,
           sex,
           healthCardNumber,
