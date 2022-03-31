@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import ProtectTogether from '../../static/style/images/talktodoctor.png';
-import Monitor from '../../static/style/images/Monitor.png';
-import Statistics from '../../static/style/images/Statistics.png';
-import Blob from '../../static/style/images/blob1.png';
-import Blob2 from '../../static/style/images/blob2.png';
-import Blob3 from '../../static/style/images/blob3.png';
+
+import ProtectTogether from '../../static/style/images/talktodoctor.svg';
+import Monitor from '../../static/style/images/Monitor.svg';
+import Statistics from '../../static/style/images/Statistics.svg';
+import Blob from '../../static/style/images/blob1.svg';
+import Blob2 from '../../static/style/images/blob2.svg';
+import Blob3 from '../../static/style/images/blob3.svg';
 import LoginPanel from './LoginPanel';
 
 const blobs = [Blob, Blob2, Blob3];
