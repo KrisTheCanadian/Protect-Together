@@ -117,6 +117,21 @@ function ChatRoom(props: ChatInfo) {
       }
     });
 
+    // remove notifications for this conversation
+    const currentUserRef = firestore.doc(`users/${state.id}`);
+    currentUserRef.get().then((currentUserDoc) => {
+      const currentUser = currentUserDoc.data();
+      let notifications = [];
+      if (currentUser && currentUser.notifications) {
+        // remove notifications for same conversationID
+        notifications = currentUser.notifications.filter((n: any) => n.conversationID !== props.patientID);
+        // update notifications
+        currentUserRef.update({
+          notifications,
+        });
+      }
+    });
+
     return () => {
       unsubscribe();
     };
