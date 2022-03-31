@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useRef, useState } from 'react';
@@ -19,9 +20,8 @@ interface Message {
 
 interface ChatInfo{
   patientID: string,
-  // eslint-disable-next-line react/no-unused-prop-types
+  recipientID:string,
   recipientFirstName: string,
-  // eslint-disable-next-line react/no-unused-prop-types
   recipientLastName: string,
 }
 
@@ -71,11 +71,12 @@ function ChatRoom(props: ChatInfo) {
       ownerID: state.id,
     };
 
-    // add message to messages array
+    // add message to messages array and add recipientID to unread
+    console.log(props.recipientID);
     await chatRef.update({
       // append message
-
       messages: firebase.firestore.FieldValue.arrayUnion(message),
+      unreadUserIds: firebase.firestore.FieldValue.arrayUnion(props.recipientID),
     });
 
     setFormValue('');
@@ -98,6 +99,13 @@ function ChatRoom(props: ChatInfo) {
       const chatData = chatSnapshot.data();
       if (chatSnapshot.exists && chatData) {
         setMessages(chatData.messages);
+
+        // if unreadUserIds contains current user, remove it
+        if (chatData.unreadUserIds.includes(state.id)) {
+          chatRef.update({
+            unreadUserIds: firebase.firestore.FieldValue.arrayRemove(state.id),
+          });
+        }
       }
     });
 

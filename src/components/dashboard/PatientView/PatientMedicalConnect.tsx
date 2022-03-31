@@ -56,7 +56,12 @@ function PatientMedicalConnect() {
         </Button>
       </Header>
       <MainContent>
-        <Chat patientID={state.id} recipientFirstName="D" recipientLastName={user?.doctorName} />
+        <Chat
+          patientID={state.id}
+          recipientID={user?.assignedDoctor}
+          recipientFirstName="D"
+          recipientLastName={user?.doctorName}
+        />
       </MainContent>
     </Box>
   );

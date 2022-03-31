@@ -358,6 +358,7 @@ function PatientInfo({ PID }: Props) {
             <Box>
               <Chat
                 patientID={patientData.PID}
+                recipientID={patientData.PID}
                 recipientFirstName={patientData.firstName}
                 recipientLastName={patientData.lastName}
               />
