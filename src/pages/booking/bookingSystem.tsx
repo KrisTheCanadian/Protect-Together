@@ -9,6 +9,7 @@ import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
 import { arrayUnion, doc, DocumentData, DocumentReference, onSnapshot, Timestamp } from 'firebase/firestore';
 import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
+import Header from '../../components/layout/Header';
 
 type Props = {
     handleBookingClose: any;
