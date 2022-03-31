@@ -55,6 +55,7 @@ function ChatRoom(props: ChatInfo) {
         );
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   // define reference to chat
