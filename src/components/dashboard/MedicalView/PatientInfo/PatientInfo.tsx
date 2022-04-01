@@ -128,16 +128,6 @@ function PatientInfo({ PID }: Props) {
 
   const patientRef = firestore.collection('users').doc(PID);
 
-  const handleCloseFile = () => {
-    setModalContent(0);
-    handleOpen();
-  };
-
-  const handleViewAppointments = () => {
-    setModalContent(1);
-    handleOpen();
-  };
-
   const handleViewHistory = () => {
     setModalContent(2);
     handleOpen();

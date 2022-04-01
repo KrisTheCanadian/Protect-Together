@@ -4,7 +4,7 @@
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import MedicalDashboard from '../../components/dashboard/MedicalView/MedicalDashboard';
+import MedicalView from '../../components/dashboard/MedicalView/MedicalView';
 import { UserProvider } from '../../context/UserContext';
 
 jest.mock('firebase/compat/app', () => {
@@ -56,19 +56,13 @@ jest.mock('firebase/firestore');
 
 afterEach(cleanup);
 
-test('Medical Dashboard Default User Greeting', () => {
-  const component = render(
-    <BrowserRouter>
-      <UserProvider>
-        <MedicalDashboard handlePatientClick={undefined} />
-      </UserProvider>
-    </BrowserRouter>,
-  );
+test('Medical View Default User Greeting', () => {
+  const component = render(<BrowserRouter><UserProvider><MedicalView /></UserProvider></BrowserRouter>);
   expect(component.getByText('Welcome Dr.')).toBeTruthy();
 });
 
-test('Medical Dashboard Renders Test', () => {
-  const component = render(<BrowserRouter><MedicalDashboard handlePatientClick={undefined} /></BrowserRouter>);
+test('Medical View Renders Test', () => {
+  const component = render(<BrowserRouter><MedicalView /></BrowserRouter>);
   expect(component.getByText('Track and manage your patients')).toBeTruthy();
   expect(component.getByText('Name')).toBeTruthy();
   expect(component.getByText('Age')).toBeTruthy();
@@ -78,8 +72,8 @@ test('Medical Dashboard Renders Test', () => {
   expect(component.getByText('Latest Symptoms')).toBeTruthy();
 });
 
-test('Medical Dashboard Renders Patients table', () => {
-  const component = render(<BrowserRouter><MedicalDashboard handlePatientClick={undefined} /></BrowserRouter>);
+test('Medical View Renders Patients table', () => {
+  const component = render(<BrowserRouter><MedicalView /></BrowserRouter>);
   expect(component.getByText('Track and manage your patients')).toBeTruthy();
   expect(component.getByText('Name')).toBeTruthy();
   expect(component.getByText('Age')).toBeTruthy();
@@ -87,4 +81,9 @@ test('Medical Dashboard Renders Patients table', () => {
   expect(component.getByText('Status')).toBeTruthy();
   expect(component.getByText('Severity')).toBeTruthy();
   expect(component.getByText('Latest Symptoms')).toBeTruthy();
+});
+
+test('Medical View Renders View Appointments', () => {
+  const component = render(<BrowserRouter><MedicalView /></BrowserRouter>);
+  expect(component.getAllByText('View Appointments').length).toBeGreaterThan(0);
 });
