@@ -73,7 +73,6 @@ function ChatRoom(props: ChatInfo) {
     };
 
     // add message to messages array and add recipientID to unread
-    console.log(props.recipientID);
     await chatRef.update({
       // append message
       messages: firebase.firestore.FieldValue.arrayUnion(message),
