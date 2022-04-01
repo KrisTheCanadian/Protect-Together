@@ -367,7 +367,10 @@ export default function AdminTable() {
 
                       <TableCell align="left">
                         {(row.role === 'medical') && (
-                        <IconButton aria-label="edit" onClick={(event) => OpenMedicalAvailabilities(event, row.UID, row.name)}>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={(event) => OpenMedicalAvailabilities(event, row.UID, row.name)}
+                        >
                           <InsertInvitationIcon />
                         </IconButton>
                         )}

@@ -154,17 +154,15 @@ export default function AddMedicalAvailabilities({ selectedUser, selectedUserNam
           </FormGroup>
         ))}
       </FormControl>
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button onClick={save} type="submit" variant="contained" color="primary">
-            Save
-          </Button>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          {saved && (
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+
+        <Button onClick={save} type="submit" variant="contained" color="primary">
+          Save
+        </Button>
+
+        {saved && (
           <p className="validationError">Your changes have been saved.</p>
-          )}
-        </div>
+        )}
       </div>
     </div>
 
