@@ -25,7 +25,6 @@ import theme from '../../../../static/style/theme';
 import NotificationsButton from '../../../layout/NotificationsButton';
 import Chat from '../../../chat';
 
-
 const style = {
   position: 'absolute' as const,
   top: '50%',
