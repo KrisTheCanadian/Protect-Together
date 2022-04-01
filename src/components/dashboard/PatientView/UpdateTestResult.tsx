@@ -13,7 +13,8 @@ import {
 import { arrayUnion, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { auth, firestore } from '../../../config/firebase_config';
+import { format } from 'date-fns';
+import Firebase, { auth, firestore } from '../../../config/firebase_config';
 
 type Props = {
   handleTestClose: any;
@@ -35,12 +36,33 @@ function UpdateTestResult({ handleTestClose }: Props) {
   const addPatientTestResults = () => {
     const uid = auth.currentUser?.uid;
     const user = firestore.collection('users').doc(uid);
-    user.update({
-      testsResults: arrayUnion({
-        testResult,
-        testType,
-        testDate,
-      }),
+    const updatePatient = async () => {
+      await user.update({
+        testsResults: arrayUnion({
+          testResult,
+          testType,
+          testDate,
+        }),
+      });
+    };
+    updatePatient().then(() => {
+      const fetchData = async () => {
+        const patientDataSnapshot = await user.get();
+        const patient = patientDataSnapshot.data();
+        if (patient) {
+          const { assignedDoctor } = patient;
+          if (assignedDoctor) {
+            const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
+            dispatchDoctor({
+              title: `${patient.firstName} ${patient.lastName} has updated their test results`,
+              message: `Tested ${testResult} using ${testType} ${testDate
+                ? `on ${format(testDate, 'yyyy-LL-dd')}` : ''}`,
+              userId: assignedDoctor,
+            });
+          }
+        }
+      };
+      fetchData();
     });
   };
 

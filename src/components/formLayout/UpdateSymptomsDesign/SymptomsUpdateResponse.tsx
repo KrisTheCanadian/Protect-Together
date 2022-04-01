@@ -50,6 +50,12 @@ export default function SymptomsUpdateResponse() {
             >
               <Grid item>
                 <Typography variant="h5" align="center">Your symptoms have been updated.</Typography>
+                <Typography
+                  variant="h5"
+                  align="center"
+                >
+                  Your doctor has been notified of your symptoms&apos; update.
+                </Typography>
               </Grid>
             </Grid>
           </Paper>

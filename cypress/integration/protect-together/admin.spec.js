@@ -25,7 +25,7 @@ describe('Sprint 3 Admin Suite', () => {
     it('Admin dashboard', () => {
         cy.visit('/')
         cy.contains('Welcome Admin')
-        cy.get('button').contains('Add Account')
+        cy.get('span').contains('Add Account')
         cy.get('[type="text"]').click().type('Cypress')
         cy.contains('Cypress Admin')
         cy.contains('Cypress Medical')

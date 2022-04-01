@@ -1,0 +1,64 @@
+.received{
+    display: flex;
+    align-items: center;
+}
+.message p{
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: #e5e5e5;
+    border-radius: 17px;
+}
+.sent p{
+    background: #434ce6;
+    color:white;
+
+}
+p{
+    margin:0px;
+    margin-bottom: 3px;
+    margin-right:5px;
+}
+.no-avatar-spacing{
+    margin-bottom: 5px;
+}
+.sent{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.message-input{
+    padding: 20px;
+    width: 100%;
+    border-radius: 20px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0;
+    border: 1px solid transparent;
+    background: #ffffff;
+    border-top: 1px solid #e7e7e7;
+    outline: none;
+}
+.messages-container{
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0;
+    padding-left: 5px;
+    margin-right: -20px;
+    padding-right: 25px;
+    padding-top: 5px;
+}
+
+.send-message-button{
+    position:absolute;
+    background: none;
+    right:3px;
+    top:15px;
+    color: #434ce6;
+    border:none;
+}
+
+.scroll-to{
+    height:5px
+}

@@ -7,6 +7,11 @@ import PatientInfo from '../components/dashboard/MedicalView/PatientInfo/Patient
 jest.mock('firebase/compat/app', () => {
   // mock Firestore
   const Firestore = () => ({
+    doc: () => ({
+      get: () => ({
+        then: () => null,
+      }),
+    }),
     collection: () => ({
 
       where: () => ({
@@ -54,20 +59,11 @@ jest.mock('firebase/firestore');
 afterEach(cleanup);
 
 test('Patient Info Renders correctly', async () => {
+  window.HTMLElement.prototype.scrollIntoView = () => null;
   const component = render(<BrowserRouter><PatientInfo PID="123" /></BrowserRouter>);
-
-  const closeButton = component.getByText("Close Patient's File");
-  expect(closeButton).toBeTruthy();
-  await fireEvent.click(closeButton);
-
-  const appointmentButton = component.getByText('View Appointments');
-  expect(appointmentButton).toBeTruthy();
-  await fireEvent.click(appointmentButton);
 
   expect(component.getByText("Patient's Info")).toBeTruthy();
   expect(component.getByText('Latest Symptoms')).toBeTruthy();
-  expect(component.getByText('Latest Covid Test')).toBeTruthy();
-  expect(component.getByText('Case Severity')).toBeTruthy();
 
   const historyButton = component.getByText('History');
   expect(historyButton).toBeTruthy();
