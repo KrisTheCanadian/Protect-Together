@@ -7,6 +7,11 @@ import PatientInfo from '../components/dashboard/MedicalView/PatientInfo/Patient
 jest.mock('firebase/compat/app', () => {
   // mock Firestore
   const Firestore = () => ({
+    doc: () => ({
+      get: () => ({
+        then: () => null,
+      }),
+    }),
     collection: () => ({
 
       where: () => ({
@@ -54,6 +59,7 @@ jest.mock('firebase/firestore');
 afterEach(cleanup);
 
 test('Patient Info Renders correctly', async () => {
+  window.HTMLElement.prototype.scrollIntoView = () => null;
   const component = render(<BrowserRouter><PatientInfo PID="123" /></BrowserRouter>);
 
   expect(component.getByText("Patient's Info")).toBeTruthy();

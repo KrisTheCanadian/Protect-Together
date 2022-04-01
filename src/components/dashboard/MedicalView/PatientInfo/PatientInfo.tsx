@@ -23,6 +23,8 @@ import PatientInfoList from './PatientInfoList';
 import { firestore } from '../../../../config/firebase_config';
 import theme from '../../../../static/style/theme';
 import NotificationsButton from '../../../layout/NotificationsButton';
+import Chat from '../../../chat';
+
 
 const style = {
   position: 'absolute' as const,
@@ -39,7 +41,6 @@ const listHeaderStyle = {
   backgroundColor: '#E6E6E6',
   color: 'black',
   fontWeight: 'bold',
-  marginTop: '16px',
 };
 
 const listStyle = {
@@ -75,9 +76,11 @@ type HelpFormData = {
   result: string,
 }
 
-type PatientData = {
+export type PatientData = {
   PID: string,
   name: string,
+  firstName: string,
+  lastName: string,
   age: number,
   sex: string,
   healthCardNumber: string,
@@ -92,23 +95,6 @@ type PatientData = {
   initHelpFormData: HelpFormData[],
 }
 
-const initPatientData: PatientData = {
-  PID: '',
-  name: '',
-  age: 0,
-  sex: '',
-  healthCardNumber: '',
-  status: '',
-  latestTestResult: undefined,
-  latestSymptoms: undefined,
-  history: undefined,
-  medicalConditions: undefined,
-  phone: undefined,
-  bmi: 0,
-  score: undefined,
-  initHelpFormData: [],
-};
-
 export function caseSeverity(score: number | undefined): string {
   if (score !== undefined) {
     if (score > 2.5) return ('Severe');
@@ -119,6 +105,24 @@ export function caseSeverity(score: number | undefined): string {
 }
 
 function PatientInfo({ PID }: Props) {
+  const initPatientData: PatientData = {
+    PID,
+    name: '',
+    firstName: '',
+    lastName: '',
+    age: 0,
+    sex: '',
+    healthCardNumber: '',
+    status: '',
+    latestTestResult: undefined,
+    latestSymptoms: undefined,
+    history: undefined,
+    medicalConditions: undefined,
+    phone: undefined,
+    bmi: 0,
+    score: undefined,
+    initHelpFormData: [],
+  };
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -139,6 +143,8 @@ function PatientInfo({ PID }: Props) {
       if (patient) {
         const patientId = patient.UID;
         const name = [patient.firstName, patient.lastName].join(' ');
+        const { firstName } = patient;
+        const { lastName } = patient;
         const age = Math.floor(((Date.now() - patient.dateOfBirth.toDate()) / 31536000000));
         const { sex, healthCardNumber, priority, medicalConditions, phone } = patient;
         const appointmentDate = format(new Date(1646707969351), 'Pp');
@@ -168,6 +174,8 @@ function PatientInfo({ PID }: Props) {
         setPatientData({
           PID: patientId,
           name,
+          firstName,
+          lastName,
           age,
           sex,
           healthCardNumber,
@@ -322,7 +330,12 @@ function PatientInfo({ PID }: Props) {
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Box>
-              {/* chat goes here */}
+              <Chat
+                patientID={patientData.PID}
+                recipientID={patientData.PID}
+                recipientFirstName={patientData.firstName}
+                recipientLastName={patientData.lastName}
+              />
             </Box>
           </Grid>
         </Grid>
