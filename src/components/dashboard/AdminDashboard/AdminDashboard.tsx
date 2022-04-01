@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import {
-  Button,
   Box,
   CssBaseline,
   Divider,
@@ -10,7 +10,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
   Modal,
   Badge,
 } from '@mui/material';
@@ -24,6 +23,7 @@ import theme from '../../../static/style/theme';
 import UnassignedPatientTable from './UnassignedPatientTable';
 import NotificationsMenuItem from '../../layout/NotificationsMenuItem';
 import Firebase, { firestore } from '../../../config/firebase_config';
+import NotificationsButton from '../../layout/NotificationsButton';
 
 const style = {
   position: 'absolute' as const,
@@ -97,9 +97,7 @@ function AdminDashboard() {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <Header title={`Welcome ${state.firstName}`} subtitle="Track and manage staff">
-        <Button variant="contained" color="info" onClick={handleOpen}>
-          Add Account
-        </Button>
+        <NotificationsButton />
       </Header>
       <SideBar>
         <List>
@@ -116,6 +114,12 @@ function AdminDashboard() {
               </Badge>
             </ListItemIcon>
             <ListItemText primary="Unassigned Patients" />
+          </ListItem>
+          <ListItem button onClick={handleOpen}>
+            <ListItemIcon>
+              <PersonAddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Account" />
           </ListItem>
           <NotificationsMenuItem />
           <ListItem button onClick={handleNotifyTest}>

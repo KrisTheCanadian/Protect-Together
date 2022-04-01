@@ -22,6 +22,7 @@ import PatientTimeline from './PatientTimeline';
 import PatientInfoList from './PatientInfoList';
 import { firestore } from '../../../../config/firebase_config';
 import theme from '../../../../static/style/theme';
+import NotificationsButton from '../../../layout/NotificationsButton';
 import Chat from '../../../chat';
 
 const style = {
@@ -129,16 +130,6 @@ function PatientInfo({ PID }: Props) {
   const [expandInfo, setExpandInfo] = React.useState<boolean>(false);
 
   const patientRef = firestore.collection('users').doc(PID);
-
-  const handleCloseFile = () => {
-    setModalContent(0);
-    handleOpen();
-  };
-
-  const handleViewAppointments = () => {
-    setModalContent(1);
-    handleOpen();
-  };
 
   const handleViewHistory = () => {
     setModalContent(2);
@@ -270,29 +261,7 @@ function PatientInfo({ PID }: Props) {
         title={`${patientData.name}`}
         subtitle={`RAMQ ${patientData.healthCardNumber} Age: ${patientData.age} years`}
       >
-        <Grid
-          container
-          textAlign="right"
-          spacing={1}
-          sx={{ width: { md: '520px', sm: '200px' } }}
-        >
-          <Grid
-            textAlign="left"
-            item
-            md={4}
-            sm={12}
-          />
-          <Grid item md={4} sm={12}>
-            <Button sx={headerButtonStyle} variant="contained" color="warning" onClick={handleCloseFile}>
-              Close Patient&apos;s File
-            </Button>
-          </Grid>
-          <Grid item md={4} sm={12}>
-            <Button sx={headerButtonStyle} variant="contained" color="info" onClick={handleViewAppointments}>
-              View Appointments
-            </Button>
-          </Grid>
-        </Grid>
+        <NotificationsButton />
       </Header>
       <MainContent>
         <Grid container spacing={2}>
@@ -309,6 +278,7 @@ function PatientInfo({ PID }: Props) {
                   </ListSubheader>
                 )}
               >
+                { patientData.latestTestResult && (
                 <ListItem key="Latest Covid Test">
                   <ListItemText
                     primary="Latest Covid Test"
@@ -324,7 +294,9 @@ function PatientInfo({ PID }: Props) {
                     )}
                   />
                 </ListItem>
+                )}
                 <Divider variant="middle" />
+                { patientData.score && (
                 <ListItem key="Case Severity">
                   <ListItemText
                     primary="Case Severity"
@@ -343,6 +315,7 @@ function PatientInfo({ PID }: Props) {
                     )}
                   />
                 </ListItem>
+                )}
                 {extendedInfo && extendedInfo()}
               </List>
               <PatientInfoList

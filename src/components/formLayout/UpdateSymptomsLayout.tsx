@@ -41,7 +41,24 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
 
   useEffect(() => {
     if (symptomsDone) {
-      updateUserSymptoms();
+      updateUserSymptoms().then(() => {
+        const fetchData = async () => {
+          const patientDataSnapshot = await users.doc(state.id).get();
+          const patient = patientDataSnapshot.data();
+          if (patient) {
+            const { assignedDoctor } = patient;
+            if (assignedDoctor) {
+              const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
+              dispatchDoctor({
+                title: `${patient.firstName} ${patient.lastName} has updated their symptoms`,
+                message: userSymptoms.join('. '),
+                userId: assignedDoctor,
+              });
+            }
+          }
+        };
+        fetchData();
+      });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symptomsDone]);
