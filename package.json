@@ -56,10 +56,14 @@
     "eject": "react-scripts eject",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
+    "cy:ci": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore 'npm run cy:start'",
     "cy:start": "cross-env PORT=5050 react-scripts -r @cypress/instrument-cra start",
-    "cy:test": "start-test cy:start 5050 cy:open",
+    "coverage": "npm run jest:run && npm run cy:fire && npm run merge-coverage && npm run cov-report",
+    "merge-coverage": "node ./scripts/mergeCoverage.js",
+    "jest:run": "react-scripts test --coverage --coverageDirectory=coverage/jest-coverage --watchAll=false",
     "cy:fire": "firebase emulators:exec --import=./cypress/firestore \"npm run cy:test\"",
-    "cy:ci": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore 'npm run cy:start'"
+    "cy:test": "start-test cy:start 5050 cy:run",
+    "cov-report": "start coverage/lcov-report/index.html"
   },
   "browserslist": {
     "production": [

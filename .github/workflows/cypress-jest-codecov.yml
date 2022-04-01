@@ -1,0 +1,67 @@
+name: Cypress Tests
+
+on: [pull_request]
+
+jobs:
+  cypress-jest-run:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        run: |
+            sudo apt install nodejs
+            sudo apt update
+            node -v
+
+      - run: npm i
+      - run: npm run build
+
+
+      - name: Jest run
+        run: npm run jest:run
+
+      - name: Install Firebase Emulator Suite
+        run: |
+          npm install -g firebase-tools
+          npm ci
+          npm run build
+        working-directory: functions
+
+      - name: Update browsers
+        run:  npx browserslist@latest --update-db
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          wait-on: 'http://localhost:5050'
+          start: npm run cy:ci
+        env:
+          # Authorization for running the firebase CLI (emulator)
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}
+          # Cypress variables
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_BASE_URL: http://localhost:5050
+          # Cypress Tests variables
+          CYPRESS_ADMIN_EMAIL: ${{ secrets.CYPRESS_ADMIN_EMAIL }}
+          CYPRESS_ADMIN_PASSWORD: ${{ secrets.CYPRESS_ADMIN_PASSWORD }}
+          CYPRESS_MEDICAL_EMAIL: ${{ secrets.CYPRESS_MEDICAL_EMAIL }}
+          CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
+          CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
+          CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
+
+
+      - name: Merge Cypress and Jest code coverage
+        run: npm run merge-coverage
+
+
+      - name: Upload coverage results to Codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
