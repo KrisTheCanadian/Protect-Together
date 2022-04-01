@@ -10,10 +10,12 @@ import Paper from '@mui/material/Paper';
 import { IconButton, Modal } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InsertInvitationIcon from '@mui/icons-material/InsertInvitation';
 import { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
 import { EditUser } from './EditUser';
+import AddMedicalAvailabilities from './AddMedicalAvailabilities';
 
 export interface EnhancedTableProps {
   numSelected: number;
@@ -144,9 +146,10 @@ const modalStyle = {
 
 export default function AdminTable() {
   // modal window for editing user
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalEditOpen, setModalEditOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
-  const handleOpen = () => setModalOpen(true);
+  const [selectedUserName, setSelectedUserName] = useState('');
+  const [modalAvailabilitiesOpen, setModalAvailabilitiesOpen] = useState(false);
 
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Data>('name');
@@ -241,9 +244,14 @@ export default function AdminTable() {
   };
 
   // this handles the click to click a row
-  const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
-    setModalOpen(true);
+  const openEditUser = (event: React.MouseEvent<unknown>, UID: string) => {
+    setModalEditOpen(true);
     setSelectedUser(UID);
+  };
+  const OpenMedicalAvailabilities = (event: React.MouseEvent<unknown>, UID: string, name: string) => {
+    setModalAvailabilitiesOpen(true);
+    setSelectedUser(UID);
+    setSelectedUserName(name);
   };
   const handleCheck = (event: React.MouseEvent<unknown>, name: string) => {
     event.preventDefault();
@@ -286,8 +294,12 @@ export default function AdminTable() {
     filterTable(event);
   };
 
-  const handleClose = () => {
-    setModalOpen(false);
+  const closeEditUser = () => {
+    setModalEditOpen(false);
+  };
+
+  const closeMedicalAvailabilities = () => {
+    setModalAvailabilitiesOpen(false);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -351,14 +363,27 @@ export default function AdminTable() {
                         {(row.role !== 'medical') && (
                           ' N/A'
                         )}
+                      </TableCell>
+
+                      <TableCell align="left">
+                        {(row.role === 'medical') && (
+                        <IconButton
+                          aria-label="edit"
+                          onClick={(event) => OpenMedicalAvailabilities(event, row.UID, row.name)}
+                        >
+                          <InsertInvitationIcon />
+                        </IconButton>
+                        )}
+                        {(row.role !== 'medical') && (
+                          ' N/A'
+                        )}
 
                       </TableCell>
-                      <TableCell align="left">N/A</TableCell>
                       <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="right">
                         {row.role === 'medical'
                           && (
-                            <IconButton aria-label="edit" onClick={(event) => handleClick(event, row.UID)}>
+                            <IconButton aria-label="edit" onClick={(event) => openEditUser(event, row.UID)}>
                               <EditOutlinedIcon />
                             </IconButton>
                           )}
@@ -393,14 +418,26 @@ export default function AdminTable() {
         />
       </Paper>
       <Modal
-        open={modalOpen}
-        onClose={handleClose}
+        open={modalEditOpen}
+        onClose={closeEditUser}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <EditUser handleClose={handleClose} selectedUser={selectedUser} />
+          <EditUser handleClose={closeEditUser} selectedUser={selectedUser} />
+        </Box>
+      </Modal>
 
+      <Modal
+        open={modalAvailabilitiesOpen}
+        onClose={closeMedicalAvailabilities}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <div>
+            <AddMedicalAvailabilities selectedUser={selectedUser} selectedUserName={selectedUserName} />
+          </div>
         </Box>
       </Modal>
 

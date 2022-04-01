@@ -79,6 +79,12 @@ function AdminCreateAccount({ handleClose }: Props) {
         availableSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
         patientSlots: medicalConstants.PATIENT_DEFAULT_SLOTS,
         filledSlots: 0,
+        availabilities:
+        [{ id: 1, startTime: '9:0', endTime: '17:0' },
+          { id: 2, startTime: '9:0', endTime: '17:0' },
+          { id: 3, startTime: '9:0', endTime: '17:0' },
+          { id: 4, startTime: '9:0', endTime: '17:0' },
+          { id: 5, startTime: '9:0', endTime: '17:0' }],
       };
     }
 
