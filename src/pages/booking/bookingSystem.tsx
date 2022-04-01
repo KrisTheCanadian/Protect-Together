@@ -9,53 +9,46 @@ import { Alert, Button, Grid, Paper, Typography, Stack, Modal } from '@mui/mater
 import { arrayUnion, doc, DocumentData, onSnapshot, setDoc, Timestamp } from 'firebase/firestore';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
-import Header from '../../components/layout/Header';
 
 type Props = {
     handleBookingClose: any;
   };
 
-function bookingSystem(this: any, { handleBookingClose } : Props) {
-  const [appointment, setAppointment] = useState<Date | null>(new Date('2022-01-01 12:00'));
+function bookingSystem({ handleBookingClose } : Props) {
   const [user, setUser] = useState<DocumentData>();
-  const [open, setOpen] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date('2022-01-01 12:00'));
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [booked, setBooked] = useState<boolean>(false);
   const { state } = React.useContext(UserContext);
   const users = firestore.collection('users');
   const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
 
-  const date1 = new Date('2022-05-02 02:15');
-  const date2 = new Date('2022-07-01 02:15');
-  const date3 = new Date('2022-06-15 03:55');
-  const times = [date1, date2, date3, date2];
-  const bookedDates = [date1, date2];
-  const bookedTimes: number[] = [];
+  const date1 = new Date('2022-05-02 5:15');
+  const date2 = new Date('2022-07-01 2:15');
+  const date3 = new Date('2022-06-15 3:55');
 
-  const checkAppoint = (data : Date | null) => {
-    if (data === null) {
+  const setTimes = ['1:00', '2:00', '3:00', '3:55', '4:00', '5:15'];
+  const bookedDates = [date1, date2, date3];
+  const bookedTimes: string[] = [];
+  const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
+
+  const updateTimes = () => {
+    setUpdatedTimes(setTimes.filter((n) => !bookedTimes.includes(n)));
+  };
+
+  const checkAppoint = (date : Date | null) => {
+    setSelectedDate(date);
+    if (date === null) {
       setError('Please select a date');
     } else {
       // eslint-disable-next-line no-restricted-syntax
       for (const appoint of bookedDates) {
-        if (appoint.getDate() === data?.getDate()
-        && appoint.getMonth() === data?.getMonth() && appoint.getFullYear() === data?.getFullYear()) {
-          bookedTimes.push(appoint.getTime());
+        if (appoint.getDate() === date?.getDate()
+        && appoint.getMonth() === date?.getMonth() && appoint.getFullYear() === date?.getFullYear()) {
+          bookedTimes.push(`${appoint.getHours()}:${appoint.getMinutes()}`);
         }
       }
-    }
-  };
-
-  const makeButton = (data : Date) => {
-    if (bookedTimes.length === 0 || !(bookedTimes.includes(data.getTime()))) {
-      console.log('looks good');
-        <Button variant="contained">
-          {data.getHours()}
-          {' : '}
-          {data.getMinutes()}
-        </Button>;
     }
   };
 
@@ -82,16 +75,34 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
             await users
               .doc(state.id)
               .update({
-                appointments: arrayUnion({ appointment }),
+                appointments: arrayUnion({ selectedDate }),
               });
           }
         });
     }
   };
 
-  function disableWeekends(date: { getDay: () => number; }) {
-    return date.getDay() === 0 || date.getDay() === 6;
-  }
+  const createAppointment = () => {
+    if (selectedDate === null) {
+      setError('Please select a date');
+    } else if (selectedTime === '' || selectedTime === null) {
+      setError('Please select a time');
+    } else {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const date = selectedDate.getDate();
+      const hour = parseInt(selectedTime.split(':')[0], 10);
+      const minute = parseInt(selectedTime.split(':')[1], 10);
+      const test = new Date(year, month, date, hour, minute);
+      console.log(test);
+      setSelectedDate(test);
+      console.log(selectedDate);
+      addDoctorAppointment();
+      handleBookingClose();
+    }
+  };
+
+  const disableWeekends = (date: { getDay: () => number; }) => date.getDay() === 0 || date.getDay() === 6;
 
   return (
     <Grid
@@ -137,6 +148,7 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
               borderRadius: 4,
               bgcolor: 'secondary.main',
               p: 4,
+              mb: 3,
             }}
           >
             <Typography variant="h5">
@@ -146,18 +158,6 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
             </Typography>
             <Grid sx={{ textAlign: 'center' }} mt={2}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                {/* <DateTimePicker
-                  renderInput={(params) => <TextField {...params} />}
-                  label="Book Appointment"
-                  value={appointment}
-                  onChange={(newValue) => {
-                    setAppointment(newValue);
-                  }}
-                  minDate={new Date()}
-                  minTime={new Date(0, 0, 0, 8)}
-                  maxTime={new Date(0, 0, 0, 18, 45)}
-                  shouldDisableDate={disableWeekends}
-                /> */}
                 <DatePicker
                   disablePast
                   value={selectedDate}
@@ -165,22 +165,36 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
                   openTo="day"
                   views={['year', 'month', 'day']}
                   onChange={(newValue) => {
-                    setSelectedDate(newValue);
-                    // checkAppoint(selectedDate);
-                    // setOpen(true);
-                    console.log('here');
+                    checkAppoint(newValue);
+                    updateTimes();
                   }}
                   renderInput={(params) => <TextField {...params} />}
+                  minDate={new Date()}
+                  shouldDisableDate={disableWeekends}
                 />
               </LocalizationProvider>
-              {/* <Modal open={open}> */}
-              <Stack spacing={2}>
-                {times.map(makeButton, this)}
+              <Stack spacing={2} mt={2}>
+                {updatedTimes.map((d) => (
+                  <Button
+                    variant="contained"
+                    key={d}
+                    onClick={() => setSelectedTime(d)}
+                  >
+                    {d}
+                  </Button>
+                ))}
               </Stack>
-              {/* </Modal> */}
             </Grid>
           </Paper>
         </Grid>
+        <Typography variant="h6" sx={{ textAlign: 'center' }}>
+          {selectedDate?.toDateString()}
+          {' '}
+          {'at '}
+          {' '}
+          {selectedTime}
+          {parseInt(selectedTime.split(':')[0], 10) < 12 ? 'am' : 'pm'}
+        </Typography>
         <Grid
           container
           item
@@ -210,7 +224,7 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
               </Button>
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} mb={2}>
             <Paper
               sx={{
                 mt: 2,
@@ -219,8 +233,7 @@ function bookingSystem(this: any, { handleBookingClose } : Props) {
               <Button
                 type="button"
                 onClick={() => {
-                  handleBookingClose();
-                  addDoctorAppointment();
+                  createAppointment();
                 }}
                 fullWidth
                 variant="contained"
