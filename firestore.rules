@@ -7,6 +7,11 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    match /messages/{docID} {
+      allow read: if request.auth.uid != null;
+      allow create: if canCreateMessage();
+    }
+
     match /users/{userId} {
       allow read: if isLoggedIn() 
           && (belongsTo(userId) || hasRole('admin') || hasRole('medical'));
@@ -27,6 +32,13 @@ service cloud.firestore {
       allow create: if isLoggedIn() && (request.auth.uid == request.resource.data.uid || hasRole('admin') || hasRole('medical'));
 
       allow update: if isLoggedIn() && (request.auth.uid == resource.data.uid || hasRole('admin') || hasRole('medical'));
+    }
+
+    function canCreateMessage() {
+      let isSignedIn = request.auth.uid != null;
+      let isOwner = request.auth.uid == request.resource.data.uid;
+
+      return isSignedIn && isOwner;
     }
 
     function getUserById(userid) {
