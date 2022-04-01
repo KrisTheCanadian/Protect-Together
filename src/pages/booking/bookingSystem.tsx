@@ -17,6 +17,7 @@ type Props = {
 function bookingSystem({ handleBookingClose } : Props) {
   const [user, setUser] = useState<DocumentData>();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [appointmentDate, setAppointmenDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [error, setError] = useState<string>('');
   const { state } = React.useContext(UserContext);
@@ -75,12 +76,20 @@ function bookingSystem({ handleBookingClose } : Props) {
             await users
               .doc(state.id)
               .update({
-                appointments: arrayUnion({ selectedDate }),
+                appointments: arrayUnion({ selectedDate: appointmentDate }),
               });
           }
         });
     }
   };
+
+  useEffect(() => {
+    if (appointmentDate !== null) {
+      addDoctorAppointment();
+      handleBookingClose();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appointmentDate]);
 
   const createAppointment = () => {
     if (selectedDate === null) {
@@ -93,12 +102,7 @@ function bookingSystem({ handleBookingClose } : Props) {
       const date = selectedDate.getDate();
       const hour = parseInt(selectedTime.split(':')[0], 10);
       const minute = parseInt(selectedTime.split(':')[1], 10);
-      const test = new Date(year, month, date, hour, minute);
-      console.log(test);
-      setSelectedDate(test);
-      console.log(selectedDate);
-      addDoctorAppointment();
-      handleBookingClose();
+      setAppointmenDate(new Date(year, month, date, hour, minute));
     }
   };
 
