@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { DateTimePicker, DatePicker } from '@mui/lab';
-import { Alert, Button, Grid, Paper, Typography, Stack, Modal } from '@mui/material';
-import { arrayUnion, doc, DocumentData, onSnapshot, setDoc, Timestamp } from 'firebase/firestore';
+import { DatePicker } from '@mui/lab';
+import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
+import { arrayUnion, doc, DocumentData, onSnapshot, setDoc } from 'firebase/firestore';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
@@ -16,7 +16,7 @@ type Props = {
 
 function bookingSystem({ handleBookingClose } : Props) {
   const [user, setUser] = useState<DocumentData>();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [error, setError] = useState<string>('');
   const { state } = React.useContext(UserContext);
@@ -37,7 +37,9 @@ function bookingSystem({ handleBookingClose } : Props) {
     setUpdatedTimes(setTimes.filter((n) => !bookedTimes.includes(n)));
   };
 
-  const checkAppoint = (date : Date | null) => {
+  const checkTOD = () => (parseInt(selectedTime.split(':')[0], 10) < 12 ? 'am' : 'pm');
+
+  const checkAppoint = (date : Date) => {
     setSelectedDate(date);
     if (date === null) {
       setError('Please select a date');
@@ -83,7 +85,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   const createAppointment = () => {
-    if (selectedDate === null) {
+    if (selectedDate === null || selectedDate === undefined) {
       setError('Please select a date');
     } else if (selectedTime === '' || selectedTime === null) {
       setError('Please select a time');
@@ -95,8 +97,9 @@ function bookingSystem({ handleBookingClose } : Props) {
       const minute = parseInt(selectedTime.split(':')[1], 10);
       const test = new Date(year, month, date, hour, minute);
       console.log(test);
+      console.log(test.getHours());
       setSelectedDate(test);
-      console.log(selectedDate);
+      console.log(selectedDate.getHours());
       addDoctorAppointment();
       handleBookingClose();
     }
@@ -165,7 +168,9 @@ function bookingSystem({ handleBookingClose } : Props) {
                   openTo="day"
                   views={['year', 'month', 'day']}
                   onChange={(newValue) => {
-                    checkAppoint(newValue);
+                    if (newValue) {
+                      checkAppoint(newValue);
+                    }
                     updateTimes();
                   }}
                   renderInput={(params) => <TextField {...params} />}
@@ -190,10 +195,10 @@ function bookingSystem({ handleBookingClose } : Props) {
         <Typography variant="h6" sx={{ textAlign: 'center' }}>
           {selectedDate?.toDateString()}
           {' '}
-          {'at '}
+          {selectedTime === '' ? '' : 'at '}
           {' '}
           {selectedTime}
-          {parseInt(selectedTime.split(':')[0], 10) < 12 ? 'am' : 'pm'}
+          {selectedTime === '' ? ' ' : checkTOD() }
         </Typography>
         <Grid
           container
