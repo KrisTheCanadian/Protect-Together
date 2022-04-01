@@ -50,11 +50,8 @@ export default function AddMedicalAvailabilities({ selectedUser, selectedUserNam
   useEffect(() => {
     if (currentAvailabilities) {
       currentAvailabilities.forEach((item: any) => {
-        console.log('here');
         days.forEach((day) => {
-          console.log(day.id);
           if (day.id === item.id) {
-            console.log('here');
             day.value = true;
             day.sTime = new Date(`2020-01-01 ${item.startTime}`);
             day.eTime = new Date(`2020-01-01 ${item.endTime}`);
@@ -155,11 +152,9 @@ export default function AddMedicalAvailabilities({ selectedUser, selectedUserNam
         ))}
       </FormControl>
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-
         <Button onClick={save} type="submit" variant="contained" color="primary">
           Save
         </Button>
-
         {saved && (
           <p className="validationError">Your changes have been saved.</p>
         )}
