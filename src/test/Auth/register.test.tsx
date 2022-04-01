@@ -9,8 +9,10 @@ import userEvent from '@testing-library/user-event';
 import firebase from 'firebase/compat';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { format } from 'date-fns';
 import { auth } from '../../config/firebase_config';
 import RegisterPage from '../../pages/auth/register';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import '@testing-library/jest-dom';
 
 jest.mock('firebase/compat/app', () => {
@@ -105,7 +107,7 @@ test('Register renders correctly', async () => {
 
   const datepicker = screen.getByLabelText('Date of Birth *');
   await userEvent.type(datepicker, '2021-11-09');
-  const chosenDate = screen.getByRole('button', { name: 'Mar 29, 2022' });
+  const chosenDate = screen.getByRole('button', { name: format(Date.now(), 'MMM d, Y') });
   await fireEvent.click(chosenDate);
   expect(chosenDate).toBeInTheDocument();
 
