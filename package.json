@@ -63,7 +63,8 @@
     "jest:run": "react-scripts test --coverage --coverageDirectory=coverage/jest-coverage --watchAll=false --testPathIgnorePatterns register.test.tsx",
     "cy:fire": "firebase emulators:exec --import=./cypress/firestore \"npm run cy:test\"",
     "cy:test": "start-test cy:start 5050 cy:run",
-    "cov-report": "start coverage/lcov-report/index.html"
+    "cov-report": "start coverage/lcov-report/index.html",
+    "cy:local": " firebase emulators:exec --import=./cypress/firestore \"cypress open --config baseUrl=http://localhost:5000\""
   },
   "browserslist": {
     "production": [
