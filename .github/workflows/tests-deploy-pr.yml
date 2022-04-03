@@ -98,20 +98,11 @@ jobs:
       - name: Jest Tests
         run: npm run jest:run
 
-      - name: Print Jest coverage
-        run: |
-          npx nyc merge coverage/jest-coverage .nyc_output/out.json
-          npx nyc report --reporter=text-summary
-          npx nyc report --reporter=text
-        continue-on-error: true
 
-      - name: Save coverage folder
-        uses: actions/upload-artifact@v2
-        continue-on-error: true
+      - name: Upload coverage results to Codecov.io
+        uses: codecov/codecov-action@v2
         with:
-          name: jest-coverage
-          if-no-files-found: error
-          path: coverage/jest-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
 
 
   cypress-tests:
@@ -152,7 +143,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-firebase-emulators-
 
-
       - name: Cypress Tests
         uses: cypress-io/github-action@v2
         with:
@@ -177,31 +167,6 @@ jobs:
           CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
           CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
           CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
-
-      - name: Print Cypress coverage
-        run: |
-          sudo rm .nyc_output/out.json
-          npx nyc merge coverage/cypress-coverage .nyc_output/out.json
-          npx nyc report --reporter=text-summary
-          npx nyc report --reporter=text
-        continue-on-error: true
-
-      - name: Download Jest coverage folders
-        uses: actions/download-artifact@v2
-        with:
-          name: jest-coverage
-          path: coverage/jest-coverage
-
-      - name: Merge Cypress and Jest code coverage
-        run: npm run merge-coverage
-        continue-on-error: true
-
-      - name: Print Total Coverage
-        run: |
-          npx nyc report --include coverage
-          npx nyc report --reporter=text-summary
-          npx nyc report --reporter=text
-        continue-on-error: true
 
       - name: Upload coverage results to Codecov.io
         uses: codecov/codecov-action@v2
