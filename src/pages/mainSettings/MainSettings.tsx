@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-// eslint-disable-next-line import/no-unresolved
-import '../../../static/style/CovidData.css';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   CssBaseline,
@@ -8,25 +6,28 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
+  ListItemText, Modal,
   useMediaQuery,
   useTheme,
-  Modal,
 } from '@mui/material';
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import CoronavirusIcon from '@mui/icons-material/Coronavirus';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import BiotechIcon from '@mui/icons-material/Biotech';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import CoronavirusIcon from '@mui/icons-material/Coronavirus';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { UserContext } from '../../../context/UserContext';
-import SideBar from '../../layout/SideBar';
-import UpdateTestResult from './UpdateTestResult';
-import TestResults from './TestResults';
-import { firestore } from '../../../config/firebase_config';
-import PatientDashboard from './PatientDashboard';
-import PatientMedicalConnect from './PatientMedicalConnect';
+import SideBar from '../../components/layout/SideBar';
+import { firestore } from '../../config/firebase_config';
+import { UserContext } from '../../context/UserContext';
+import UpdateTestResult from '../../components/dashboard/PatientView/UpdateTestResult';
+import TestResults from '../../components/dashboard/PatientView/TestResults';
+import AccountSettings from '../../components/accountSettings/AccountSettings';
+import PatientDashboard from '../../components/dashboard/PatientView/PatientDashboard';
+import ContactInformation from '../../components/accountSettings/ContactInformation';
+import HealthInformation from '../../components/accountSettings/HealthInfotmation';
+import ChangePassword from '../../components/accountSettings/ChangePassword';
+import AllInOne from '../../components/accountSettings/AllInOne';
 
 const style = {
   position: 'absolute' as const,
@@ -39,9 +40,9 @@ const style = {
   p: 4,
 };
 
-function PatientView() {
-  const [contentId, setContentId] = useState<number>(0);
+function MainSettings() {
   const navigate = useNavigate();
+  const [option, setOption] = useState<number>(0);
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
@@ -69,7 +70,7 @@ function PatientView() {
       <CssBaseline />
       <SideBar>
         <List>
-          <ListItem button key="Dashboard" onClick={() => setContentId(0)}>
+          <ListItem button key="Dashboard" onClick={() => { navigate('/dashboard'); }}>
             <ListItemIcon>
               <DashboardOutlinedIcon />
             </ListItemIcon>
@@ -98,17 +99,21 @@ function PatientView() {
               />
             </ListItem>
           )}
-          <ListItem button key="Settings" data-testid="MainSettings">
+          <ListItem button key="Settings" data-testid="MainSettings" onClick={() => setOption(0)}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Main Settings" onClick={() => { navigate('/mainSettings'); }} />
+            <ListItemText primary="Main Settings" />
           </ListItem>
         </List>
         <Divider />
       </SideBar>
-      {contentId === 0 && <PatientDashboard setContentId={setContentId} />}
-      {contentId === 1 && <PatientMedicalConnect />}
+      {option === 0 && <AllInOne setOption={setOption} />}
+      {option === 1 && <AccountSettings setOption={setOption} />}
+      {option === 1 && <ContactInformation />}
+      {option === 2 && <ChangePassword />}
+      {option === 3 && <HealthInformation />}
+
       <Modal
         open={testOpen}
         onClose={handleTestClose}
@@ -133,4 +138,4 @@ function PatientView() {
   );
 }
 
-export default PatientView;
+export default MainSettings;
