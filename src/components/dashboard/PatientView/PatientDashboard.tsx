@@ -26,15 +26,12 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import { UserContext } from '../../../context/UserContext';
 import { firestore } from '../../../config/firebase_config';
-import BookingSystem from '../../../pages/booking/bookingSystem';
 
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const handleBookingClose = () => setBookingOpen(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
@@ -98,9 +95,9 @@ function PatientDashboard(props: { setContentId: any }) {
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
         <div>
           {!user?.assignedDoctor && (
-            <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
-              Ask for Help
-            </Button>
+          <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
+            Ask for Help
+          </Button>
           )}
         </div>
       </Header>
@@ -353,14 +350,6 @@ function PatientDashboard(props: { setContentId: any }) {
           </ListItem>
         </List>
       </MainContent>
-      <Modal
-        open={bookingOpen}
-        onClose={handleBookingClose}
-      >
-        <Box>
-          <BookingSystem handleBookingClose={handleBookingClose} />
-        </Box>
-      </Modal>
     </Box>
   );
 }

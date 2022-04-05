@@ -17,6 +17,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import EventIcon from '@mui/icons-material/Event';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { UserContext } from '../../../context/UserContext';
@@ -26,6 +27,7 @@ import TestResults from './TestResults';
 import { firestore } from '../../../config/firebase_config';
 import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
+import BookingSystem from '../../../pages/booking/bookingSystem';
 
 const style = {
   position: 'absolute' as const,
@@ -43,10 +45,12 @@ function PatientView() {
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
+  const handleBookingClose = () => setBookingOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
 
@@ -97,6 +101,17 @@ function PatientView() {
               />
             </ListItem>
           )}
+          {user?.assignedDoctor && (
+            <ListItem button key="Booking">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Book Appointment"
+                onClick={() => setBookingOpen(true)}
+              />
+            </ListItem>
+          )}
         </List>
         <Divider />
       </SideBar>
@@ -120,6 +135,14 @@ function PatientView() {
       >
         <Box sx={style}>
           <TestResults handleTestRClose={handleTestRClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={bookingOpen}
+        onClose={handleBookingClose}
+      >
+        <Box sx={style}>
+          <BookingSystem handleBookingClose={handleBookingClose} />
         </Box>
       </Modal>
     </Box>

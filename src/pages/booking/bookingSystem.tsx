@@ -6,7 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { DatePicker } from '@mui/lab';
 import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
-import { arrayUnion, doc, DocumentData, onSnapshot, setDoc } from 'firebase/firestore';
+import { arrayUnion, doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
@@ -25,14 +25,54 @@ function bookingSystem({ handleBookingClose } : Props) {
   const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
 
-  const date1 = new Date('2022-05-02 5:15');
-  const date2 = new Date('2022-07-01 2:15');
-  const date3 = new Date('2022-06-15 3:55');
+  const date1 = new Date('2022-05-02 17:00');
+  const date2 = new Date('2022-07-01 14:00');
+  const date3 = new Date('2022-06-15 12:30');
+  // This is a temporary schedule.
+  const schedule = [{ id: 1, startTime: '9:0', endTime: '17:0' },
+    { id: 2, startTime: '9:0', endTime: '17:0' },
+    { id: 3, startTime: '9:0', endTime: '17:0' },
+    { id: 4, startTime: '9:0', endTime: '17:0' },
+    { id: 5, startTime: '9:0', endTime: '17:0' }];
 
-  const setTimes = ['1:00', '2:00', '3:00', '3:55', '4:00', '5:15'];
+  const disabledDays = [0, 1, 2, 3, 4, 5, 6];
+  schedule.forEach((day: any) => {
+    disabledDays.splice(disabledDays.indexOf(day.id), 1);
+  });
+
+  const setTimes: any[] = [];
   const bookedDates = [date1, date2, date3];
   const bookedTimes: string[] = [];
   const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
+
+  const setAppointmentTimes = (day : number) => {
+    schedule.forEach((d: any) => {
+      if (d.id === day) {
+        const dateStart = new Date();
+        const startHour = parseInt(d.startTime.split(':')[0], 10);
+        const startMinute = parseInt(d.startTime.split(':')[1], 10);
+        dateStart.setHours(startHour);
+        dateStart.setMinutes(startMinute);
+
+        const dateEnd = new Date();
+        const endHour = parseInt(d.endTime.split(':')[0], 10);
+        const endMinute = parseInt(d.endTime.split(':')[1], 10);
+        dateEnd.setHours(endHour);
+        dateEnd.setMinutes(endMinute);
+
+        while (dateStart <= dateEnd) {
+          const hour = dateStart.getHours();
+          let minute = `${dateStart.getMinutes()}`;
+          if (minute === '0') {
+            minute = '00';
+          }
+          const min = dateStart.getMinutes();
+          setTimes.push(`${hour}:${min}`);
+          dateStart.setMinutes(dateStart.getMinutes() + 30);
+        };
+      };
+    });
+  };
 
   const updateTimes = () => {
     setUpdatedTimes(setTimes.filter((n) => !bookedTimes.includes(n)));
@@ -86,7 +126,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
-    if (appointmentDate !== null) {
+    if (appointmentDate !== null || selectedDate === undefined) {
       addDoctorAppointment();
       handleBookingClose();
     }
@@ -108,7 +148,11 @@ function bookingSystem({ handleBookingClose } : Props) {
     }
   };
 
-  const disableWeekends = (date: { getDay: () => number; }) => date.getDay() === 0 || date.getDay() === 6;
+  const disabledDay = (date: { getDay: () => number; }) => (
+    disabledDays.includes(0) && date.getDay() === 0) || (disabledDays.includes(1) && date.getDay() === 1)
+    || (disabledDays.includes(2) && date.getDay() === 2) || (disabledDays.includes(3) && date.getDay() === 3)
+    || (disabledDays.includes(4) && date.getDay() === 4) || (disabledDays.includes(5) && date.getDay() === 5)
+    || (disabledDays.includes(6) && date.getDay() === 6);
 
   return (
     <Grid
@@ -173,12 +217,13 @@ function bookingSystem({ handleBookingClose } : Props) {
                   onChange={(newValue) => {
                     if (newValue) {
                       checkAppoint(newValue);
+                      setAppointmentTimes(newValue.getDay());
                     }
                     updateTimes();
                   }}
                   renderInput={(params) => <TextField {...params} />}
                   minDate={new Date()}
-                  shouldDisableDate={disableWeekends}
+                  shouldDisableDate={disabledDay}
                 />
               </LocalizationProvider>
               <Stack spacing={2} mt={2}>
