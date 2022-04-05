@@ -23,9 +23,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   const { state } = React.useContext(UserContext);
   const users = firestore.collection('users');
   const todayDate = new Date();
-  const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
-  // This is a temporary schedule.
   const [schedule, setSchedule] = useState<any[]>([]);
 
   const disabledDays = [0, 1, 2, 3, 4, 5, 6];
@@ -138,7 +136,7 @@ function bookingSystem({ handleBookingClose } : Props) {
 
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
       bookAppointment({ appointmentDate }).then(() => {
-        // set book appointment to false
+        // TODO set book appointment to false
       })
         .catch((saveError) => {
           console.error(saveError);
@@ -174,7 +172,8 @@ function bookingSystem({ handleBookingClose } : Props) {
     disabledDays.includes(0) && date.getDay() === 0) || (disabledDays.includes(1) && date.getDay() === 1)
     || (disabledDays.includes(2) && date.getDay() === 2) || (disabledDays.includes(3) && date.getDay() === 3)
     || (disabledDays.includes(4) && date.getDay() === 4) || (disabledDays.includes(5) && date.getDay() === 5)
-    || (disabledDays.includes(6) && date.getDay() === 6) || date.getDate() === todayDate.getDate();
+    || (disabledDays.includes(6) && date.getDay() === 6) || (date.getDate() === todayDate.getDate()
+    && date.getMonth() === todayDate.getMonth() && date.getFullYear() === todayDate.getFullYear());
 
   return (
     <Grid
