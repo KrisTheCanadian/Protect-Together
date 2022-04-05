@@ -122,13 +122,23 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   const user = (await userRef.get()).data();
   if (user) {
     const doctorId = user.assignedDoctor;
-    const doctorRef = db.doc(`appointments/${doctorId}`);
-    await doctorRef.set({
-      appointments: admin.firestore.FieldValue.arrayUnion(appointment),
-    }, {merge: true});
-    return null;
+    const appointmentRef = db.doc(`appointments/${doctorId}`);
+
+    // check if allready booked
+    const appointmentData = await (await appointmentRef.get()).data();
+    const existingAppointment = appointmentData && appointmentData.appointments
+        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date == appointment.date).length !== 0;
+
+    // if it doesn't exist save it
+    if (!existingAppointment) {
+      return await appointmentRef.set({
+        appointments: admin.firestore.FieldValue.arrayUnion(appointment),
+      }, {merge: true});
+    } else {
+      throw new Error("Appointment already taken, please select another");
+    }
   } else {
-    return null;
+    throw new Error("Error booking appointment");
   }
 });
 
