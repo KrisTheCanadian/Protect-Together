@@ -260,6 +260,7 @@ function bookingSystem({ handleBookingClose } : Props) {
           {selectedTime === '' ? '' : 'at '}
           {' '}
           {selectedTime}
+          {(selectedTime?.split(':')[1])?.length > 0 && (selectedTime?.split(':')[1])?.length < 2 && ('0')}
           {selectedTime === '' ? ' ' : checkTOD() }
         </Typography>
         <Grid
