@@ -212,9 +212,11 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const age = Math.floor(((Date.now() - user.dateOfBirth.toDate()) / 31536000000));
-        const appointmentDate = format(new Date(1646707969351), 'Pp');
-        // eslint-disable-next-line max-len
-        const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
+        const appointmentDate = format(new Date(
+          user.appointments[user.appointments.length - 1].selectedDate.seconds * 1000,
+        ), 'Pp');
+        const status = user.testsResults !== undefined
+          ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
         const severity = caseSeverity(user.score);
         const userHasUpdates = Math.round(Math.random()) === 1;
         if (userHasUpdates) hasUpdatesData.push(user.UID);
