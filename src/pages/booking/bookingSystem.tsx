@@ -24,13 +24,13 @@ function bookingSystem({ handleBookingClose } : Props) {
   const users = firestore.collection('users');
   const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
-
+  const date0 = new Date('2022-04-05 11:35');
   const date1 = new Date('2022-05-02 17:00');
   const date2 = new Date('2022-07-01 14:00');
   const date3 = new Date('2022-06-15 12:30');
   // This is a temporary schedule.
   const schedule = [{ id: 1, startTime: '9:0', endTime: '17:0' },
-    { id: 2, startTime: '9:0', endTime: '17:0' },
+    { id: 2, startTime: '9:05', endTime: '17:05' },
     { id: 3, startTime: '9:0', endTime: '17:0' },
     { id: 4, startTime: '9:0', endTime: '17:0' },
     { id: 5, startTime: '9:0', endTime: '17:0' }];
@@ -41,7 +41,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   });
 
   const setTimes: any[] = [];
-  const bookedDates = [date1, date2, date3];
+  const bookedDates = [date0, date1, date2, date3];
   const bookedTimes: string[] = [];
   const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
 
@@ -62,12 +62,9 @@ function bookingSystem({ handleBookingClose } : Props) {
 
         while (dateStart <= dateEnd) {
           const hour = dateStart.getHours();
-          let minute = `${dateStart.getMinutes()}`;
-          if (minute === '0') {
-            minute = '00';
-          }
-          const min = dateStart.getMinutes();
-          setTimes.push(`${hour}:${min}`);
+          const minute = dateStart.getMinutes();
+          const leadingZero = dateStart.getMinutes() < 10 ? '0' : '';
+          setTimes.push(`${hour}:${leadingZero}${minute}`);
           dateStart.setMinutes(dateStart.getMinutes() + 30);
         };
       };
@@ -226,7 +223,17 @@ function bookingSystem({ handleBookingClose } : Props) {
                   shouldDisableDate={disabledDay}
                 />
               </LocalizationProvider>
-              <Stack spacing={2} mt={2}>
+              <Stack
+                spacing={2}
+                mt={2}
+                display="flex"
+                flexDirection="column"
+                maxHeight="300px"
+                style={{
+                  overflow: 'hidden',
+                  overflowY: 'scroll',
+                }}
+              >
                 {updatedTimes.map((d) => (
                   <Button
                     variant="contained"
@@ -234,6 +241,8 @@ function bookingSystem({ handleBookingClose } : Props) {
                     onClick={() => setSelectedTime(d)}
                   >
                     {d}
+                    {(d.split(':')[1]).length < 2 && ('0')}
+
                   </Button>
                 ))}
               </Stack>
