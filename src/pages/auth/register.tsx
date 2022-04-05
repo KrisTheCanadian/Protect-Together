@@ -143,7 +143,7 @@ export default function RegisterPage() {
     case 1:
       return (
         <Grid container component="main" sx={{ height: '100vh' }}>
-          <PanelSwapper panelVerySmallSize={550} panelSmallSize={4} panelMedSize={5} />
+          <PanelSwapper showPanel="none" panelSmallSize={4} panelMedSize={5} />
           <Grid item xs={12} sm={8} md={7} component={Paper} elevation={6} square display="flex" alignItems="center">
             <Box
               sx={{
@@ -330,7 +330,7 @@ export default function RegisterPage() {
     case 2:
       return (
         <Grid container component="main" sx={{ height: '100vh' }}>
-          <PanelSwapper panelVerySmallSize={550} panelSmallSize={4} panelMedSize={5} />
+          <PanelSwapper showPanel="none" panelSmallSize={4} panelMedSize={5} />
           <Grid item xs={12} sm={8} md={7} component={Paper} elevation={6} square display="flex" alignItems="center">
             <Box
               sx={{

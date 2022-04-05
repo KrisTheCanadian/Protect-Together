@@ -18,9 +18,9 @@ const currentIndex = Math.floor(Math.random() * 3);
 export default function PanelSwapper(props: any) {
   return (
     <LoginPanel
-      verySmallSize={props.panelVerySmallSize}
       smallSize={props.panelSmallSize}
       medSize={props.panelMedSize}
+      displayPanel={props.showPanel}
       blob={blobs[currentIndex]}
       sentence={sentences[currentIndex]}
       boldWord={boldWords[currentIndex]}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Alert, Avatar, Box, Button, Grid, Link, TextField, Typography, ButtonGroup, Paper, useTheme,
+  Alert, Avatar, Box, Button, Grid, Link, TextField, Typography, ButtonGroup, Paper, useTheme, useMediaQuery,
 } from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const theme = useTheme();
+  const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   const navigate = useNavigate();
 
@@ -39,6 +40,7 @@ export default function LoginPage() {
     <Grid container component="main" sx={{ height: '100vh' }}>
       <Grid
         item
+        container
         xs={12}
         sm={6}
         md={5}
@@ -48,10 +50,11 @@ export default function LoginPage() {
         display="flex"
         alignItems="center"
         justifyContent="center"
+        sx={{ direction: phoneSize ? 'column' : 'row ' }}
       >
         <Box
           sx={{
-            my: 8,
+            my: 4,
             mx: 4,
             display: 'flex',
             flexDirection: 'column',
@@ -111,7 +114,7 @@ export default function LoginPage() {
           {error && <Alert severity="error">{error}</Alert>}
         </Box>
       </Grid>
-      <PanelSwapper panelVerySmallSize={550} panelSmallSize={6} panelMedSize={7} />
+      <PanelSwapper showPanel="flex" panelSmallSize={6} panelMedSize={7} />
     </Grid>
   );
 }
