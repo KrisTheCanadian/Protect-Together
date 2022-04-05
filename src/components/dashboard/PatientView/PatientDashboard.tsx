@@ -26,7 +26,6 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import { UserContext } from '../../../context/UserContext';
 import { firestore } from '../../../config/firebase_config';
-import BookingSystem from '../../../pages/booking/bookingSystem';
 
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
@@ -348,14 +347,6 @@ function PatientDashboard(props: { setContentId: any }) {
           </ListItem>
         </List>
       </MainContent>
-      <Modal
-        open={bookingOpen}
-        onClose={handleBookingClose}
-      >
-        <Box>
-          <BookingSystem handleBookingClose={handleBookingClose} />
-        </Box>
-      </Modal>
     </Box>
   );
 }
