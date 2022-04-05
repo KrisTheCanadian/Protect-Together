@@ -22,6 +22,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   const [error, setError] = useState<string>('');
   const { state } = React.useContext(UserContext);
   const users = firestore.collection('users');
+  const todayDate = new Date();
   const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
   // This is a temporary schedule.
@@ -166,11 +167,11 @@ function bookingSystem({ handleBookingClose } : Props) {
     }
   };
 
-  const disabledDay = (date: { getDay: () => number; }) => (
+  const disabledDay = (date: any) => (
     disabledDays.includes(0) && date.getDay() === 0) || (disabledDays.includes(1) && date.getDay() === 1)
     || (disabledDays.includes(2) && date.getDay() === 2) || (disabledDays.includes(3) && date.getDay() === 3)
     || (disabledDays.includes(4) && date.getDay() === 4) || (disabledDays.includes(5) && date.getDay() === 5)
-    || (disabledDays.includes(6) && date.getDay() === 6);
+    || (disabledDays.includes(6) && date.getDay() === 6) || date.getDate() === todayDate.getDate();
 
   return (
     <Grid
