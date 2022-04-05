@@ -164,7 +164,6 @@ function ChatRoom(props: ChatInfo) {
           className="send-message-button"
         >
           <SendIcon />
-
         </button>
       </form>
     </>
@@ -172,6 +171,13 @@ function ChatRoom(props: ChatInfo) {
 }
 
 function Chat(props: ChatInfo) {
+  const sendRequest = () => {
+    const enablePatientAppointment = Firebase.functions().httpsCallable('enablePatientAppointment');
+    enablePatientAppointment({
+      userId: props.patientID,
+    });
+  };
+
   return (
     <Box
       className="Chat"
@@ -194,14 +200,18 @@ function Chat(props: ChatInfo) {
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="secondary">Book Appointment</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={sendRequest}
+            >
+              Send Appointment Request
 
+            </Button>
           </Grid>
         </Grid>
       </Box>
-
       <ChatRoom {...props} />
-
     </Box>
   );
 }

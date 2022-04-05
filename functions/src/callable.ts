@@ -176,7 +176,7 @@ export const getDoctorAvailabilities = functions.https.onCall(async (_data, cont
   }
 });
 
-// get availabilities from doctor
+// get appointments from doctor
 
 export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   const userID = context.auth?.uid;
@@ -190,7 +190,7 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
     const doctorId = user.assignedDoctor;
     const appointmentRef = db.doc(`appointments/${doctorId}`);
 
-    // check if allready booked
+    // check if already booked
     const appointmentData = await (await appointmentRef.get()).data();
     const existingAppointment = appointmentData && appointmentData.appointments
         .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date == appointment.date).length !== 0;
@@ -206,5 +206,15 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   } else {
     throw new Error("Error booking appointment");
   }
+});
+
+export const enablePatientAppointment = functions.https.onCall(async (_data) => {
+  const userId = _data.userId;
+  const userRef = db.doc(`users/${userId}`);
+  const userSnap = await userRef.get();
+
+  return userSnap.ref.set({
+    canBookAppointment: true,
+  });
 });
 

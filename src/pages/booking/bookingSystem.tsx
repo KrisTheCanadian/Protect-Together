@@ -83,7 +83,6 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
-    console.log('use effect called');
     const getDoctorAvailabilities = Firebase.functions().httpsCallable('getDoctorAvailabilities');
     getDoctorAvailabilities().then((availabilities) => {
       setSchedule(availabilities.data);
@@ -136,7 +135,7 @@ function bookingSystem({ handleBookingClose } : Props) {
 
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
       bookAppointment({ appointmentDate }).then(() => {
-        // TODO set book appointment to false
+        // TODO set canBookAppointment to false
       })
         .catch((saveError) => {
           console.error(saveError);
@@ -145,7 +144,6 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
-    console.log('use effect called');
     if (appointmentDate !== null || selectedDate === undefined) {
       addDoctorAppointment();
       handleBookingClose();
@@ -275,7 +273,7 @@ function bookingSystem({ handleBookingClose } : Props) {
             </Grid>
           </Paper>
         </Grid>
-        <Typography variant="h6" sx={{ textAlign: 'center' }}>
+        <Typography sx={{ textAlign: 'center' }}>
           {selectedDate?.toDateString()}
           {' '}
           {selectedTime === '' ? '' : 'at '}
