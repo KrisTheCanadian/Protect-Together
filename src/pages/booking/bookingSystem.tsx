@@ -60,7 +60,11 @@ function bookingSystem({ handleBookingClose } : Props) {
           const hour = dateStart.getHours();
           const minute = dateStart.getMinutes();
           const leadingZero = dateStart.getMinutes() < 10 ? '0' : '';
-          setTimes.push(`${hour}:${leadingZero}${minute}`);
+          if (leadingZero === '0' && minute !== 0) {
+            setTimes.push(`${hour}:${leadingZero}${minute}`);
+          } else {
+            setTimes.push(`${hour}:${minute}`);
+          }
           dateStart.setMinutes(dateStart.getMinutes() + 30);
         };
       };
