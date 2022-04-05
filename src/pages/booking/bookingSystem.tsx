@@ -7,7 +7,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { DatePicker } from '@mui/lab';
 import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
 import { arrayUnion, doc, DocumentData, onSnapshot } from 'firebase/firestore';
-import { firestore } from '../../config/firebase_config';
+import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
 type Props = {
@@ -29,11 +29,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   const date2 = new Date('2022-07-01 14:00');
   const date3 = new Date('2022-06-15 12:30');
   // This is a temporary schedule.
-  const schedule = [{ id: 1, startTime: '9:0', endTime: '17:0' },
-    { id: 2, startTime: '9:05', endTime: '17:05' },
-    { id: 3, startTime: '9:0', endTime: '17:0' },
-    { id: 4, startTime: '9:0', endTime: '17:0' },
-    { id: 5, startTime: '9:0', endTime: '17:0' }];
+  const [schedule, setSchedule] = useState<any[]>([]);
 
   const disabledDays = [0, 1, 2, 3, 4, 5, 6];
   schedule.forEach((day: any) => {
@@ -93,6 +89,11 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
+    const getDoctorAvailabilities = Firebase.functions().httpsCallable('getDoctorAvailabilities');
+    getDoctorAvailabilities().then((availabilities) => {
+      setSchedule(availabilities.data);
+      console.log(availabilities.data);
+    });
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {

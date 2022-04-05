@@ -154,3 +154,24 @@ const delay = (time:number) => {
     }, time);
   });
 };
+
+
+// get availabilities from doctor
+
+export const getDoctorAvailabilities = functions.https.onCall(async (_data, context)=>{
+  const userID = context.auth?.uid;
+  const userRef = db.doc(`users/${userID}`);
+  const user = (await userRef.get()).data();
+  if (user) {
+    const doctorId = user.assignedDoctor;
+    const doctorRef = db.doc(`users/${doctorId}`);
+    const doctor = (await doctorRef.get()).data();
+    if (doctor) {
+      return doctor.availabilities;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+});
