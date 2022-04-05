@@ -18,7 +18,7 @@ export default function SymptomsForm() {
           justifyContent: 'center',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box data-testid="symptoms" sx={{ display: 'flex', justifyContent: 'center' }}>
           {matchesMd && <HeaderSymptoms id={status} content="updateForm" />}
           {!matchesMd && <DrawerSymptoms id={status} content="updateForm" />}
 

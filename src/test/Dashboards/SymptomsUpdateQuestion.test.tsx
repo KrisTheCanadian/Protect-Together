@@ -6,7 +6,7 @@ import {
 import { Firestore } from 'firebase/firestore';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import SymptomsUpdate from '../../pages/symptomsForm/SymptomsUpdate';
+import SymptomsUpdateQuestion from '../../components/formLayout/UpdateSymptomsDesign/SymptomsUpdateQuestion';
 // eslint-disable-next-line import/no-extraneous-dependencies
 
 jest.mock('firebase/compat/app', () => {
@@ -56,12 +56,12 @@ jest.mock('firebase/compat/app', () => {
 
 jest.mock('firebase/firestore');
 afterEach(cleanup);
-test('SymptomsUpdate renders correctly', async () => {
-  const component = render(<BrowserRouter><SymptomsUpdate /></BrowserRouter>);
+test('Option selection renders correctly', async () => {
+  const component = render(<BrowserRouter><SymptomsUpdateQuestion handleTestRClose={undefined} /></BrowserRouter>);
 
-  const symp = component.getByTestId('status');
-  expect(symp).toBeTruthy();
+  const sympupdate = component.getByTestId('symptom_update');
+  expect(sympupdate).toBeTruthy();
 
-  const symptoms = component.getByTestId('symptoms');
-  expect(symptoms).toBeTruthy();
+  const checkupdate = component.getAllByTestId('checkbox_update');
+  expect(checkupdate).toBeTruthy();
 });
