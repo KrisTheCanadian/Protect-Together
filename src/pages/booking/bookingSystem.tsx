@@ -6,7 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { DatePicker } from '@mui/lab';
 import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
-import { arrayUnion, doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import { arrayUnion, doc, DocumentData, onSnapshot, Timestamp } from 'firebase/firestore';
 import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
@@ -24,10 +24,6 @@ function bookingSystem({ handleBookingClose } : Props) {
   const users = firestore.collection('users');
   const doctor = user?.assignedDoctor;
   const docName = user?.doctorName;
-  const date0 = new Date('2022-04-05 11:35');
-  const date1 = new Date('2022-05-02 17:00');
-  const date2 = new Date('2022-07-01 14:00');
-  const date3 = new Date('2022-06-15 12:30');
   // This is a temporary schedule.
   const [schedule, setSchedule] = useState<any[]>([]);
 
@@ -37,7 +33,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   });
 
   const setTimes: any[] = [];
-  const bookedDates = [date0, date1, date2, date3];
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const bookedTimes: string[] = [];
   const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
 
@@ -93,10 +89,17 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
+    console.log('use effect called');
     const getDoctorAvailabilities = Firebase.functions().httpsCallable('getDoctorAvailabilities');
     getDoctorAvailabilities().then((availabilities) => {
       setSchedule(availabilities.data);
-      console.log(availabilities.data);
+    });
+    const getDoctorAppointments = Firebase.functions().httpsCallable('getDoctorAppointments');
+    getDoctorAppointments().then((appointments) => {
+      const appointmentDates = appointments.data
+        .map((appointment: { date: any; }) => appointment.date);
+      setBookedDates(appointmentDates);
+      console.log(appointmentDates);
     });
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
@@ -124,10 +127,14 @@ function bookingSystem({ handleBookingClose } : Props) {
               });
           }
         });
+
+      const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
+      bookAppointment({ appointmentDate });
     }
   };
 
   useEffect(() => {
+    console.log('use effect called');
     if (appointmentDate !== null || selectedDate === undefined) {
       addDoctorAppointment();
       handleBookingClose();
