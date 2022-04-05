@@ -82,6 +82,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
+    console.log('use effect called');
     const getDoctorAvailabilities = Firebase.functions().httpsCallable('getDoctorAvailabilities');
     getDoctorAvailabilities().then((availabilities) => {
       setSchedule(availabilities.data);
@@ -154,6 +155,7 @@ function bookingSystem({ handleBookingClose } : Props) {
   };
 
   useEffect(() => {
+    console.log('use effect called');
     if (appointmentDate !== null || selectedDate === undefined) {
       addDoctorAppointment();
       handleBookingClose();
