@@ -137,9 +137,12 @@ function bookingSystem({ handleBookingClose } : Props) {
         });
 
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
-      bookAppointment({ appointmentDate }).catch((saveError) => {
-        console.error(saveError);
-      });
+      bookAppointment({ appointmentDate }).then(() => {
+        // set book appointment to false
+      })
+        .catch((saveError) => {
+          console.error(saveError);
+        });
     }
   };
 
