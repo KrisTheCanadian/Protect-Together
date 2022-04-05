@@ -12,6 +12,7 @@ const LoginPanel = (props: any) => {
   return (
     <Grid
       item
+      container
       xs={false}
       sm={props.smallSize}
       md={props.medSize}
@@ -123,7 +124,6 @@ const LoginPanel = (props: any) => {
           >
             {props.sentence}
             <Typography
-              variant="h5"
               color="#FFFFFF"
               textAlign="center"
               fontSize="2.5rem"
