@@ -352,6 +352,7 @@ export default function RegisterPage() {
                   <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>
                     <DatePicker
                       label="Date of Birth"
+                      disableFuture
                       value={formData.dob}
                       onChange={(newValue) => {
                         setFormData({ ...formData, dob: newValue });
