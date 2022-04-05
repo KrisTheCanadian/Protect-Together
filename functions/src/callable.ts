@@ -182,38 +182,19 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   const userID = context.auth?.uid;
   const appointment = {
     uid: userID,
-    date: _data.appointmentDate,
+    date: admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate)),
   };
   const userRef = db.doc(`users/${userID}`);
   const user = (await userRef.get()).data();
   if (user) {
     const doctorId = user.assignedDoctor;
-    const doctorRef = db.doc(`users/${doctorId}`);
-    await doctorRef.update({
+    const doctorRef = db.doc(`appointments/${doctorId}`);
+    await doctorRef.set({
       appointments: admin.firestore.FieldValue.arrayUnion(appointment),
-    });
+    }, {merge: true});
     return null;
   } else {
     return null;
   }
 });
 
-// get availabilities from doctor
-
-export const getDoctorAppointments = functions.https.onCall(async (_data, context)=>{
-  const userID = context.auth?.uid;
-  const userRef = db.doc(`users/${userID}`);
-  const user = (await userRef.get()).data();
-  if (user) {
-    const doctorId = user.assignedDoctor;
-    const doctorRef = db.doc(`users/${doctorId}`);
-    const doctor = (await doctorRef.get()).data();
-    if (doctor) {
-      return doctor.appointments;
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-});

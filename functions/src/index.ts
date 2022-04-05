@@ -1,4 +1,4 @@
-export {requestDoctor, dispatchDoctor, sendNotification, sendNotificationForConversation, getDoctorAvailabilities, bookAppointment, getDoctorAppointments} from "./callable";
+export {requestDoctor, dispatchDoctor, sendNotification, sendNotificationForConversation, getDoctorAvailabilities, bookAppointment} from "./callable";
 
 
 // // Start writing Firebase Functions

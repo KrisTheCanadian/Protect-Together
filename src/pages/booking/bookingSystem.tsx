@@ -6,7 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { DatePicker } from '@mui/lab';
 import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
-import { arrayUnion, doc, DocumentData, onSnapshot, Timestamp } from 'firebase/firestore';
+import { arrayUnion, doc, DocumentData, DocumentReference, onSnapshot, Timestamp } from 'firebase/firestore';
 import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 
@@ -89,21 +89,31 @@ function bookingSystem({ handleBookingClose } : Props) {
     getDoctorAvailabilities().then((availabilities) => {
       setSchedule(availabilities.data);
     });
-    const getDoctorAppointments = Firebase.functions().httpsCallable('getDoctorAppointments');
-    getDoctorAppointments().then((appointments) => {
-      const appointmentDates = appointments.data
-        // eslint-disable-next-line no-underscore-dangle
-        .map((appointment: { date: any; }) => new Date(appointment.date._seconds * 1000));
-      setBookedDates(appointmentDates);
-    });
+
+    // initialize ref and subscription because need user info first
+    let appointmentRef = firestore.collection('appointments').doc();
+    let unsubscribeAppointments: () => void;
+
+    // get booked appointments after subscribing to user
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
+        appointmentRef = firestore.collection('appointments').doc(data.assignedDoctor);
+
+        // subscribe to appointments
+        unsubscribeAppointments = appointmentRef.onSnapshot((snapshot) => {
+          const snapData = snapshot.data();
+          const appointmentDates = snapData?.appointments
+            .map((appointment: { date: Timestamp; }) => appointment.date.toDate());
+          setBookedDates(appointmentDates);
+        });
       }
     });
+
     return () => {
       unsubscribe();
+      unsubscribeAppointments();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
