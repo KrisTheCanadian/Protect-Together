@@ -104,9 +104,11 @@ function bookingSystem({ handleBookingClose } : Props) {
         // subscribe to appointments
         unsubscribeAppointments = appointmentRef.onSnapshot((snapshot) => {
           const snapData = snapshot.data();
-          const appointmentDates = snapData?.appointments
-            .map((appointment: { date: Timestamp; }) => appointment.date.toDate());
-          setBookedDates(appointmentDates);
+          if (snapData) {
+            const appointmentDates = snapData?.appointments
+              .map((appointment: { date: Timestamp; }) => appointment.date.toDate());
+            setBookedDates(appointmentDates);
+          }
         });
       }
     });
@@ -134,7 +136,9 @@ function bookingSystem({ handleBookingClose } : Props) {
         });
 
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
-      bookAppointment({ appointmentDate });
+      bookAppointment({ appointmentDate }).catch((saveError) => {
+        console.error(saveError);
+      });
     }
   };
 
