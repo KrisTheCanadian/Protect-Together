@@ -116,7 +116,7 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   const userID = context.auth?.uid;
   const appointment = {
     uid: userID,
-    date: admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate)),
+    date: _data.appointmentDate,
   };
   const userRef = db.doc(`users/${userID}`);
   const user = (await userRef.get()).data();
