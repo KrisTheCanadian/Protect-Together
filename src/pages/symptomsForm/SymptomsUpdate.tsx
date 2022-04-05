@@ -23,6 +23,7 @@ export default function SymptomsForm() {
           {!matchesMd && <DrawerSymptoms id={status} content="updateForm" />}
 
           <div
+            data-testid="status"
             style={{
               justifyContent: 'center',
               marginTop: matchesMd ? 30 : 0,
