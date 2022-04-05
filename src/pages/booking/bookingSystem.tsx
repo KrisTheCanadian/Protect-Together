@@ -55,12 +55,7 @@ function bookingSystem({ handleBookingClose } : Props) {
         while (dateStart <= dateEnd) {
           const hour = dateStart.getHours();
           const minute = dateStart.getMinutes();
-          const leadingZero = dateStart.getMinutes() < 10 ? '0' : '';
-          if (leadingZero === '0' && minute !== 0) {
-            setTimes.push(`${hour}:${leadingZero}${minute}`);
-          } else {
-            setTimes.push(`${hour}:${minute}`);
-          }
+          setTimes.push(`${hour}:${minute}`);
           dateStart.setMinutes(dateStart.getMinutes() + 30);
         };
       };
@@ -97,9 +92,9 @@ function bookingSystem({ handleBookingClose } : Props) {
     const getDoctorAppointments = Firebase.functions().httpsCallable('getDoctorAppointments');
     getDoctorAppointments().then((appointments) => {
       const appointmentDates = appointments.data
-        .map((appointment: { date: any; }) => appointment.date);
+        // eslint-disable-next-line no-underscore-dangle
+        .map((appointment: { date: any; }) => new Date(appointment.date._seconds * 1000));
       setBookedDates(appointmentDates);
-      console.log(appointmentDates);
     });
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
@@ -252,8 +247,10 @@ function bookingSystem({ handleBookingClose } : Props) {
                     key={d}
                     onClick={() => setSelectedTime(d)}
                   >
-                    {d}
-                    {(d.split(':')[1]).length < 2 && ('0')}
+                    {d.split(':')[0]}
+                    :
+                    {(parseInt(d.split(':')[1], 10)) < 10 && ('0')}
+                    {d.split(':')[1]}
 
                   </Button>
                 ))}
@@ -266,8 +263,10 @@ function bookingSystem({ handleBookingClose } : Props) {
           {' '}
           {selectedTime === '' ? '' : 'at '}
           {' '}
-          {selectedTime}
-          {(selectedTime?.split(':')[1])?.length > 0 && (selectedTime?.split(':')[1])?.length < 2 && ('0')}
+          {selectedTime?.split(':')[0]}
+          {selectedTime === '' ? '' : ':'}
+          {(parseInt(selectedTime.split(':')[1], 10)) < 10 && ('0')}
+          {selectedTime?.split(':')[1]}
           {selectedTime === '' ? ' ' : checkTOD() }
         </Typography>
         <Grid
