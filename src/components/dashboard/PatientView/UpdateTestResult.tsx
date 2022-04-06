@@ -67,39 +67,27 @@ function UpdateTestResult({ handleTestClose }: Props) {
   };
 
   return (
-    <Grid
-      container
+    <Paper
       sx={{
-        bgcolor: 'background.default',
-        borderRadius: 1,
-        boxShadow: 4,
-        padding: 6,
-        flexDirection: 'column',
-        alignContent: 'center',
-        justifyContent: 'center',
-        width: '90%',
-        m: '5%',
-        maxHeight: '95vh',
-        overflow: 'scroll',
+        maxHeight: '80vh',
+        overflowY: 'auto',
       }}
     >
       <Grid
         container
-        item
         rowSpacing={1.5}
         sx={{
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignContent: 'center',
           bgcolor: 'background.default',
+          borderRadius: 1,
+          boxShadow: 4,
+          padding: { xs: 4, sm: 6 },
+          flexDirection: 'column',
+          alignContent: 'center',
+          justifyContent: 'center',
+          width: '100%',
         }}
       >
-        <Grid
-          item
-          sx={{
-            width: '100%',
-          }}
-        >
+        <Grid item>
           <Paper
             sx={{
               borderRadius: 1,
@@ -129,12 +117,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
             </FormControl>
           </Paper>
         </Grid>
-        <Grid
-          item
-          sx={{
-            width: '100%',
-          }}
-        >
+        <Grid item>
           <Paper
             sx={{
               borderRadius: 1,
@@ -156,7 +139,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                 onChange={(event) => setTestType(event.target.value)}
               >
                 <FormControlLabel
-                  value="PCRTest"
+                  value="PCR Test"
                   control={<Radio />}
                   label="PCR Test"
                   sx={{
@@ -165,7 +148,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   }}
                 />
                 <FormControlLabel
-                  value="rapidAntigenTest"
+                  value="Rapid Antigen Test"
                   control={<Radio />}
                   label="Rapid Antigen Test"
                   sx={{
@@ -174,7 +157,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   }}
                 />
                 <FormControlLabel
-                  value="antibodyTest"
+                  value="Antibody Test"
                   control={<Radio />}
                   label="Antibody Test"
                   sx={{
@@ -185,18 +168,12 @@ function UpdateTestResult({ handleTestClose }: Props) {
             </FormControl>
           </Paper>
         </Grid>
-        <Grid
-          item
-          sx={{
-            width: '100%',
-          }}
-        >
+        <Grid item>
           <Paper
             sx={{
               borderRadius: 1,
               bgcolor: 'primary.contrastText',
               p: 4,
-              mb: 2,
             }}
           >
             <FormControl>
@@ -232,59 +209,59 @@ function UpdateTestResult({ handleTestClose }: Props) {
               </RadioGroup>
             </FormControl>
           </Paper>
-          <Grid
-            container
-            item
-            spacing={2}
-            sx={{
-              flexDirection: 'row',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <Grid item>
-              <Paper
-                sx={{
-                  mt: 2,
+        </Grid>
+        <Grid
+          container
+          item
+          spacing={2}
+          sx={{
+            flexDirection: 'row',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid item>
+            <Paper
+              sx={{
+                mt: 2,
+              }}
+            >
+              <Button
+                type="button"
+                onClick={() => {
+                  handleTestClose();
                 }}
+                color="warning"
+                fullWidth
+                variant="contained"
               >
-                <Button
-                  type="button"
-                  onClick={() => {
-                    handleTestClose();
-                  }}
-                  color="warning"
-                  fullWidth
-                  variant="contained"
-                >
-                  Cancel
-                </Button>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Paper
-                sx={{
-                  mt: 2,
+                Cancel
+              </Button>
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper
+              sx={{
+                mt: 2,
+              }}
+            >
+              <Button
+                type="button"
+                onClick={() => {
+                  handleTestClose();
+                  addPatientTestResults();
                 }}
+                fullWidth
+                variant="contained"
+                disabled={status}
               >
-                <Button
-                  type="button"
-                  onClick={() => {
-                    handleTestClose();
-                    addPatientTestResults();
-                  }}
-                  fullWidth
-                  variant="contained"
-                  disabled={status}
-                >
-                  Submit
-                </Button>
-              </Paper>
-            </Grid>
+                Submit
+              </Button>
+            </Paper>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 }
 
