@@ -31,11 +31,8 @@ jest.mock('firebase/compat/app', () => {
     },
 
   });
-
   const firestore = Firestore;
-
   const app = jest.requireActual('firebase/compat/app');
-
   const auth = () => ({
     onAuthStateChanged: () => {
       jest.fn();
