@@ -37,13 +37,16 @@ const style = {
 };
 
 const listHeaderStyle = {
-  backgroundColor: '#E6E6E6',
+  backgroundColor: theme.palette.secondary.main,
   color: 'black',
   fontWeight: 'bold',
+  borderTopLeftRadius: '8px',
+  borderTopRightRadius: '8px',
 };
 
 const listStyle = {
   backgroundColor: 'white',
+  borderRadius: '8px',
 };
 
 const headerButtonStyle = {
@@ -322,7 +325,7 @@ function PatientInfo({ PID }: Props) {
                 listTitle="Latest Symptoms"
                 listItems={patientData.latestSymptoms?.userSymptoms.map((elem) => ({ primary: elem, secondary: '' }))}
               />
-              <Button sx={{ mt: '16px' }} fullWidth variant="contained" color="info" onClick={handleViewHistory}>
+              <Button sx={{ mt: '16px' }} fullWidth variant="contained" color="primary" onClick={handleViewHistory}>
                 History
               </Button>
             </Box>
