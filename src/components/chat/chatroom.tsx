@@ -217,7 +217,7 @@ function Chat(props: ChatInfo) {
           <Grid item>
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
-          {role === 'medical' && disableBook
+          {role === 'medical' && !disableBook
           && (
           <Grid item>
             <Button
