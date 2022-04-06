@@ -50,11 +50,7 @@ function PatientMedicalConnect() {
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
-      <Header title={`Chat with Dr. ${user?.doctorName}`}>
-        <Button variant="contained" color="primary" onClick={() => { navigate('/symptomsUpdate'); }}>
-          Update Your Symptoms
-        </Button>
-      </Header>
+      <Header title={`Chat with Dr. ${user?.doctorName}`} />
       <MainContent>
         <Chat
           patientID={state.id}
