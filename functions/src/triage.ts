@@ -11,7 +11,7 @@ export const dispatchDoctor = functions.https.onCall( (_data)=> {
   const doctorRef = db.doc(`users/${medicalId}`);
 
   // check for patients in need of doctor and assign to doctor id
-  db.collection("users")
+  return db.collection("users")
       .where("role", "==", "patient")
       .where("assignedDoctor", "==", "requestedDoctor")
       .orderBy("score", "desc").limit(_data.availableSlots).get()

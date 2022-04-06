@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
-export {getDoctorAvailabilities, bookAppointment, enablePatientAppointment} from "./booking";
+export {getDoctorAvailabilities, bookAppointment, enablePatientAppointment, cancelAppointment} from "./booking";
 export {sendNotification, sendNotificationForConversation} from "./notifications";
 export {requestDoctor, dispatchDoctor} from "./triage";
 

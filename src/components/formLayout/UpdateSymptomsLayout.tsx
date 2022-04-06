@@ -48,8 +48,8 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
           if (patient) {
             const { assignedDoctor } = patient;
             if (assignedDoctor) {
-              const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
-              dispatchDoctor({
+              const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+              sendNotification({
                 title: `${patient.firstName} ${patient.lastName} has updated their symptoms`,
                 message: userSymptoms.join('. '),
                 userId: assignedDoctor,
