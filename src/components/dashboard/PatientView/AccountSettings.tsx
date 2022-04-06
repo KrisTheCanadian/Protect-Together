@@ -28,9 +28,8 @@ export default function AccountSettings() {
   const userDoc = firestore.collection('users').doc(auth.currentUser?.uid);
   const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [user, setUser] = useState<DocumentData>();
-  const { state } = useContext(UserContext);
   const navigate = useNavigate();
+  const patientRef = firestore.collection('users').doc(auth.currentUser?.uid);
 
   const [formData, setFormData] = useState<FormData>({
     phone: '',
@@ -47,6 +46,7 @@ export default function AccountSettings() {
   });
 
   useEffect(() => {
+    console.log('update data');
     if (error === '' && formError.errorPhoneNumber === ''
         && formError.errorWeight === '' && formError.errorHeight === ''
         && (formData.phone !== ''
@@ -59,6 +59,31 @@ export default function AccountSettings() {
       setDisableSubmit(true);
     }
   }, [error, formData, formError.errorHeight, formError.errorPhoneNumber, formError.errorWeight, disableSubmit]);
+
+  useEffect(() => {
+    console.log('reading data');
+    const unsubscribe = patientRef.onSnapshot(async (patientDataSnapshot: any) => {
+      const patient = patientDataSnapshot.data();
+      if (patient) {
+        const { phone } = patient;
+        const { height } = patient;
+        const { weight } = patient;
+        const { healthCardNumber } = patient;
+        const { medicalConditions } = patient;
+        const { notes } = patient;
+        setFormData({
+          phone,
+          weight,
+          height,
+          healthCardNumber,
+          medicalConditions,
+          notes,
+        });
+      }
+    });
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateContactHealthtInfo = async () => {
     if (formData.phone !== '') await userDoc.update({ phone: formData.phone });
@@ -91,7 +116,6 @@ export default function AccountSettings() {
           p={3}
           sx={{ my: 16,
             mx: 4,
-            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -105,7 +129,7 @@ export default function AccountSettings() {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                value={formData.phone}
+                value={formData?.phone}
                 id="phoneNumber"
                 data-testid="phone-number"
                 label="Phone Number"
@@ -134,7 +158,7 @@ export default function AccountSettings() {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                value={formData.height}
+                value={formData?.height}
                 data-testid="height"
                 id="height"
                 label="Height"
@@ -158,7 +182,7 @@ export default function AccountSettings() {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                value={formData.weight}
+                value={formData?.weight}
                 data-testid="weight"
                 id="weight"
                 label="Weight"
@@ -182,7 +206,7 @@ export default function AccountSettings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                value={formData.healthCardNumber}
+                value={formData?.healthCardNumber}
                 data-testid="healthcare-number"
                 fullWidth
                 id="healthCardNumber"
@@ -196,7 +220,7 @@ export default function AccountSettings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                value={formData.medicalConditions}
+                value={formData?.medicalConditions}
                 data-testid="medical-conditions"
                 fullWidth
                 multiline
@@ -211,7 +235,7 @@ export default function AccountSettings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                value={formData.notes}
+                value={formData?.notes}
                 data-testid="additional-notes"
                 fullWidth
                 multiline
@@ -227,7 +251,12 @@ export default function AccountSettings() {
           </Grid>
           <Grid container justifyContent="flex-end">
             {error && <Alert severity="error">{error}</Alert>}
-            <Button variant="contained" sx={{ mt: 3, mb: 2 }} disabled={disableSubmit} onClick={handleSubmit}>
+            <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={disableSubmit}
+              onClick={handleSubmit}
+            >
               Submit
               <ArrowRightAltIcon />
             </Button>
