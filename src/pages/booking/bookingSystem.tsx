@@ -29,7 +29,6 @@ function bookingSystem({ handleBookingClose } : Props) {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const bookedTimes: string[] = [];
   const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
-  const [disableBook, setDisableBook] = useState<boolean>(false);
 
   const disabledDays = [0, 1, 2, 3, 4, 5, 6];
   schedule.forEach((day: any) => {

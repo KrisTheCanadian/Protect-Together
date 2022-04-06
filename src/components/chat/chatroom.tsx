@@ -179,6 +179,15 @@ function Chat(props: ChatInfo) {
   };
   const { state } = React.useContext(UserContext);
   const { role } = state;
+  const [disableBook, setDisabledBook] = useState<boolean>();
+
+  const getPatientData = () => {
+    const patientUserRef = firestore.doc(`users/${props.patientID}`);
+    patientUserRef.get().then((currentUserDoc) => {
+      const patient = currentUserDoc.data();
+      setDisabledBook(patient?.disableBook);
+    });
+  };
 
   return (
     <Box
@@ -201,7 +210,7 @@ function Chat(props: ChatInfo) {
           <Grid item>
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
-          {role === 'medical'
+          {role === 'medical' && disableBook
           && (
           <Grid item>
             <Button
