@@ -17,6 +17,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import EventIcon from '@mui/icons-material/Event';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -28,6 +29,7 @@ import { firestore } from '../../../config/firebase_config';
 import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
 import AccountSettings from './AccountSettings';
+import BookingSystem from '../../../pages/booking/bookingSystem';
 
 const style = {
   position: 'absolute' as const,
@@ -45,18 +47,23 @@ function PatientView() {
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
+  const handleBookingClose = () => setBookingOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
+  const [disableBook, setDisableBook] = useState<boolean>(false);
+  const areAssigned = user?.assignedDoctor !== undefined;
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
+        setDisableBook(data.disableBook);
       }
     });
     return () => {
@@ -87,6 +94,26 @@ function PatientView() {
               <BiotechIcon />
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
+          </ListItem>
+
+          <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Symptoms Update"
+              onClick={() => { navigate('/symptomsUpdate'); }}
+            />
+          </ListItem>
+
+          <ListItem button disabled={disableBook && areAssigned} key="Booking">
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Book Appointment"
+              onClick={() => setBookingOpen(true)}
+            />
           </ListItem>
           {user?.assignedDoctor && (
             <ListItem button key="Results" data-testid="SymptomsUpdate2">
@@ -129,6 +156,14 @@ function PatientView() {
       >
         <Box sx={style}>
           <TestResults handleTestRClose={handleTestRClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={bookingOpen}
+        onClose={handleBookingClose}
+      >
+        <Box sx={style}>
+          <BookingSystem handleBookingClose={handleBookingClose} />
         </Box>
       </Modal>
     </Box>
