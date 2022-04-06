@@ -94,7 +94,7 @@ function PatientView() {
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
 
-          <ListItem button disabled={areAssigned} key="Results" data-testid="SymptomsUpdate2">
+          <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
             </ListItemIcon>

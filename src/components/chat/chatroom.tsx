@@ -177,6 +177,8 @@ function Chat(props: ChatInfo) {
       userId: props.patientID,
     });
   };
+  const { state } = React.useContext(UserContext);
+  const { role } = state;
 
   return (
     <Box
@@ -199,6 +201,8 @@ function Chat(props: ChatInfo) {
           <Grid item>
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
+          {role === 'medical'
+          && (
           <Grid item>
             <Button
               variant="contained"
@@ -209,6 +213,7 @@ function Chat(props: ChatInfo) {
 
             </Button>
           </Grid>
+          )}
         </Grid>
       </Box>
       <ChatRoom {...props} />
