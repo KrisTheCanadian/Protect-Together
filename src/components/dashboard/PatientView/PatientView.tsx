@@ -27,6 +27,7 @@ import TestResults from './TestResults';
 import { firestore } from '../../../config/firebase_config';
 import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
+import AccountSettings from './AccountSettings';
 
 const style = {
   position: 'absolute' as const,
@@ -102,13 +103,14 @@ function PatientView() {
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Main Settings" onClick={() => { navigate('/mainSettings'); }} />
+            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
         </List>
         <Divider />
       </SideBar>
       {contentId === 0 && <PatientDashboard setContentId={setContentId} />}
       {contentId === 1 && <PatientMedicalConnect />}
+      {contentId === 2 && <AccountSettings />}
       <Modal
         open={testOpen}
         onClose={handleTestClose}
