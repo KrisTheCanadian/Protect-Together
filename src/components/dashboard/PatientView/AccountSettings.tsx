@@ -50,8 +50,8 @@ export default function AccountSettings() {
     if (error === '' && formError.errorPhoneNumber === ''
         && formError.errorWeight === '' && formError.errorHeight === ''
         && (formData.phone !== ''
-        || formData.height !== ''
-        || formData.weight !== '' || formData.healthCardNumber !== ''
+            || formData.height !== ''
+            || formData.weight !== '' || formData.healthCardNumber !== ''
             || formData.notes !== '' || formData.medicalConditions !== ''
         )) {
       setDisableSubmit(false);
@@ -77,156 +77,162 @@ export default function AccountSettings() {
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
-      <Header title="Account Settings" subtitle="Change your account settings">
-        <NotificationsButton />
-      </Header>
-
+      <Header title="Account Settings" subtitle="Change your account settings" />
       <Grid
-        spacing={5}
-        boxShadow={6}
-        p={12}
-        sx={{ my: 0,
-          mx: 0,
-          flexDirection: 'column',
-          alignItems: 'center',
-          top: '-15%' }}
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}
       >
-        <Grid container spacing={2} mt={1}>
-          <Grid item xs={12} sm={12}>
-            <Typography variant="h6">
-              Contact Information
-            </Typography>
+        <Box
+          boxShadow={6}
+          p={3}
+          sx={{ my: 16,
+            mx: 4,
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid container spacing={2} mt={1}>
+            <Grid item xs={12} sm={12}>
+              <Typography variant="h6">
+                Contact Information
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                value={formData.phone}
+                id="phoneNumber"
+                data-testid="phone-number"
+                label="Phone Number"
+                name="phoneNumber"
+                autoComplete="phone-number"
+                error={Boolean(formError.errorPhoneNumber)}
+                helperText={formError.errorPhoneNumber}
+                onChange={(event) => {
+                  if (!validator.isMobilePhone(event.target.value, 'en-CA')) {
+                    setFormError({ ...formError, errorPhoneNumber: 'Invalid phone number.' });
+                  } else {
+                    setFormError({ ...formError, errorPhoneNumber: '' });
+                  }
+                  setFormData({ ...formData, phone: event.target.value });
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              value={formData.phone}
-              id="phoneNumber"
-              data-testid="phone-number"
-              label="Phone Number"
-              name="phoneNumber"
-              autoComplete="phone-number"
-              error={Boolean(formError.errorPhoneNumber)}
-              helperText={formError.errorPhoneNumber}
-              onChange={(event) => {
-                if (!validator.isMobilePhone(event.target.value, 'en-CA')) {
-                  setFormError({ ...formError, errorPhoneNumber: 'Invalid phone number.' });
-                } else {
-                  setFormError({ ...formError, errorPhoneNumber: '' });
-                }
-                setFormData({ ...formData, phone: event.target.value });
-              }}
-            />
-          </Grid>
-        </Grid>
 
-        <Grid container spacing={1} mt={1}>
-          <Grid item spacing={1} xs={12} sm={12}>
-            <Typography variant="h6">
-              Health Information
-            </Typography>
+          <Grid container spacing={1} mt={1}>
+            <Grid item xs={12} sm={12}>
+              <Typography variant="h6">
+                Health Information
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                value={formData.height}
+                data-testid="height"
+                id="height"
+                label="Height"
+                name="height"
+                autoComplete="height"
+                error={Boolean(formError.errorHeight)}
+                helperText={formError.errorHeight}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+                onChange={(event) => {
+                  if (!validator.isFloat(event.target.value, { gt: 0 })) {
+                    setFormError({ ...formError, errorHeight: 'Invalid height.' });
+                  } else {
+                    setFormError({ ...formError, errorHeight: '' });
+                  }
+                  setFormData({ ...formData, height: event.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                value={formData.weight}
+                data-testid="weight"
+                id="weight"
+                label="Weight"
+                name="weight"
+                autoComplete="weight"
+                error={Boolean(formError.errorWeight)}
+                helperText={formError.errorWeight}
+                sx={{ mr: 0 }}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+                }}
+                onChange={(event) => {
+                  if (!validator.isFloat(event.target.value, { gt: 0 }) && event.target.value !== '') {
+                    setFormError({ ...formError, errorWeight: 'Invalid weight.' });
+                  } else {
+                    setFormError({ ...formError, errorWeight: '' });
+                  }
+                  setFormData({ ...formData, weight: event.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                value={formData.healthCardNumber}
+                data-testid="healthcare-number"
+                fullWidth
+                id="healthCardNumber"
+                label="Health Card Number"
+                name="healthCardNumber"
+                autoComplete="healthCardNumber"
+                onChange={(event) => {
+                  setFormData({ ...formData, healthCardNumber: event.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                value={formData.medicalConditions}
+                data-testid="medical-conditions"
+                fullWidth
+                multiline
+                name="medicalConditions"
+                label="Medical Conditions"
+                id="medicalConditions"
+                autoComplete="medicalConditions"
+                onChange={(event) => {
+                  setFormData({ ...formData, medicalConditions: event.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                value={formData.notes}
+                data-testid="additional-notes"
+                fullWidth
+                multiline
+                name="additionalNotes"
+                label="Additional Notes"
+                id="additionalNotes"
+                autoComplete="additionalNotes"
+                onChange={(event) => {
+                  setFormData({ ...formData, notes: event.target.value });
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              value={formData.height}
-              data-testid="height"
-              id="height"
-              label="Height"
-              name="height"
-              autoComplete="height"
-              error={Boolean(formError.errorHeight)}
-              helperText={formError.errorHeight}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-              }}
-              onChange={(event) => {
-                if (!validator.isFloat(event.target.value, { gt: 0 })) {
-                  setFormError({ ...formError, errorHeight: 'Invalid height.' });
-                } else {
-                  setFormError({ ...formError, errorHeight: '' });
-                }
-                setFormData({ ...formData, height: event.target.value });
-              }}
-            />
+          <Grid container justifyContent="flex-end">
+            {error && <Alert severity="error">{error}</Alert>}
+            <Button variant="contained" sx={{ mt: 3, mb: 2 }} disabled={disableSubmit} onClick={handleSubmit}>
+              Submit
+              <ArrowRightAltIcon />
+            </Button>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              value={formData.weight}
-              data-testid="weight"
-              id="weight"
-              label="Weight"
-              name="weight"
-              autoComplete="weight"
-              error={Boolean(formError.errorWeight)}
-              helperText={formError.errorWeight}
-              sx={{ mr: 0 }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-              }}
-              onChange={(event) => {
-                if (!validator.isFloat(event.target.value, { gt: 0 }) && event.target.value !== '') {
-                  setFormError({ ...formError, errorWeight: 'Invalid weight.' });
-                } else {
-                  setFormError({ ...formError, errorWeight: '' });
-                }
-                setFormData({ ...formData, weight: event.target.value });
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              value={formData.healthCardNumber}
-              data-testid="healthcare-number"
-              fullWidth
-              id="healthCardNumber"
-              label="Health Card Number"
-              name="healthCardNumber"
-              autoComplete="healthCardNumber"
-              onChange={(event) => {
-                setFormData({ ...formData, healthCardNumber: event.target.value });
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              value={formData.medicalConditions}
-              data-testid="medical-conditions"
-              fullWidth
-              multiline
-              name="medicalConditions"
-              label="Medical Conditions"
-              id="medicalConditions"
-              autoComplete="medicalConditions"
-              onChange={(event) => {
-                setFormData({ ...formData, medicalConditions: event.target.value });
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              value={formData.notes}
-              data-testid="additional-notes"
-              fullWidth
-              multiline
-              name="additionalNotes"
-              label="Additional Notes"
-              id="additionalNotes"
-              autoComplete="additionalNotes"
-              onChange={(event) => {
-                setFormData({ ...formData, notes: event.target.value });
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="flex-end">
-          {error && <Alert severity="error">{error}</Alert>}
-          <Button variant="contained" sx={{ mt: 3, mb: 2 }} disabled={disableSubmit} onClick={handleSubmit}>
-            Submit
-            <ArrowRightAltIcon />
-          </Button>
-        </Grid>
+        </Box>
       </Grid>
     </Box>
   );
