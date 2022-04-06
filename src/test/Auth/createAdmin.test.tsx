@@ -36,6 +36,7 @@ afterEach(cleanup);
 test('AdminCreateAccount Test', async () => {
   const component = render(<BrowserRouter><AdminCreateAccount handleClose={undefined} /></BrowserRouter>);
   expect(component.getByText('Create Account')).toBeTruthy();
+  expect(component.getByText('Account Type')).toBeTruthy();
 
   const accountType = component.getByTestId('account-type');
   expect(accountType).toBeTruthy();

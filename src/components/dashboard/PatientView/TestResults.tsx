@@ -95,6 +95,7 @@ function TestResults({ handleTestRClose }: Props) {
         >
           <Button
             type="button"
+            data-testid="testResult-button"
             onClick={() => {
               handleTestRClose();
             }}

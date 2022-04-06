@@ -90,8 +90,9 @@ export default function AccountSettings(props: { setOption:any}) {
     } else {
       setDisableSubmit(true);
     }
-  }, [error, formData, formError.errorConfirmPassword, formError.errorEmail, formError.errorHeight,
-    formError.errorIncorrectPassword, formError.errorPhoneNumber, formError.errorWeight, disableSubmit]);
+  }, [error, formData, formError.errorCurrentPassword, formError.errorConfirmPassword,
+    formError.errorEmail, formError.errorHeight, formError.errorIncorrectPassword,
+    formError.errorPhoneNumber, formError.errorWeight, disableSubmit]);
 
   const updateContactHealthtInfo = async () => {
     if (formData.firstName !== '') await userDoc.update({ firstName: formData.firstName });
