@@ -17,6 +17,7 @@ import {
   Avatar,
   useMediaQuery,
   useTheme,
+  Modal,
 } from '@mui/material';
 import Iframe from 'react-iframe';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +31,7 @@ function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
-  const { state } = useContext(UserContext);
+  const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
 
   const [country, setCountry] = useState('');
@@ -91,9 +92,9 @@ function PatientDashboard(props: { setContentId: any }) {
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
         <div>
           {!user?.assignedDoctor && (
-            <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
-              Ask for Help
-            </Button>
+          <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
+            Ask for Help
+          </Button>
           )}
         </div>
       </Header>

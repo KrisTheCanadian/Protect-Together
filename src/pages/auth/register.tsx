@@ -24,6 +24,7 @@ type FormData = {
   phoneNumber: string,
   password: string,
   confirm: string,
+  disableBook: boolean,
   dob: Date | null,
   weight: string,
   height: string,
@@ -58,6 +59,7 @@ export default function RegisterPage() {
     phoneNumber: '',
     password: '',
     confirm: '',
+    disableBook: true,
     dob: null,
     weight: '',
     height: '',
@@ -352,6 +354,7 @@ export default function RegisterPage() {
                   <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>
                     <DatePicker
                       label="Date of Birth"
+                      disableFuture
                       value={formData.dob}
                       onChange={(newValue) => {
                         setFormData({ ...formData, dob: newValue });
