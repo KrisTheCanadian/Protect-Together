@@ -65,6 +65,7 @@ function PatientView() {
   const [testROpen, setTestROpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [appointmentsViewOpen, setAppointmentsViewOpen] = useState(false);
+  const [appointment, setAppointment] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
@@ -82,6 +83,12 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
+        const appointmentData = data?.appointments[data.appointments.length - 1].selectedDate;
+        const appointmentTime = appointmentData.toDate();
+        const currentDate = new Date();
+        if (appointmentTime > currentDate) {
+          setAppointment(true);
+        }
       }
     });
     return () => {
@@ -138,13 +145,13 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
-          {user?.assignedDoctor && (
+          {appointment && (
           <ListItem button key="Appointments">
             <ListItemIcon>
               <EventIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Upcoming Appointment"
+              primary="Next Appointment"
               onClick={() => setAppointmentsViewOpen(true)}
             />
           </ListItem>
@@ -188,7 +195,7 @@ function PatientView() {
         onClose={handleAppointmentsViewClose}
       >
         <Box sx={modalStyle}>
-          <PatientAppointments />
+          <PatientAppointments handleAppointmentsViewClose={handleAppointmentsViewClose} />
         </Box>
       </Modal>
     </Box>
