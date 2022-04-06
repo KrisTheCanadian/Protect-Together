@@ -30,14 +30,8 @@ function App() {
               <Route path="/" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot" element={<ForgotPassword />} />
-              <Route
-                path="/dashboard"
-                element={<AuthRequired component={<Dashboard />} />}
-              />
-              <Route
-                path="/change"
-                element={<AuthRequired component={<ChangePassword />} />}
-              />
+              <Route path="/dashboard" element={<AuthRequired component={<Dashboard />} />} />
+              <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
               <Route path="/styleguide" element={<StyleGuide />} />
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
               <Route path="/symptomsUpdate" element={<AuthRequired component={<SymptomsUpdate />} />} />
