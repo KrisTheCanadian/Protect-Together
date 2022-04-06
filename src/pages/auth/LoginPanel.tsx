@@ -17,7 +17,6 @@ const LoginPanel = (props: any) => {
       sm={props.smallSize}
       md={props.medSize}
       bgcolor="primary.main"
-      container
       direction="column"
       sx={{
         backgroundImage: `url(${props.blob})`,
