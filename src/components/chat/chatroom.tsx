@@ -164,7 +164,6 @@ function ChatRoom(props: ChatInfo) {
           className="send-message-button"
         >
           <SendIcon />
-
         </button>
       </form>
     </>
@@ -172,6 +171,24 @@ function ChatRoom(props: ChatInfo) {
 }
 
 function Chat(props: ChatInfo) {
+  const sendRequest = () => {
+    const enablePatientAppointment = Firebase.functions().httpsCallable('enablePatientAppointment');
+    enablePatientAppointment({
+      userId: props.patientID,
+    });
+  };
+  const { state } = React.useContext(UserContext);
+  const { role } = state;
+  const [disableBook, setDisabledBook] = useState<boolean>();
+
+  const getPatientData = () => {
+    const patientUserRef = firestore.doc(`users/${props.patientID}`);
+    patientUserRef.get().then((currentUserDoc) => {
+      const patient = currentUserDoc.data();
+      setDisabledBook(patient?.disableBook);
+    });
+  };
+
   return (
     <Box
       className="Chat"
@@ -193,15 +210,22 @@ function Chat(props: ChatInfo) {
           <Grid item>
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
+          {role === 'medical' && disableBook
+          && (
           <Grid item>
-            <Button variant="contained" color="secondary">Book Appointment</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={sendRequest}
+            >
+              Send Appointment Request
 
+            </Button>
           </Grid>
+          )}
         </Grid>
       </Box>
-
       <ChatRoom {...props} />
-
     </Box>
   );
 }

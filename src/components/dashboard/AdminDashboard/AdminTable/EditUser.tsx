@@ -58,6 +58,7 @@ export const EditUser = ({ handleClose, selectedUser }: Props) => {
   return (
     <>
       <Typography
+        data-testid="Save"
         variant="h4"
         component="div"
         gutterBottom
