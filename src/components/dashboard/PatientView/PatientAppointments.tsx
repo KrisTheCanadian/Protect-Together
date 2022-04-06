@@ -5,7 +5,7 @@ import CalendarPicker from '@mui/lab/CalendarPicker';
 import { Typography, Box, Paper, Button, useTheme, useMediaQuery, Modal } from '@mui/material';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { UserContext } from '../../../context/UserContext';
-import { firestore } from '../../../config/firebase_config';
+import Firebase, { firestore } from '../../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -23,7 +23,7 @@ const style = {
   borderRadius: 4,
 };
 
-export default function SubComponentsPickers() {
+export default function PatientAppointments({ handleAppointmentViewClose } : any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down(1190));
   const [date, setDate] = React.useState<Date | null>(new Date());
@@ -35,6 +35,16 @@ export default function SubComponentsPickers() {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const deleteAppointment = () => {
+    const cancelAppointment = Firebase.functions().httpsCallable('cancelAppointment');
+    cancelAppointment({ date }).then(() => {
+      // TODO set canBookAppointment to false
+    })
+      .catch((saveError) => {
+        console.error(saveError);
+      });
   };
 
   useEffect(() => {
@@ -78,7 +88,7 @@ export default function SubComponentsPickers() {
               flexDirection: 'column',
             }}
             >
-              <Typography variant="h3" mt={2} ml={2} sx={{ color: '#ffff' }}>
+              <Typography variant="h3" mt={3} ml={2} sx={{ color: '#ffff' }}>
                 {date !== null && date.getDate() < 10 && ('0')}
                 {date?.getDate()}
               </Typography>
@@ -124,7 +134,7 @@ export default function SubComponentsPickers() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Box mt={2}>
               <Button
-                onClick={handleOpen}
+                onClick={handleClose}
                 type="submit"
                 variant="contained"
                 color="secondary"
@@ -134,7 +144,13 @@ export default function SubComponentsPickers() {
               </Button>
             </Box>
             <Box mt={2}>
-              <Button onClick={handleOpen} type="submit" variant="contained" color="warning" style={{ width: '200px' }}>
+              <Button
+                onClick={deleteAppointment}
+                type="submit"
+                variant="contained"
+                color="warning"
+                style={{ width: '200px' }}
+              >
                 Cancel Appointment
               </Button>
             </Box>
