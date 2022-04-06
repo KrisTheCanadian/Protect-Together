@@ -1,4 +1,9 @@
-export {requestDoctor, dispatchDoctor, sendNotification, sendNotificationForConversation, getDoctorAvailabilities, bookAppointment, enablePatientAppointment} from "./callable";
+import * as admin from "firebase-admin";
+admin.initializeApp();
+
+export {getDoctorAvailabilities, bookAppointment, enablePatientAppointment} from "./booking";
+export {sendNotification, sendNotificationForConversation} from "./notifications";
+export {requestDoctor, dispatchDoctor} from "./triage";
 
 
 // // Start writing Firebase Functions

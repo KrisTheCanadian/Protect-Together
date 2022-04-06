@@ -20,6 +20,7 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import EventIcon from '@mui/icons-material/Event';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { UserContext } from '../../../context/UserContext';
 import SideBar from '../../layout/SideBar';
 import UpdateTestResult from './UpdateTestResult';
@@ -27,6 +28,7 @@ import TestResults from './TestResults';
 import { firestore } from '../../../config/firebase_config';
 import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
+import AccountSettings from './AccountSettings';
 import BookingSystem from '../../../pages/booking/bookingSystem';
 
 const style = {
@@ -93,7 +95,6 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-
           <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
@@ -113,11 +114,18 @@ function PatientView() {
               onClick={() => setBookingOpen(true)}
             />
           </ListItem>
+          <ListItem button key="Settings" data-testid="MainSettings">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
+          </ListItem>
         </List>
         <Divider />
       </SideBar>
       {contentId === 0 && <PatientDashboard setContentId={setContentId} />}
       {contentId === 1 && <PatientMedicalConnect />}
+      {contentId === 2 && <AccountSettings />}
       <Modal
         open={testOpen}
         onClose={handleTestClose}
