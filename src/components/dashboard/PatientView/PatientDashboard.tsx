@@ -31,9 +31,6 @@ function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
-  const [testOpen, setTestOpen] = useState(false);
-  const handleTestOpen = () => setTestOpen(true);
-  const handleTestClose = () => setTestOpen(false);
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
 

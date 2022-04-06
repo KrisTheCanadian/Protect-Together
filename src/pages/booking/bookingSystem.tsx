@@ -25,16 +25,16 @@ function bookingSystem({ handleBookingClose } : Props) {
   const todayDate = new Date();
   const docName = user?.doctorName;
   const [schedule, setSchedule] = useState<any[]>([]);
+  const setTimes: any[] = [];
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const bookedTimes: string[] = [];
+  const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
+  const [disableBook, setDisableBook] = useState<boolean>(false);
 
   const disabledDays = [0, 1, 2, 3, 4, 5, 6];
   schedule.forEach((day: any) => {
     disabledDays.splice(disabledDays.indexOf(day.id), 1);
   });
-
-  const setTimes: any[] = [];
-  const [bookedDates, setBookedDates] = useState<Date[]>([]);
-  const bookedTimes: string[] = [];
-  const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
 
   const setAppointmentTimes = (day : number) => {
     schedule.forEach((d: any) => {
@@ -135,7 +135,18 @@ function bookingSystem({ handleBookingClose } : Props) {
 
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
       bookAppointment({ appointmentDate }).then(() => {
-        // TODO set canBookAppointment to false
+        users
+          .doc(state.id).get()
+          .then(async (snapshot) => {
+            const data = snapshot.data();
+            if (data !== undefined) {
+              await users
+                .doc(state.id)
+                .update({
+                  disableBook: true,
+                });
+            }
+          });
       })
         .catch((saveError) => {
           console.error(saveError);

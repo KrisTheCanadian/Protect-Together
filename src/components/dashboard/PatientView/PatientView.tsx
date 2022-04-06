@@ -53,12 +53,15 @@ function PatientView() {
   const handleBookingClose = () => setBookingOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
+  const [disableBook, setDisableBook] = useState<boolean>(false);
+  const areAssigned = user?.assignedDoctor !== undefined;
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
         setUser(data);
+        setDisableBook(data.disableBook);
       }
     });
     return () => {
@@ -90,28 +93,26 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          {user?.assignedDoctor && (
-            <ListItem button key="Results" data-testid="SymptomsUpdate2">
-              <ListItemIcon>
-                <ContentPasteIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Symptoms Update"
-                onClick={() => { navigate('/symptomsUpdate'); }}
-              />
-            </ListItem>
-          )}
-          {user?.assignedDoctor && (
-            <ListItem button key="Booking">
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Book Appointment"
-                onClick={() => setBookingOpen(true)}
-              />
-            </ListItem>
-          )}
+
+          <ListItem button disabled={areAssigned} key="Results" data-testid="SymptomsUpdate2">
+            <ListItemIcon>
+              <ContentPasteIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Symptoms Update"
+              onClick={() => { navigate('/symptomsUpdate'); }}
+            />
+          </ListItem>
+
+          <ListItem button disabled={disableBook && areAssigned} key="Booking">
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Book Appointment"
+              onClick={() => setBookingOpen(true)}
+            />
+          </ListItem>
         </List>
         <Divider />
       </SideBar>

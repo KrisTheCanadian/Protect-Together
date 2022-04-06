@@ -213,8 +213,8 @@ export const enablePatientAppointment = functions.https.onCall(async (_data) => 
   const userRef = db.doc(`users/${userId}`);
   const userSnap = await userRef.get();
 
-  return userSnap.ref.set({
-    canBookAppointment: true,
+  return userSnap.ref.update({
+    disableBook: false,
   });
 });
 
