@@ -117,7 +117,7 @@ export default function AddMedicalAvailabilities({ selectedUser, selectedUserNam
               </Grid>
               <Grid item xs={12} md={9} sx={{ display: 'flex', alignItems: 'center' }}>
 
-                <LocalizationProvider data-testid="start" dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <TimePicker
                     label="Start"
                     disabled={!day.value}
