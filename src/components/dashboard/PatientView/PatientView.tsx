@@ -30,6 +30,7 @@ import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
 import AccountSettings from './AccountSettings';
 import BookingSystem from '../../../pages/booking/bookingSystem';
+import PatientAppointments from './PatientAppointments';
 
 const style = {
   position: 'absolute' as const,
@@ -42,17 +43,34 @@ const style = {
   p: 4,
 };
 
+const modalStyle = {
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  display: 'flex',
+  flexDirection: 'column',
+
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  p: 4,
+};
+
 function PatientView() {
   const [contentId, setContentId] = useState<number>(0);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [appointmentsViewOpen, setAppointmentsViewOpen] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
   const handleBookingClose = () => setBookingOpen(false);
+  const handleAppointmentsViewClose = () => setAppointmentsViewOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
   const [disableBook, setDisableBook] = useState<boolean>(false);
@@ -120,6 +138,17 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
+          {user?.assignedDoctor && (
+          <ListItem button key="Appointments">
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Upcoming Appointment"
+              onClick={() => setAppointmentsViewOpen(true)}
+            />
+          </ListItem>
+          )}
         </List>
         <Divider />
       </SideBar>
@@ -152,6 +181,14 @@ function PatientView() {
       >
         <Box sx={style}>
           <BookingSystem handleBookingClose={handleBookingClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={appointmentsViewOpen}
+        onClose={handleAppointmentsViewClose}
+      >
+        <Box sx={modalStyle}>
+          <PatientAppointments />
         </Box>
       </Modal>
     </Box>
