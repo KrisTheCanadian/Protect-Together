@@ -17,7 +17,6 @@ import SymptomsForm from '../pages/symptomsForm/SymptomsForm';
 import SymptomsUpdate from '../pages/symptomsForm/SymptomsUpdate';
 import { LayoutContext } from '../context/LayoutContext';
 import { UserProvider } from '../context/UserContext';
-import MainSettings from '../pages/mainSettings/MainSettings';
 
 function App() {
   const [open, setOpen] = React.useState(false);
@@ -37,7 +36,6 @@ function App() {
               <Route path="/symptomsForm" element={<AuthRequired component={<SymptomsForm />} />} />
               <Route path="/symptomsUpdate" element={<AuthRequired component={<SymptomsUpdate />} />} />
               <Route path="/change" element={<AuthRequired component={<ChangePassword />} />} />
-              <Route path="/mainSettings" element={<AuthRequired component={<MainSettings />} />} />
             </Routes>
           </UserProvider>
         </div>
