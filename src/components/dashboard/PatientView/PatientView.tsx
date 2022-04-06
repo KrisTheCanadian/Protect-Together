@@ -120,7 +120,8 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
+          {!areAssigned && (
+          <ListItem button key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
             </ListItemIcon>
@@ -129,8 +130,15 @@ function PatientView() {
               onClick={() => { navigate('/symptomsUpdate'); }}
             />
           </ListItem>
-
-          <ListItem button disabled={disableBook && areAssigned} key="Booking">
+          )}
+          <ListItem button key="Settings" data-testid="MainSettings">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
+          </ListItem>
+          {!appointment && !disableBook && areAssigned && (
+          <ListItem button key="Booking">
             <ListItemIcon>
               <EventIcon />
             </ListItemIcon>
@@ -139,12 +147,7 @@ function PatientView() {
               onClick={() => setBookingOpen(true)}
             />
           </ListItem>
-          <ListItem button key="Settings" data-testid="MainSettings">
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
-          </ListItem>
+          )}
           {appointment && (
           <ListItem button key="Appointments">
             <ListItemIcon>
