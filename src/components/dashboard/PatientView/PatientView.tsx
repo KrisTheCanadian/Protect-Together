@@ -159,28 +159,6 @@ function PatientView() {
             />
           </ListItem>
           )}
-          {user?.canBookAppointment && (
-            <ListItem button key="Booking">
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Book Appointment"
-                onClick={() => setBookingOpen(true)}
-              />
-            </ListItem>
-          )}
-          {appointment && (
-          <ListItem button key="Appointments">
-            <ListItemIcon>
-              <EventIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Next Appointment"
-              onClick={() => setAppointmentsViewOpen(true)}
-            />
-          </ListItem>
-          )}
         </List>
         <Divider />
       </SideBar>
