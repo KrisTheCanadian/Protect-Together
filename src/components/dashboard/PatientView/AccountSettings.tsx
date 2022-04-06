@@ -46,7 +46,6 @@ export default function AccountSettings() {
   });
 
   useEffect(() => {
-    console.log('update data');
     if (error === '' && formError.errorPhoneNumber === ''
         && formError.errorWeight === '' && formError.errorHeight === ''
         && (formData.phone !== ''
@@ -61,7 +60,6 @@ export default function AccountSettings() {
   }, [error, formData, formError.errorHeight, formError.errorPhoneNumber, formError.errorWeight, disableSubmit]);
 
   useEffect(() => {
-    console.log('reading data');
     const unsubscribe = patientRef.onSnapshot(async (patientDataSnapshot: any) => {
       const patient = patientDataSnapshot.data();
       if (patient) {
