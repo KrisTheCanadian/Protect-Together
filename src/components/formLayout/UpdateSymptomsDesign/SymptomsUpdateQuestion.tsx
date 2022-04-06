@@ -92,7 +92,7 @@ export default function SymptomsUpdateQuestion({ changeStatus, changePoints, cha
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div data-testid="symptom_update" style={{ display: 'flex' }}>
       <Paper
         sx={{
           margin: 'auto',
@@ -141,6 +141,7 @@ export default function SymptomsUpdateQuestion({ changeStatus, changePoints, cha
                       key={Math.random()}
                       control={(
                         <Checkbox
+                          data-testid="checkbox_update"
                           onChange={() => handleCheckboxChange(symptom)}
                           checked={checkedSymptoms.includes(symptom.id)}
                           name={symptom.label}
