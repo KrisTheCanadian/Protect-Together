@@ -187,7 +187,7 @@ function Chat(props: ChatInfo) {
       <Box sx={{ padding: '15px 20px 15px 20px', borderBottom: '1px solid #e7e7e7' }}>
         <Grid
           container
-          spacing={24}
+          // spacing={24}
           justifyContent="space-between"
         >
           <Grid item>
