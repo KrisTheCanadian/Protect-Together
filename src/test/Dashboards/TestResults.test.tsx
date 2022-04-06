@@ -58,7 +58,7 @@ const getById = queryByAttribute.bind(null, 'id');
 jest.mock('firebase/firestore');
 afterEach(cleanup);
 
-test('Register renders correctly', async () => {
+test('Test Results renders correctly', async () => {
   const component = render(<BrowserRouter><TestResults handleTestRClose={undefined} /></BrowserRouter>);
   const results = component.getByTestId('testResult-button');
   expect(results).toBeTruthy();
