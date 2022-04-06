@@ -50,7 +50,7 @@
     "dev:emulator": "firebase emulators:exec 'npm run dev'",
     "build": "react-scripts build",
     "build:emulator": "firebase emulators:exec 'npm run build'",
-    "test": "react-scripts test --coverage --watchAll",
+    "test": "react-scripts test",
     "test-emulate-firestore": "firebase emulators:exec --only firestore 'mocha src/test/firebase_rules.test.mocha.js'",
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
     "cy:open": "cypress open",
