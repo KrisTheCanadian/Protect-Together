@@ -7,10 +7,17 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    match /messages/{docID} {
+    match /chats/{docId} {
       allow read: if request.auth.uid != null;
       allow create: if canCreateMessage();
+      allow update: if canCreateMessage();
     }
+    
+    match /appointments/{docId} {
+      allow read: if request.auth.uid != null;
+      allow create: if false;
+    }
+
 
     match /users/{userId} {
       allow read: if isLoggedIn() 
@@ -36,9 +43,8 @@ service cloud.firestore {
 
     function canCreateMessage() {
       let isSignedIn = request.auth.uid != null;
-      let isOwner = request.auth.uid == request.resource.data.uid;
 
-      return isSignedIn && isOwner;
+      return isSignedIn;
     }
 
     function getUserById(userid) {

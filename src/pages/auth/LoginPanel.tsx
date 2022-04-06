@@ -17,6 +17,7 @@ const LoginPanel = (props: any) => {
       md={props.medSize}
       display="flex"
       bgcolor="primary.main"
+      container
       direction="column"
       sx={{
         backgroundImage: `url(${props.blob})`,
@@ -123,7 +124,6 @@ const LoginPanel = (props: any) => {
           >
             {props.sentence}
             <Typography
-              variant="h5"
               color="#FFFFFF"
               textAlign="center"
               fontSize="2.5rem"
