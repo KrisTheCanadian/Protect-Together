@@ -15,16 +15,17 @@ import {
 import SideBar from '../../layout/SideBar';
 import MedicalDashboard from './MedicalDashboard';
 import PatientInfo from './PatientInfo/PatientInfo';
+import AppointmentView from './appointmentView';
 
 function MedicalView() {
   // contentId
   // medical dashboard: 0
-  // patient's into: 1
+  // patient's info: 1
   const [contentId, setContentId] = React.useState<number>(0);
   const [patientId, setPatientId] = React.useState<string>('');
   // modal content
   // appointments: 0
-  // clode patient's file: 1
+  // close patient's file: 1
   const [modalContent, setModalContent] = React.useState<number>(0);
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
@@ -96,7 +97,7 @@ function MedicalView() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {modalContent === 0 && 'appointments'}
+          {modalContent === 0 && <AppointmentView />}
           {modalContent === 1 && 'delete patient'}
         </Box>
       </Modal>
