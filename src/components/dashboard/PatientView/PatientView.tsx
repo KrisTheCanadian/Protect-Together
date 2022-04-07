@@ -83,11 +83,13 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
-        const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
-        const appointmentTime = appointmentData?.toDate();
-        const currentDate = new Date();
-        if (appointmentTime > currentDate) {
-          setAppointment(true);
+        if (data.appointments && data.appointments.length) {
+          const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+          const appointmentTime = appointmentData?.toDate();
+          const currentDate = new Date();
+          if (appointmentTime > currentDate) {
+            setAppointment(true);
+          }
         }
       }
     });
