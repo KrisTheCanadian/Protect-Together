@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -190,6 +191,10 @@ function Chat(props: ChatInfo) {
     });
   };
 
+  useEffect(() => {
+    getPatientData();
+  }, []);
+
   return (
     <Box
       className="Chat"
@@ -217,7 +222,7 @@ function Chat(props: ChatInfo) {
           <Grid item>
             <Typography variant="h6" component="div">Messages</Typography>
           </Grid>
-          {role === 'medical' && !disableBook
+          {role === 'medical' && disableBook
           && (
           <Grid item>
             <Button
