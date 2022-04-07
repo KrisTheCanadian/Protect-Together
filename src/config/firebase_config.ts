@@ -25,7 +25,7 @@ export const Providers = {
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-if (window.location.port.includes('5000')) {
+if (window.location.port.includes('5000') || window.location.port.includes('5050')) {
   // NOTE: do NOT put this in production.
   firebase.firestore().settings({ experimentalForceLongPolling: true });
   firestore.useEmulator('localhost', 8080);

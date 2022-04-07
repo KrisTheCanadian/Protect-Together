@@ -1,0 +1,208 @@
+name: Tests and Deploy
+
+on: [ pull_request ]
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-cy-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cy-node-
+
+      - name: Cache firebase emulators
+        id: cache-firebase-emulators
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/firebase/emulators
+            functions/lib
+            functions/node_modules
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('**/functions/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-firebase-emulators-
+
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: |
+          npm install
+          npm install cypress
+
+
+
+
+      - name: Build React
+        run: npm run build
+        continue-on-error: true
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v3
+        continue-on-error: true
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
+
+
+      - name: Install Firebase Emulator Suite
+        if: steps.cache-firebase-emulators.outputs.cache-hit != 'true'
+        run: |
+          npm install -g firebase-tools
+          npm i cross-var
+          npm ci
+          npm run build
+        working-directory: functions
+
+
+
+
+  jest-tests:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-cy-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cy-node-
+
+      - name: Jest Tests
+        run: npm run jest:run
+
+
+      - name: Upload coverage results to Codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+
+  cypress-tests:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [ 1 ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-cy-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cy-node-
+
+      - name: Cache firebase emulators
+        id: cache-firebase-emulators
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/firebase/emulators
+            functions/lib
+            functions/node_modules
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('**/functions/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-firebase-emulators-
+
+      - name: Cypress Tests
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
+          browser: chrome
+          record: false
+          parallel: false
+          wait-on-timeout: 150
+          wait-on: 'http://localhost:5050'
+          start: npm run cy:ci
+        env:
+          # Authorization for running the firebase CLI (emulator)
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}
+          # Cypress variables
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_BASE_URL: http://localhost:5050
+          # Cypress Tests variables
+          CYPRESS_ADMIN_EMAIL: ${{ secrets.CYPRESS_ADMIN_EMAIL }}
+          CYPRESS_ADMIN_PASSWORD: ${{ secrets.CYPRESS_ADMIN_PASSWORD }}
+          CYPRESS_MEDICAL_EMAIL: ${{ secrets.CYPRESS_MEDICAL_EMAIL }}
+          CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
+          CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
+          CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
+
+      - name: Upload coverage results to Codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  deploy-to-firebase-hosting-on-pr:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Download build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}'
+          projectId: soen-390-ba781
+

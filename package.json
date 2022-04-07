@@ -46,16 +46,25 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "test": "react-scripts test",
+    "build": "react-scripts build",
     "start:emulator": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore 'npm start'",
     "dev:emulator": "firebase emulators:exec 'npm run dev'",
-    "build": "react-scripts build",
     "build:emulator": "firebase emulators:exec 'npm run build'",
-    "test": "react-scripts test",
     "test-emulate-firestore": "firebase emulators:exec --only firestore 'mocha src/test/firebase_rules.test.mocha.js'",
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
+    "eject": "react-scripts eject",
     "cy:open": "cypress open",
-    "cy:run": "CYPRESS_BASE_URL=http://localhost:5000 cypress run",
-    "eject": "react-scripts eject"
+    "cy:run": "cypress run --record false",
+    "cy:ci": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore 'npm run cy:start'",
+    "cy:start": "cross-env PORT=5050 react-scripts -r @cypress/instrument-cra start",
+    "coverage": "npm run jest:run && npm run cy:fire && npm run merge-coverage && npm run cov-report",
+    "merge-coverage": "node ./scripts/mergeCoverage.js",
+    "jest:run": "react-scripts test --coverage --coverageDirectory=coverage/jest-coverage --watchAll=false --testPathIgnorePatterns register.test.tsx",
+    "cy:fire": "firebase emulators:exec --import=./cypress/firestore \"npm run cy:test\"",
+    "cy:test": "start-test cy:start 5050 cy:run",
+    "cov-report": "start coverage/lcov-report/index.html",
+    "cy:local": " firebase emulators:exec --import=./cypress/firestore \"cypress open --config baseUrl=http://localhost:5000\""
   },
   "browserslist": {
     "production": [
@@ -70,6 +79,8 @@
     ]
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.9.12",
+    "@cypress/instrument-cra": "^1.4.0",
     "@firebase/rules-unit-testing": "^2.0.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@types/react-syntax-highlighter": "^13.5.2",
@@ -77,6 +88,8 @@
     "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "babel-plugin-istanbul": "^6.1.1",
+    "cross-env": "^7.0.3",
     "cypress": "^9.5.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -89,10 +102,27 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-testing-library": "^5.1.0",
     "firebase-functions-test": "^0.3.3",
+    "istanbul-lib-coverage": "^3.2.0",
     "jest": "^27.5.1",
     "node-fetch": ">=2.6.7",
+    "nyc": "^15.1.0",
     "pify": "^5.0.0",
     "prettier": "^2.5.1",
-    "prettier-eslint": "^13.0.0"
+    "prettier-eslint": "^13.0.0",
+    "start-server-and-test": "^1.14.0"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json"
+    ]
+  },
+  "nyc": {
+    "report-dir": "coverage/cypress-coverage",
+    "include": [
+    ],
+    "exclude": [
+      "src/test/**",
+      "src/context/LayoutContext.tsx"
+    ]
   }
 }

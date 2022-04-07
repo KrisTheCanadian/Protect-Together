@@ -25,10 +25,35 @@ describe('Sprint 3 Admin Suite', () => {
     it('Admin dashboard', () => {
         cy.visit('/')
         cy.contains('Welcome Admin')
-        cy.get('span').contains('Add Account')
         cy.get('[type="text"]').click().type('Cypress')
         cy.contains('Cypress Admin')
         cy.contains('Cypress Medical')
+    })
+
+    after(() => {
+        cy.logout()
+    })
+
+})
+describe('Sprint 4 Admin Suite', () => {
+
+    before(() => {
+        cy.adminLogin()
+    })
+
+
+    it('Admin dashboard', () => {
+        cy.visit('/')
+        cy.contains('Dashboard').click()
+        cy.contains('Unassigned Patients').click()
+        cy.contains('Add Account').click()
+        cy.get('body').click(0,0);
+        cy.contains('Notify Test').click()
+        cy.contains('Notifications').click()
+        cy.contains('Title Test')
+        cy.get('body').click(0,0);
+        cy.get('[data-testid="NotificationsNoneOutlinedIcon"]').eq(0).click()
+        cy.contains('Title Test')
     })
 
     after(() => {

@@ -79,23 +79,9 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Yes').click()
         cy.contains('Continue').click()
         cy.contains('You will be contacted by one of our doctors shortly.')
-        cy.contains('Back to Home').click()
-    })
-
-    // To be fixied
-    // it('Add Covid-19 Test', () => {
-    //     cy.visit('/')
-    //     cy.contains('Add Covid-19 Test').click()
-    //     cy.get('[placeholder="mm/dd/yyyy"]').click().type('03/09/2022')
-    //     cy.get('[placeholder="mm/dd/yyyy"]').invoke("prop", 'defaultValue').should('contain', '03/09/2022')
-    //     cy.contains('Which test did you take?').parent().find('[type="radio"]').then(radioButtons => {
-    //         cy.wrap(radioButtons).first().check().should('be.checked')
-    //     })
-    //     cy.contains('What was your test result?').parent().find('[type="radio"]').then(radioButtons => {
-    //         cy.wrap(radioButtons).first().check().should('be.checked')
-    //     })
-    //     cy.contains('Submit').click()
-    // })
+        cy.contains('Yes').click()
+        cy.contains('You have been added to our waitlist.')
+        })
 
     it('COVID-19 Statistics Per Country', () => {
         cy.visit('/')
@@ -110,8 +96,81 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Do not forget to follow the safety policies and stay safe!')
     })
 
+    it('Basic Protective Measures Against Coronavirus', () => {
+        cy.visit('/')
+        cy.contains('Basic Protective Measures Against Coronavirus')
+        cy.contains('Clean your hands')
+        cy.contains('Avoid touching your face')
+
+    })
+
     after(() => {
         cy.logout()
     })
 
 })
+
+describe('Sprint 4 Patient Suite', () => {
+
+    before(() => {
+        cy.patientLogin()
+    })
+
+
+    it('Test Results', () => {
+        cy.visit('/')
+        cy.contains('Add Covid-19 Test').click()
+        cy.get('body').click(0,0);
+        cy.contains('Test Results').click()
+        cy.contains('PCRTest: positive')
+    })
+
+    it('Symptoms Update', () => {
+        cy.visit('/')
+        cy.contains('Symptoms Update').click()
+        cy.contains('Cough').click()
+        cy.contains('Continue').click()
+        cy.get('button').contains('Mild').click()
+        cy.contains('Continue').click()
+        cy.contains('Your symptoms have been updated.')
+        cy.get('button').contains('Back to Home').click()
+    })
+
+    it('Main Settings', () => {
+        cy.visit('/')
+        cy.contains('Main Settings').click()
+        cy.get('[id="phoneNumber"]').click().clear().type("5145125478")
+        cy.get('[id="height"]').click().clear().type("120")
+        cy.get('[id="weight"]').click().clear().type("100")
+        cy.get('[id="healthCardNumber"]').click().clear().type("sprint4444")
+        cy.get('[id="medicalConditions"]').click().clear().type("Alzheimer")
+        cy.get('[id="additionalNotes"]').click().clear().type("Cannot Remember")
+        cy.get('button').contains('Submit').click()
+        cy.wait(2000)
+        cy.contains('Main Settings').click()
+        cy.contains('Alzheimer')
+    })
+    it('Book Appointment', () => {
+        cy.visit('/')
+        cy.contains('Book Appointment').click()
+        cy.get('button').contains('Cancel').click()
+
+    })
+    it('Add Covid-19 Test', () => {
+        cy.visit('/')
+        cy.contains('Add Covid-19 Test').click()
+        cy.contains('Test Date')
+        cy.contains('Test Type').parent().find('[type="radio"]').then(radioButtons => {
+                    cy.wrap(radioButtons).first().check().should('be.checked')
+        })
+        cy.contains('Test Result')
+        cy.get('button').contains('Cancel').click()
+    })
+
+    after(() => {
+        cy.logout()
+    })
+
+})
+
+
