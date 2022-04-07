@@ -83,11 +83,13 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
-        const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
-        const appointmentTime = appointmentData?.toDate();
-        const currentDate = new Date();
-        if (appointmentTime > currentDate) {
-          setAppointment(true);
+        if (data.appointments && data.appointments.length) {
+          const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+          const appointmentTime = appointmentData?.toDate();
+          const currentDate = new Date();
+          if (appointmentTime > currentDate) {
+            setAppointment(true);
+          }
         }
       }
     });
@@ -121,15 +123,15 @@ function PatientView() {
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
           {areAssigned && (
-          <ListItem button key="Results" data-testid="SymptomsUpdate2">
-            <ListItemIcon>
-              <ContentPasteIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Symptoms Update"
-              onClick={() => { navigate('/symptomsUpdate'); }}
-            />
-          </ListItem>
+            <ListItem button key="Results" data-testid="SymptomsUpdate2">
+              <ListItemIcon>
+                <ContentPasteIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Symptoms Update"
+                onClick={() => { navigate('/symptomsUpdate'); }}
+              />
+            </ListItem>
           )}
           <ListItem button key="Settings" data-testid="MainSettings">
             <ListItemIcon>
@@ -138,26 +140,26 @@ function PatientView() {
             <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
           {!disableBook && areAssigned && (
-          <ListItem button key="Booking">
-            <ListItemIcon>
-              <EventIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Book Appointment"
-              onClick={() => setBookingOpen(true)}
-            />
-          </ListItem>
+            <ListItem button key="Booking">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Book Appointment"
+                onClick={() => setBookingOpen(true)}
+              />
+            </ListItem>
           )}
           {appointment && disableBook && (
-          <ListItem button key="Appointments">
-            <ListItemIcon>
-              <EventIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Next Appointment"
-              onClick={() => setAppointmentsViewOpen(true)}
-            />
-          </ListItem>
+            <ListItem button key="Appointments">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Next Appointment"
+                onClick={() => setAppointmentsViewOpen(true)}
+              />
+            </ListItem>
           )}
         </List>
         <Divider />
@@ -189,7 +191,7 @@ function PatientView() {
         open={bookingOpen}
         onClose={handleBookingClose}
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <BookingSystem handleBookingClose={handleBookingClose} />
         </Box>
       </Modal>

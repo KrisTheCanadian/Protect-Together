@@ -15,16 +15,17 @@ import {
 import SideBar from '../../layout/SideBar';
 import MedicalDashboard from './MedicalDashboard';
 import PatientInfo from './PatientInfo/PatientInfo';
+import AppointmentView from './appointmentView';
 
 function MedicalView() {
   // contentId
   // medical dashboard: 0
-  // patient's into: 1
+  // patient's info: 1
   const [contentId, setContentId] = React.useState<number>(0);
   const [patientId, setPatientId] = React.useState<string>('');
   // modal content
   // appointments: 0
-  // clode patient's file: 1
+  // close patient's file: 1
   const [modalContent, setModalContent] = React.useState<number>(0);
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
@@ -43,6 +44,20 @@ function MedicalView() {
     width: '50%',
     boxShadow: 0,
     margin: 0,
+    p: 4,
+  };
+
+  const modalStyle = {
+    borderRadius: '8px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    display: 'flex',
+    flexDirection: 'column',
+    bgcolor: 'background.paper',
+    border: 'none',
+    boxShadow: 24,
     p: 4,
   };
 
@@ -95,8 +110,8 @@ function MedicalView() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          {modalContent === 0 && 'appointments'}
+        <Box sx={modalStyle}>
+          {modalContent === 0 && <AppointmentView />}
           {modalContent === 1 && 'delete patient'}
         </Box>
       </Modal>

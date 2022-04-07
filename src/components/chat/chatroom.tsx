@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -189,6 +190,10 @@ function Chat(props: ChatInfo) {
       setDisabledBook(patient?.disableBook);
     });
   };
+
+  useEffect(() => {
+    getPatientData();
+  }, []);
 
   return (
     <Box
