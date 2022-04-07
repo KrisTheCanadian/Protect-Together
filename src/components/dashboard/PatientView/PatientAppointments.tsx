@@ -26,7 +26,7 @@ const style = {
 export default function PatientAppointments({ handleAppointmentViewClose } : any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down(1190));
-  const [date, setDate] = React.useState<Date | null>(new Date());
+  const [appointmentDate, setAppointmentDate] = React.useState<Date | null>(new Date());
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
   const [open, setOpen] = React.useState(false);
@@ -39,8 +39,9 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
 
   const deleteAppointment = () => {
     const cancelAppointment = Firebase.functions().httpsCallable('cancelAppointment');
-    cancelAppointment({ date }).then(() => {
-      // TODO set canBookAppointment to false
+    console.log(appointmentDate);
+    cancelAppointment({ appointmentDate }).then(() => {
+      // TODO set canBookAppointment to true*
     })
       .catch((saveError) => {
         console.error(saveError);
@@ -53,7 +54,7 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
       if (data) {
         setUser(data);
         const appointmentTime = data?.appointments[data.appointments.length - 1].selectedDate;
-        setDate(appointmentTime.toDate());
+        setAppointmentDate(appointmentTime.toDate());
       }
     });
     return () => {
@@ -78,7 +79,7 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
           marginTop: midSize ? '1rem' : '0' }}
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <CalendarPicker date={date} onChange={() => date} />
+            <CalendarPicker date={appointmentDate} onChange={() => appointmentDate} />
           </LocalizationProvider>
           <Box>
             <Paper sx={{ backgroundColor: '#434ce6',
@@ -89,19 +90,19 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
             }}
             >
               <Typography variant="h3" mt={3} ml={2} sx={{ color: '#ffff' }}>
-                {date !== null && date.getDate() < 10 && ('0')}
-                {date?.getDate()}
+                {appointmentDate !== null && appointmentDate.getDate() < 10 && ('0')}
+                {appointmentDate?.getDate()}
               </Typography>
               <Typography variant="subtitle1" ml={2} sx={{ color: '#ffff' }}>
-                {date?.toLocaleString('default', { month: 'long' })}
+                {appointmentDate?.toLocaleString('default', { month: 'long' })}
                 {' '}
-                {date?.getFullYear()}
+                {appointmentDate?.getFullYear()}
               </Typography>
               <Typography variant="h5" mt={1} ml={2} sx={{ color: '#ffff' }}>
-                {date?.getHours()}
+                {appointmentDate?.getHours()}
                 :
-                {date !== null && date.getMinutes() < 10 && ('0')}
-                {date?.getMinutes()}
+                {appointmentDate !== null && appointmentDate.getMinutes() < 10 && ('0')}
+                {appointmentDate?.getMinutes()}
                 {' '}
                 AM
               </Typography>
