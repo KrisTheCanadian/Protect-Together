@@ -91,7 +91,7 @@ function AppointmentView() {
   };
 
   return (
-    <div style={{ overflowY: 'auto', minWidth: '35em' }}>
+    <div style={{ overflowY: 'auto', minWidth: '35em', minHeight: '15em' }}>
       <Typography
         variant="h5"
         mt={3}
