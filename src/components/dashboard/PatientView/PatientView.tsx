@@ -83,8 +83,8 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
-        const appointmentData = data?.appointments[data.appointments.length - 1].selectedDate;
-        const appointmentTime = appointmentData.toDate();
+        const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+        const appointmentTime = appointmentData?.toDate();
         const currentDate = new Date();
         if (appointmentTime > currentDate) {
           setAppointment(true);
@@ -120,7 +120,7 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          {!areAssigned && (
+          {areAssigned && (
           <ListItem button key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
@@ -137,7 +137,7 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
-          {!appointment && !disableBook && areAssigned && (
+          {!disableBook && areAssigned && (
           <ListItem button key="Booking">
             <ListItemIcon>
               <EventIcon />
@@ -148,7 +148,7 @@ function PatientView() {
             />
           </ListItem>
           )}
-          {appointment && (
+          {appointment && disableBook && (
           <ListItem button key="Appointments">
             <ListItemIcon>
               <EventIcon />

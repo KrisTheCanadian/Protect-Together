@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CalendarPicker from '@mui/lab/CalendarPicker';
@@ -23,7 +23,7 @@ const style = {
   borderRadius: 4,
 };
 
-export default function PatientAppointments({ handleAppointmentViewClose } : any) {
+export default function PatientAppointments({ handleAppointmentsViewClose } : any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down(1190));
   const [appointmentDate, setAppointmentDate] = React.useState<Date | null>(new Date());
@@ -36,16 +36,21 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
   const handleClose = () => {
     setOpen(false);
   };
+  const users = firestore.collection('users');
 
   const deleteAppointment = () => {
     const cancelAppointment = Firebase.functions().httpsCallable('cancelAppointment');
-    console.log(appointmentDate);
-    cancelAppointment({ appointmentDate }).then(() => {
-      // TODO set canBookAppointment to true*
-    })
-      .catch((saveError) => {
-        console.error(saveError);
-      });
+    handleClose();
+    handleAppointmentsViewClose();
+    cancelAppointment({ appointmentDate }).then(async () => {
+      await users
+        .doc(state.id)
+        .update({
+          disableBook: false,
+        });
+    }).catch((saveError) => {
+      console.error(saveError);
+    });
   };
 
   useEffect(() => {
@@ -104,7 +109,8 @@ export default function PatientAppointments({ handleAppointmentViewClose } : any
                 {appointmentDate !== null && appointmentDate.getMinutes() < 10 && ('0')}
                 {appointmentDate?.getMinutes()}
                 {' '}
-                AM
+                {appointmentDate !== null && appointmentDate?.getHours() < 12 && (' AM')}
+                {appointmentDate !== null && appointmentDate?.getHours() >= 12 && (' PM')}
               </Typography>
             </Paper>
             {!midSize && (

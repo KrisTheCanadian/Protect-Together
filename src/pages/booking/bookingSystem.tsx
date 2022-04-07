@@ -103,7 +103,7 @@ function bookingSystem({ handleBookingClose } : Props) {
           const snapData = snapshot.data();
           if (snapData) {
             const appointmentDates = snapData?.appointments
-              .map((appointment: { date: Timestamp; }) => appointment.date.toDate());
+              .map((appointment: { selectedDate: Timestamp; }) => appointment.selectedDate.toDate());
             setBookedDates(appointmentDates);
           }
         });
