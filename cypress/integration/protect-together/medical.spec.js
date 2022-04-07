@@ -34,3 +34,70 @@ describe('Sprint 3 Medical Suite', () => {
     })
 
 })
+
+describe('Sprint 4 Medical Suite', () => {
+
+    before(() => {
+        cy.medicalLogin()
+    })
+
+
+    it('Medical dashboard', () => {
+        cy.visit('/')
+        cy.contains('Dashboard').click()
+        cy.contains('5').click()
+        cy.contains('10').click()
+        cy.contains('Name').click()
+        cy.contains('Age').click()
+        cy.contains('Appointment Dates').click()
+        cy.contains('Status').click()
+        cy.contains('Severity').click()
+        cy.contains('Latest Symptoms').click()
+        cy.contains('View Appointments').click()
+        cy.get('body').click(0,0);
+        cy.get('[data-testid="NotificationsNoneOutlinedIcon"]').eq(0).click()
+        cy.contains('No notifications')
+        cy.get('body').click(0,0);
+    })
+
+    it('Patient Profile', () => {
+        cy.visit('/')
+        cy.contains('Patient 2').click()
+        cy.contains('Patient 2')
+        cy.contains('RAMQ MANSOKS0002')
+        cy.contains('Patient\'s Info')
+        cy.contains('Latest Symptoms')
+        cy.contains('Messages')
+        cy.contains('History')
+        cy.get('body').click(0,0);
+    })
+
+    it('Medical Chat', () => {
+        cy.visit('/')
+        cy.contains('Patient 2').click()
+        cy.get('[class="message-input"]').click().type("Hi Patient")
+        cy.get('[data-testid="SendIcon"]').click()
+        cy.get('.message.sent').should('contain','Hi Patient')
+    })
+
+    it('Close Patient\'s File', () => {
+        cy.visit('/')
+        cy.contains('Patient 2').click()
+        cy.contains('Close Patient\'s File').click()
+        cy.contains('delete patient')
+    })
+    it('View Appointments', () => {
+        cy.visit('/')
+        cy.contains('Patient 2').click()
+        cy.contains('View Appointments').click()
+        cy.get('[aria-haspopup="listbox"]').click()
+        cy.get('[data-value="Patient 2 Demo"]').click()
+        cy.contains('No Upcoming Appointments')
+        cy.contains('No Previous Appointments')
+    })
+
+    after(() => {
+        cy.logout()
+    })
+
+})

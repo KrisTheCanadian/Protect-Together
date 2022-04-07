@@ -117,6 +117,12 @@
     ]
   },
   "nyc": {
-    "report-dir": "coverage/cypress-coverage"
+    "report-dir": "coverage/cypress-coverage",
+    "include": [
+    ],
+    "exclude": [
+      "src/test/**",
+      "src/context/LayoutContext.tsx"
+    ]
   }
 }
