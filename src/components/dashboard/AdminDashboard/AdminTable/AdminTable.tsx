@@ -199,7 +199,6 @@ export default function AdminTable() {
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot: any) => {
       let tableData = new Array<Data>();
-
       // generate list from data and assign to table data array
       await snapshot.forEach((childSnapshot: any) => {
         const user = childSnapshot.data();

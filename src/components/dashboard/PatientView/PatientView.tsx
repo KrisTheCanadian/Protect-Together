@@ -30,6 +30,7 @@ import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
 import AccountSettings from './AccountSettings';
 import BookingSystem from '../../../pages/booking/bookingSystem';
+import PatientAppointments from './PatientAppointments';
 
 const style = {
   position: 'absolute' as const,
@@ -42,17 +43,35 @@ const style = {
   p: 4,
 };
 
+const modalStyle = {
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  display: 'flex',
+  flexDirection: 'column',
+
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  p: 4,
+};
+
 function PatientView() {
   const [contentId, setContentId] = useState<number>(0);
   const navigate = useNavigate();
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [appointmentsViewOpen, setAppointmentsViewOpen] = useState(false);
+  const [appointment, setAppointment] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
   const handleBookingClose = () => setBookingOpen(false);
+  const handleAppointmentsViewClose = () => setAppointmentsViewOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
   const [disableBook, setDisableBook] = useState<boolean>(false);
@@ -64,6 +83,12 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
+        const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+        const appointmentTime = appointmentData?.toDate();
+        const currentDate = new Date();
+        if (appointmentTime > currentDate) {
+          setAppointment(true);
+        }
       }
     });
     return () => {
@@ -95,7 +120,8 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-          <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
+          {areAssigned && (
+          <ListItem button key="Results" data-testid="SymptomsUpdate2">
             <ListItemIcon>
               <ContentPasteIcon />
             </ListItemIcon>
@@ -104,8 +130,15 @@ function PatientView() {
               onClick={() => { navigate('/symptomsUpdate'); }}
             />
           </ListItem>
-
-          <ListItem button disabled={disableBook && areAssigned} key="Booking">
+          )}
+          <ListItem button key="Settings" data-testid="MainSettings">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
+          </ListItem>
+          {!disableBook && areAssigned && (
+          <ListItem button key="Booking">
             <ListItemIcon>
               <EventIcon />
             </ListItemIcon>
@@ -114,12 +147,18 @@ function PatientView() {
               onClick={() => setBookingOpen(true)}
             />
           </ListItem>
-          <ListItem button key="Settings" data-testid="MainSettings">
+          )}
+          {appointment && disableBook && (
+          <ListItem button key="Appointments">
             <ListItemIcon>
-              <SettingsIcon />
+              <EventIcon />
             </ListItemIcon>
-            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
+            <ListItemText
+              primary="Next Appointment"
+              onClick={() => setAppointmentsViewOpen(true)}
+            />
           </ListItem>
+          )}
         </List>
         <Divider />
       </SideBar>
@@ -152,6 +191,14 @@ function PatientView() {
       >
         <Box sx={style}>
           <BookingSystem handleBookingClose={handleBookingClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={appointmentsViewOpen}
+        onClose={handleAppointmentsViewClose}
+      >
+        <Box sx={modalStyle}>
+          <PatientAppointments handleAppointmentsViewClose={handleAppointmentsViewClose} />
         </Box>
       </Modal>
     </Box>
