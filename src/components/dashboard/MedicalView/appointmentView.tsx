@@ -49,17 +49,26 @@ function AppointmentView() {
         const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const { appointments } = user;
-        const lastAppointment = new Date(
-          user.appointments[user.appointments.length - 1].selectedDate.seconds * 1000,
-        );
-        const appointmentTime = user.appointments[user.appointments.length - 1].selectedDate;
+        let upcoming = false;
         const previousAppointments: any = [];
-        user.appointments.forEach((x: any) => {
-          if (x.selectedDate !== user.appointments[user.appointments.length - 1].selectedDate) {
-            previousAppointments.push(new Date(x.selectedDate.seconds * 1000));
+
+        if (user.appointments && user?.appointments.length !== 0) {
+          const lastAppointment = new Date(
+            user.appointments[user.appointments.length - 1].selectedDate.seconds * 1000,
+          );
+          upcoming = lastAppointment.getTime() > Date.now();
+          if (upcoming) {
+            user.appointments.forEach((x: any) => {
+              if (x.selectedDate !== user.appointments[user.appointments.length - 1].selectedDate) {
+                previousAppointments.push(new Date(x.selectedDate.seconds * 1000));
+              }
+            });
+          } else {
+            user.appointments.forEach((x: any) => {
+              previousAppointments.push(new Date(x.selectedDate.seconds * 1000));
+            });
           }
-        });
-        const upcoming = lastAppointment.getTime() > Date.now();
+        }
         const patientEntry = createTableData(UID, name, appointments, upcoming, previousAppointments);
         names = [name, ...names];
         setPatientNames(names);
@@ -75,7 +84,7 @@ function AppointmentView() {
     setSelectedName(event.target.value as string);
   };
 
-  const updatePreviousApp = (index: number) => {
+  const getUpcoming = (index: number) => {
     const { length } = patientData[index].appointmentDates;
     const last = format(patientData[index].appointmentDates[length - 1].selectedDate.seconds * 1000, 'Pp');
     return last;
@@ -108,7 +117,7 @@ function AppointmentView() {
         <FormControl sx={{ m: 1, width: 300 }}>
           <InputLabel>Patient</InputLabel>
           <Select
-            value={selectedName}
+            value={selectedName || ''}
             defaultValue=""
             onChange={handleChange}
             input={<OutlinedInput label="Name" />}
@@ -126,54 +135,40 @@ function AppointmentView() {
       </Grid>
       {selectedName && patientData.map((p, index) => {
         if (p.name === selectedName) {
-          const upApp = p.upcoming ? updatePreviousApp(index) : 'No Upcoming Appointments';
+          const upApp = p.upcoming ? getUpcoming(index) : 'No Upcoming Appointments';
           return (
-            <Grid
-              container
+            <Box
               key={index}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-around',
+              }}
             >
-              <Grid
-                container
-                item
-                xs={6}
-              >
-                <Typography mt={3}>
+              <Box>
+                <Typography mt={3} sx={{ textDecoration: 'underline' }}>
                   Upcoming Appointments
                 </Typography>
-                {upApp}
-              </Grid>
-              <Grid
-                container
-                item
-                xs={6}
-              >
-                <Typography mt={3}>
+                <Box mt={1}>
+                  {upApp}
+                </Box>
+              </Box>
+              <Box>
+                <Typography mt={3} sx={{ textDecoration: 'underline' }}>
                   Previous Appointments
                 </Typography>
-                {p.previousAppointments !== null && (
-                  <Stack
-                    spacing={1}
-                    mt={2}
-                    display="flex"
-                    flexDirection="column"
-                    maxHeight="300px"
-                    style={{
-                      overflow: 'hidden',
-                      overflowY: 'scroll',
-                    }}
-                  >
-                    {p.previousAppointments?.map((d: any, key: any) => (
-                      <List>
-                        <ListItem key={key}>
-                          <ListItemText />
-                          {format(d, 'Pp')}
-                        </ListItem>
-                      </List>
-                    ))}
-                  </Stack>
+                {p.previousAppointments.length === 0 && (
+                  <Typography mt={1}>
+                    No Previous Appointments
+                  </Typography>
                 )}
-              </Grid>
-            </Grid>
+                {p.previousAppointments.length !== 0
+                  && p.previousAppointments?.map((d: any, key: any) => (
+                    <Box mt={1} key={key}>
+                      {format(d, 'Pp')}
+                    </Box>
+                  ))}
+              </Box>
+            </Box>
           );
         }
         return '';
