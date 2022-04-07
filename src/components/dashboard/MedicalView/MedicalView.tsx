@@ -47,6 +47,20 @@ function MedicalView() {
     p: 4,
   };
 
+  const modalStyle = {
+    borderRadius: '8px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    display: 'flex',
+    flexDirection: 'column',
+    bgcolor: 'background.paper',
+    border: 'none',
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
@@ -96,7 +110,7 @@ function MedicalView() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           {modalContent === 0 && <AppointmentView />}
           {modalContent === 1 && 'delete patient'}
         </Box>

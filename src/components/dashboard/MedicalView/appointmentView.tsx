@@ -91,19 +91,7 @@ function AppointmentView() {
   };
 
   return (
-    <Grid
-      container
-      sx={{
-        bgcolor: 'primary.contrastText',
-        borderRadius: 2,
-        boxShadow: 6,
-        padding: 6,
-        flexDirection: 'column',
-        width: '40em',
-        maxHeight: '100vh',
-        overflow: 'scroll',
-      }}
-    >
+    <div style={{ overflowY: 'auto', minWidth: '35em' }}>
       <Typography
         variant="h5"
         mt={3}
@@ -173,7 +161,7 @@ function AppointmentView() {
         }
         return '';
       })}
-    </Grid>
+    </div>
   );
 }
 export default AppointmentView;

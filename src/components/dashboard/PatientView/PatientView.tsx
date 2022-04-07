@@ -191,7 +191,7 @@ function PatientView() {
         open={bookingOpen}
         onClose={handleBookingClose}
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <BookingSystem handleBookingClose={handleBookingClose} />
         </Box>
       </Modal>
