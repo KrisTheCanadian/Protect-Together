@@ -70,17 +70,24 @@ export const enablePatientAppointment = functions.https.onCall(async (_data) => 
 export const cancelAppointment = functions.https.onCall(async (_data, context)=>{
   const userID = context.auth?.uid;
   const userRef = db.doc(`users/${userID}`);
-  const user = (await userRef.get()).data();
+  const userSnap = await userRef.get();
+  const user = userSnap.data();
   const appointmentDate = admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate));
+
   if (user) {
     const updatedPatientAppointments = user.appointments
-        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date !== appointmentDate);
+        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> {
+          functions.logger.error(appointmentDate, {structuredData: true});
+          functions.logger.error(bookedAppointment.date, {structuredData: true});
+          functions.logger.error(bookedAppointment.date != appointmentDate, {structuredData: true});
+          return bookedAppointment.date != appointmentDate;
+        });
 
     const doctorId = user.assignedDoctor;
     const appointmentRef = db.doc(`appointments/${doctorId}`);
     const appointmentData = await (await appointmentRef.get()).data();
     const updatedDoctorAppointments = appointmentData && appointmentData.appointments
-        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date !== appointmentDate);
+        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date != appointmentDate);
 
     return userRef.update({appointments: updatedPatientAppointments}).then(()=>{
       appointmentRef.update({appointments: updatedDoctorAppointments});
