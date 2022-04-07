@@ -69,8 +69,8 @@ function AdminDashboard() {
   const { state, update } = React.useContext(UserContext);
 
   const handleNotifyTest = () => {
-    const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
-    dispatchDoctor({ title: 'Title Test', message: 'testing', userId: state.id });
+    const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+    sendNotification({ title: 'Title Test', message: 'testing', userId: state.id });
   };
 
   useEffect(() => {

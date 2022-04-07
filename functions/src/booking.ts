@@ -31,7 +31,7 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
   const userID = context.auth?.uid;
   const appointment = {
     uid: userID,
-    date: admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate)),
+    selectedDate: admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate)),
   };
   const userRef = db.doc(`users/${userID}`);
   const user = (await userRef.get()).data();
@@ -42,7 +42,7 @@ export const bookAppointment = functions.https.onCall(async (_data, context)=>{
     // check if already booked
     const appointmentData = await (await appointmentRef.get()).data();
     const existingAppointment = appointmentData && appointmentData.appointments
-        .filter((bookedAppointment: { date: admin.firestore.Timestamp; })=> bookedAppointment.date == appointment.date).length !== 0;
+        .filter((bookedAppointment: { selectedDate: admin.firestore.Timestamp; })=> bookedAppointment.selectedDate.isEqual(appointment.selectedDate)).length !== 0;
 
     // if it doesn't exist save it
     if (!existingAppointment) {
@@ -67,3 +67,29 @@ export const enablePatientAppointment = functions.https.onCall(async (_data) => 
   });
 });
 
+export const cancelAppointment = functions.https.onCall(async (_data, context)=>{
+  const userID = context.auth?.uid;
+  const userRef = db.doc(`users/${userID}`);
+  const userSnap = await userRef.get();
+  const user = userSnap.data();
+  const appointmentDate = admin.firestore.Timestamp.fromDate(new Date(_data.appointmentDate));
+
+  if (user) {
+    const updatedPatientAppointments = user.appointments
+        .filter((bookedAppointment: { selectedDate: admin.firestore.Timestamp; })=> {
+          return !bookedAppointment.selectedDate.isEqual(appointmentDate);
+        });
+
+    const doctorId = user.assignedDoctor;
+    const appointmentRef = db.doc(`appointments/${doctorId}`);
+    const appointmentData = await (await appointmentRef.get()).data();
+    const updatedDoctorAppointments = appointmentData && appointmentData.appointments
+        .filter((bookedAppointment: { selectedDate: admin.firestore.Timestamp; })=> !bookedAppointment.selectedDate.isEqual(appointmentDate));
+
+    return userRef.update({appointments: updatedPatientAppointments}).then(()=>{
+      appointmentRef.update({appointments: updatedDoctorAppointments});
+    });
+  } else {
+    return null;
+  }
+});

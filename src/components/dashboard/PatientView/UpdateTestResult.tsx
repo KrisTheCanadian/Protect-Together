@@ -52,8 +52,8 @@ function UpdateTestResult({ handleTestClose }: Props) {
         if (patient) {
           const { assignedDoctor } = patient;
           if (assignedDoctor) {
-            const dispatchDoctor = Firebase.functions().httpsCallable('sendNotification');
-            dispatchDoctor({
+            const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+            sendNotification({
               title: `${patient.firstName} ${patient.lastName} has updated their test results`,
               message: `Tested ${testResult} using ${testType} ${testDate
                 ? `on ${format(testDate, 'yyyy-LL-dd')}` : ''}`,
