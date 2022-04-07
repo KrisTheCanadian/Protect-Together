@@ -29,7 +29,7 @@ export interface EnhancedTableProps {
 
 export interface EnhancedTableToolbarProps {
   numSelected: number;
-  onSearch: (event: any)=> void;
+  onSearch: (event: any) => void;
 }
 const style = {
   position: 'absolute' as const,
@@ -63,9 +63,9 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string },
+  ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -212,9 +212,14 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         const { UID } = user;
         const name = [user.firstName, user.lastName].join(' ');
         const age = Math.floor(((Date.now() - user.dateOfBirth.toDate()) / 31536000000));
-        const appointmentDate = format(new Date(1646707969351), 'Pp');
-        // eslint-disable-next-line max-len
-        const status = user.testsResults !== undefined ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
+        let appointmentDate = '';
+        if (user.appointments && user?.appointments.length !== 0) {
+          appointmentDate = format(new Date(
+            user.appointments[user.appointments.length - 1].selectedDate.seconds * 1000,
+          ), 'Pp');
+        }
+        const status = user.testsResults !== undefined
+          ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
         const severity = caseSeverity(user.score);
         const userHasUpdates = Math.round(Math.random()) === 1;
         if (userHasUpdates) hasUpdatesData.push(user.UID);
@@ -226,7 +231,7 @@ export default function MedicalTable({ handlePatientClick }: Props) {
       sethasUpdates(hasUpdatesData);
     });
     return () => unsubscribe();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRequestSort = (
@@ -273,8 +278,8 @@ export default function MedicalTable({ handlePatientClick }: Props) {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
     setFilteredRows(rowData.filter((row) => (row.name.toLowerCase().includes(searchText.toLowerCase())
-       || row.appointmentDate.toString().toLowerCase().includes(searchText.toLowerCase())
-       || row.status.toLowerCase().includes(searchText.toLowerCase())
+      || row.appointmentDate.toString().toLowerCase().includes(searchText.toLowerCase())
+      || row.status.toLowerCase().includes(searchText.toLowerCase())
     )));
   };
 
@@ -398,13 +403,13 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          { modalContent === 0
+          {modalContent === 0
             && (
-            <PatientInfoList
-              listTitle={`Latest Symptoms ${ptSymptoms
-                ? `(${format(ptSymptoms.date.toDate(), 'yyyy-LL-dd KK:mm:ss a')})` : ''}`}
-              listItems={ptSymptoms?.userSymptoms.map((symp: string) => ({ primary: symp, secondary: '' }))}
-            />
+              <PatientInfoList
+                listTitle={`Latest Symptoms ${ptSymptoms
+                  ? `(${format(ptSymptoms.date.toDate(), 'yyyy-LL-dd KK:mm:ss a')})` : ''}`}
+                listItems={ptSymptoms?.userSymptoms.map((symp: string) => ({ primary: symp, secondary: '' }))}
+              />
             )}
         </Box>
       </Modal>

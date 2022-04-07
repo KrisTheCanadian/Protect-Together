@@ -20,6 +20,7 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import EventIcon from '@mui/icons-material/Event';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { UserContext } from '../../../context/UserContext';
 import SideBar from '../../layout/SideBar';
 import UpdateTestResult from './UpdateTestResult';
@@ -27,16 +28,33 @@ import TestResults from './TestResults';
 import { firestore } from '../../../config/firebase_config';
 import PatientDashboard from './PatientDashboard';
 import PatientMedicalConnect from './PatientMedicalConnect';
+import AccountSettings from './AccountSettings';
 import BookingSystem from '../../../pages/booking/bookingSystem';
+import PatientAppointments from './PatientAppointments';
 
 const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
+  width: { lg: '50%', md: '75%', sm: '100%', xs: '100%' },
   boxShadow: 0,
   margin: 0,
+  p: 4,
+};
+
+const modalStyle = {
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  display: 'flex',
+  flexDirection: 'column',
+
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
   p: 4,
 };
 
@@ -46,11 +64,14 @@ function PatientView() {
   const [testOpen, setTestOpen] = useState(false);
   const [testROpen, setTestROpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [appointmentsViewOpen, setAppointmentsViewOpen] = useState(false);
+  const [appointment, setAppointment] = useState(false);
   const handleTestOpen = () => setTestOpen(true);
   const handleTestClose = () => setTestOpen(false);
   const handleTestROpen = () => setTestROpen(true);
   const handleTestRClose = () => setTestROpen(false);
   const handleBookingClose = () => setBookingOpen(false);
+  const handleAppointmentsViewClose = () => setAppointmentsViewOpen(false);
   const { state } = useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
   const [disableBook, setDisableBook] = useState<boolean>(false);
@@ -62,6 +83,14 @@ function PatientView() {
       if (data) {
         setUser(data);
         setDisableBook(data.disableBook);
+        if (data.appointments && data.appointments.length) {
+          const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+          const appointmentTime = appointmentData?.toDate();
+          const currentDate = new Date();
+          if (appointmentTime > currentDate) {
+            setAppointment(true);
+          }
+        }
       }
     });
     return () => {
@@ -93,31 +122,51 @@ function PatientView() {
             </ListItemIcon>
             <ListItemText data-testid="TestResults" primary="Test Results" onClick={handleTestROpen} />
           </ListItem>
-
-          <ListItem button disabled={!areAssigned} key="Results" data-testid="SymptomsUpdate2">
+          {areAssigned && (
+            <ListItem button key="Results" data-testid="SymptomsUpdate2">
+              <ListItemIcon>
+                <ContentPasteIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Symptoms Update"
+                onClick={() => { navigate('/symptomsUpdate'); }}
+              />
+            </ListItem>
+          )}
+          <ListItem button key="Settings" data-testid="MainSettings">
             <ListItemIcon>
-              <ContentPasteIcon />
+              <SettingsIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="Symptoms Update"
-              onClick={() => { navigate('/symptomsUpdate'); }}
-            />
+            <ListItemText primary="Main Settings" onClick={() => { setContentId(2); }} />
           </ListItem>
-
-          <ListItem button disabled={disableBook && areAssigned} key="Booking">
-            <ListItemIcon>
-              <EventIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Book Appointment"
-              onClick={() => setBookingOpen(true)}
-            />
-          </ListItem>
+          {!disableBook && areAssigned && (
+            <ListItem button key="Booking">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Book Appointment"
+                onClick={() => setBookingOpen(true)}
+              />
+            </ListItem>
+          )}
+          {appointment && disableBook && (
+            <ListItem button key="Appointments">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Next Appointment"
+                onClick={() => setAppointmentsViewOpen(true)}
+              />
+            </ListItem>
+          )}
         </List>
         <Divider />
       </SideBar>
       {contentId === 0 && <PatientDashboard setContentId={setContentId} />}
       {contentId === 1 && <PatientMedicalConnect />}
+      {contentId === 2 && <AccountSettings />}
       <Modal
         open={testOpen}
         onClose={handleTestClose}
@@ -142,8 +191,16 @@ function PatientView() {
         open={bookingOpen}
         onClose={handleBookingClose}
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <BookingSystem handleBookingClose={handleBookingClose} />
+        </Box>
+      </Modal>
+      <Modal
+        open={appointmentsViewOpen}
+        onClose={handleAppointmentsViewClose}
+      >
+        <Box sx={modalStyle}>
+          <PatientAppointments handleAppointmentsViewClose={handleAppointmentsViewClose} />
         </Box>
       </Modal>
     </Box>

@@ -3,6 +3,9 @@ import {
   Button,
   Grid,
   Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { doc, Timestamp, onSnapshot } from 'firebase/firestore';
 import Timeline from '@mui/lab/Timeline';
@@ -28,6 +31,8 @@ interface TestResult {
 function TestResults({ handleTestRClose }: Props) {
   const { state } = React.useContext(UserContext);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const theme = useTheme();
+  const phoneSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
@@ -41,32 +46,18 @@ function TestResults({ handleTestRClose }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (testResults.length === 0) {
+    return (
+      <Paper sx={{ padding: '20px' }}>
+        <Typography variant="h6" textAlign="center">You do not have any test results.</Typography>
+      </Paper>
+    );
+  }
   return (
-    <Grid
-      container
-      sx={{
-        bgcolor: 'background.default',
-        borderRadius: 1,
-        boxShadow: 3,
-        padding: 6,
-        flexDirection: 'column',
-        alignContent: 'center',
-        justifyContent: 'center',
-        width: '98%',
-        m: '1%',
-        maxHeight: '95vh',
-        overflow: 'scroll',
-      }}
-    >
-      <Grid
-        item
-        sx={{
-          width: '100%',
-        }}
-      />
-      <Paper sx={{ bgcolor: 'white', padding: '20px', maxWidth: '100%' }}>
-        <Timeline>
-          {testResults.map((testResult) => (
+    <Paper sx={{ bgcolor: 'white', padding: '20px', maxWidth: '100%', maxHeight: '80vh', overflow: 'auto' }}>
+      <Timeline>
+        {testResults.map((x) => x).sort((a: TestResult, b: TestResult) => b.testDate.seconds - a.testDate.seconds)
+          .map((testResult) => (
             <TimelineItem key={testResult.testDate.toString()}>
               <TimelineOppositeContent color="text.secondary">
                 {testResult.testDate.toDate().toDateString()}
@@ -82,39 +73,9 @@ function TestResults({ handleTestRClose }: Props) {
                 {testResult.testResult}
               </TimelineContent>
             </TimelineItem>
-
           ))}
-
-        </Timeline>
-      </Paper>
-      <Grid item>
-        <Paper
-          sx={{
-            mt: 2,
-          }}
-        >
-          <Button
-            type="button"
-            data-testid="testResult-button"
-            onClick={() => {
-              handleTestRClose();
-            }}
-            color="warning"
-            fullWidth
-            variant="contained"
-          >
-            Close
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item>
-        <Paper
-          sx={{
-            mt: 2,
-          }}
-        />
-      </Grid>
-    </Grid>
+      </Timeline>
+    </Paper>
   );
 }
 

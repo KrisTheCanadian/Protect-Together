@@ -103,7 +103,7 @@ function bookingSystem({ handleBookingClose } : Props) {
           const snapData = snapshot.data();
           if (snapData) {
             const appointmentDates = snapData?.appointments
-              .map((appointment: { date: Timestamp; }) => appointment.date.toDate());
+              .map((appointment: { selectedDate: Timestamp; }) => appointment.selectedDate.toDate());
             setBookedDates(appointmentDates);
           }
         });
@@ -184,19 +184,7 @@ function bookingSystem({ handleBookingClose } : Props) {
     && date.getMonth() === todayDate.getMonth() && date.getFullYear() === todayDate.getFullYear());
 
   return (
-    <Grid
-      container
-      sx={{
-        bgcolor: 'primary.contrastText',
-        borderRadius: 2,
-        boxShadow: 6,
-        padding: 6,
-        flexDirection: 'column',
-        width: '40em',
-        maxHeight: '100vh',
-        overflow: 'scroll',
-      }}
-    >
+    <div style={{ overflowY: 'auto', minWidth: '400px' }}>
       <Grid
         container
         item
@@ -344,7 +332,7 @@ function bookingSystem({ handleBookingClose } : Props) {
         </Grid>
         {error && <Alert severity="error">{error}</Alert>}
       </Grid>
-    </Grid>
+    </div>
   );
 };
 export default bookingSystem;

@@ -6,16 +6,20 @@ import {
   ListSubheader,
   Divider,
 } from '@mui/material';
+import theme from '../../../../static/style/theme';
 
 const listHeaderStyle = {
-  backgroundColor: '#E6E6E6',
+  backgroundColor: theme.palette.secondary.main,
   color: 'black',
   fontWeight: 'bold',
   marginTop: '16px',
+  borderTopLeftRadius: '8px',
+  borderTopRightRadius: '8px',
 };
 
 const listStyle = {
   backgroundColor: 'white',
+  borderRadius: '8px',
 };
 
 type StringPair = {

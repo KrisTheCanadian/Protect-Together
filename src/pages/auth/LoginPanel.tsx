@@ -12,12 +12,11 @@ const LoginPanel = (props: any) => {
   return (
     <Grid
       item
-      xs={false}
+      container
+      xs={12}
       sm={props.smallSize}
       md={props.medSize}
-      display="flex"
       bgcolor="primary.main"
-      container
       direction="column"
       sx={{
         backgroundImage: `url(${props.blob})`,
@@ -25,6 +24,7 @@ const LoginPanel = (props: any) => {
         backgroundSize: '90%',
         backgroundPosition: 'center',
         overflowY: 'visible',
+        display: phoneSize ? props.displayPanel : 'flex',
       }}
     >
       <Grid
@@ -74,7 +74,7 @@ const LoginPanel = (props: any) => {
             color="#FFFFFF"
             sx={{
               [theme.breakpoints.between('xs', 'sm')]: {
-                fontSize: '1.7rem',
+                fontSize: '1.5rem',
               },
               [theme.breakpoints.between('sm', 'md')]: {
                 fontSize: '1.8rem',
@@ -102,7 +102,7 @@ const LoginPanel = (props: any) => {
           sm={6}
           md={3}
           sx={{
-            [theme.breakpoints.between(0, props.verySmallSize)]: {
+            [theme.breakpoints.between(0, 'sm')]: {
               display: 'none',
             },
           }}
@@ -150,7 +150,7 @@ const LoginPanel = (props: any) => {
           alignItems="center"
           justifyContent="center"
           sx={{
-            [theme.breakpoints.between(0, props.verySmallSize)]: {
+            [theme.breakpoints.between(0, 'sm')]: {
               alignItems: 'flex-end',
             },
           }}

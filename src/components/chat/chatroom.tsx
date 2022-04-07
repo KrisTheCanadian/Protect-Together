@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -11,6 +12,7 @@ import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
 import { PatientData } from '../dashboard/MedicalView/PatientInfo/PatientInfo';
 import './chatroom.css';
+import theme from '../../static/style/theme';
 
 interface Message {
   message: string,
@@ -140,7 +142,7 @@ function ChatRoom(props: ChatInfo) {
 
   return (
     <>
-      <Box className="messages-container" sx={{ flex: 1, overflow: 'scroll' }}>
+      <Box className="messages-container" sx={{ flex: 1, overflow: 'auto' }}>
         {messages && messages.map((msg, index) => {
           let showAvatar = true;
           if (messages[index - 1] && messages[index - 1].ownerID === msg.ownerID) {
@@ -189,6 +191,10 @@ function Chat(props: ChatInfo) {
     });
   };
 
+  useEffect(() => {
+    getPatientData();
+  }, []);
+
   return (
     <Box
       className="Chat"
@@ -197,14 +203,20 @@ function Chat(props: ChatInfo) {
         display: 'flex',
         flexDirection: 'column',
         background: 'white',
-        borderRadius: '20px',
+        borderRadius: '8px',
 
       }}
     >
-      <Box sx={{ padding: '15px 20px 15px 20px', borderBottom: '1px solid #e7e7e7' }}>
+      <Box
+        sx={{
+          padding: '15px 20px 15px 20px',
+          borderBottom: '1px solid #e7e7e7',
+          bgcolor: theme.palette.secondary.main,
+        }}
+      >
         <Grid
           container
-          spacing={24}
+          spacing={1}
           justifyContent="space-between"
         >
           <Grid item>

@@ -13,25 +13,14 @@ const sentences = ['Connect with a Doctor from', 'Keep Up with the Latest Covid-
 const boldWords = ['Anywhere.', 'Statistics.', 'Symptoms.'];
 const illustrations = [ProtectTogether, Statistics, Monitor];
 
+const currentIndex = Math.floor(Math.random() * 3);
+
 export default function PanelSwapper(props: any) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (currentIndex === sentences.length - 1) {
-        setCurrentIndex(0);
-      } else {
-        setCurrentIndex(currentIndex + 1);
-      }
-    }, 15000);
-    return () => clearInterval(intervalId);
-  }, [currentIndex]);
-
   return (
     <LoginPanel
-      verySmallSize={props.panelVerySmallSize}
       smallSize={props.panelSmallSize}
       medSize={props.panelMedSize}
+      displayPanel={props.showPanel}
       blob={blobs[currentIndex]}
       sentence={sentences[currentIndex]}
       boldWord={boldWords[currentIndex]}
