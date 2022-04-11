@@ -1,10 +1,11 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {sendNotificationHelper, UserNotification} from "./notifications";
 
 
 const db = admin.firestore();
 
-// add new doctor, add new slots and when I close a case
+// to be called when adding new doctor or add new slots and when I close a case
 export const dispatchDoctor = functions.https.onCall( (_data)=> {
   // get doctor with available slots
   const medicalId = _data.medicalID;
@@ -23,6 +24,17 @@ export const dispatchDoctor = functions.https.onCall( (_data)=> {
           batch.update(doc.ref, "doctorName", `${_data.firstName} ${_data.lastName}`);
         });
         batch.commit().then(()=>{
+          const numberUpdated = querySnap.docs.length;
+          const plural = numberUpdated > 1 ? "s" : "";
+          // send message with number of patients assigned
+          const message: UserNotification = {
+            title: `New Patient${plural}`,
+            message: "Your patient list has been updated",
+            date: admin.firestore.Timestamp.now(),
+            read: false,
+            conversationID: null,
+          };
+          sendNotificationHelper(medicalId, message);
           // adjust doctor slots
           const newFilledSlots = _data.filledSlots + querySnap.docs.length;
           const newAvailableSlots = _data.availableSlots - querySnap.docs.length;
@@ -57,6 +69,16 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
     const availableDoc = availableDoctorRef.data();
     return userSnap.ref
         .update({assignedDoctor: availableDoc.UID, doctorName: `${availableDoc.firstName} ${availableDoc.lastName}`}).then(()=>{
+          // send notification to doctor
+          const message: UserNotification = {
+            title: "New Patient",
+            message: `${userSnap.data()?.firstName} has been assigned to you`,
+            date: admin.firestore.Timestamp.now(),
+            read: false,
+            conversationID: null,
+          };
+          sendNotificationHelper(availableDoc.UID, message);
+
           // decrement available Slots
           const newfilledSlots = availableDoctorRef.data().filledSlots +1;
           const newAvailableSlots = availableDoctorRef.data().patientSlots - newfilledSlots;

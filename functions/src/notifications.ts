@@ -19,13 +19,6 @@ export const sendNotification = functions.https.onCall(async (_data) => {
   return sendNotificationHelper(userId, message);
 });
 
-interface UserNotification {
-  title: string;
-  message: string;
-  date: admin.firestore.Timestamp;
-  read: boolean;
-}
-
 
 // send notification for unread messages
 export const sendNotificationForConversation = functions.https.onCall(async (_data) => {
@@ -78,7 +71,7 @@ const delay = (time:number) => {
 
 
 // helper function to send notification to user
-const sendNotificationHelper = async (recipientID: string, notification: UserNotification) => {
+export const sendNotificationHelper = async (recipientID: string, notification: UserNotification) => {
   const userRef = db.doc(`users/${recipientID}`);
   const userSnap = await userRef.get();
   return userSnap.ref.update({
@@ -87,7 +80,7 @@ const sendNotificationHelper = async (recipientID: string, notification: UserNot
 };
 
 // format for notification
-interface UserNotification {
+export interface UserNotification {
   title: string;
   message: string;
   date: admin.firestore.Timestamp;
