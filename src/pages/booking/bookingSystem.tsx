@@ -149,13 +149,11 @@ function bookingSystem({ handleBookingClose } : Props) {
         .catch((saveError) => {
           console.error(saveError);
         });
-      const sendNotification = Firebase.functions().httpsCallable('sendNotificationForConversation');
-      // we need to grab the user using firestore
+      const sendNotification = Firebase.functions().httpsCallable('sendNotification');
       sendNotification({
-        title: 'New Appointment booked by a patient.',
-        message: `New Appointment Booked by ${state.firstName} ${state.lastName}.`,
-        recipientID: user?.assignedDoctor,
-        conversationID: user?.UID,
+        title: `New Appointment for patient ${state.firstName} ${state.lastName}.`,
+        message: `New Appointment Booked on ${appointmentDate}.`,
+        userId: user?.assignedDoctor,
       });
     }
   };
