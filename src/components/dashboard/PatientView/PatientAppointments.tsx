@@ -51,6 +51,12 @@ export default function PatientAppointments({ handleAppointmentsViewClose } : an
     }).catch((saveError) => {
       console.error(saveError);
     });
+    const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+    sendNotification({
+      title: `Appointment for patient ${state.firstName} ${state.lastName} has been cancelled!`,
+      message: `Patient has cancelled the appointment on ${appointmentDate}.`,
+      userId: user?.assignedDoctor,
+    });
   };
 
   useEffect(() => {

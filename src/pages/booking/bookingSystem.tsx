@@ -131,7 +131,6 @@ function bookingSystem({ handleBookingClose } : Props) {
               });
           }
         });
-
       const bookAppointment = Firebase.functions().httpsCallable('bookAppointment');
       bookAppointment({ appointmentDate }).then(() => {
         users
@@ -150,6 +149,12 @@ function bookingSystem({ handleBookingClose } : Props) {
         .catch((saveError) => {
           console.error(saveError);
         });
+      const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+      sendNotification({
+        title: `New Appointment for patient ${state.firstName} ${state.lastName}.`,
+        message: `New Appointment Booked on ${appointmentDate}.`,
+        userId: user?.assignedDoctor,
+      });
     }
   };
 
