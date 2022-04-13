@@ -67,8 +67,8 @@ export const enablePatientAppointment = functions.https.onCall(async (_data) => 
   });
 });
 
-export const cancelAppointment = functions.https.onCall(async (_data, context)=>{
-  const userID = context.auth?.uid;
+export const cancelAppointment = functions.https.onCall(async (_data)=>{
+  let userID = _data.userId;
   const userRef = db.doc(`users/${userID}`);
   const userSnap = await userRef.get();
   const user = userSnap.data();
@@ -88,8 +88,35 @@ export const cancelAppointment = functions.https.onCall(async (_data, context)=>
 
     return userRef.update({appointments: updatedPatientAppointments}).then(()=>{
       appointmentRef.update({appointments: updatedDoctorAppointments});
+      userID = null;
     });
   } else {
     return null;
   }
 });
+
+// export const closeFile = functions.https.onCall(async (_data, context)=>{
+//   const patientID = _data.PID;
+//   const patientRef = db.doc(`users/${patientID }`);
+//   const patientSnap = await patientRef.get();
+//   const patient = patientSnap.data();
+
+//   if (patient) {
+//     const updatedPatientAppointments = user.appointments
+//         .filter((bookedAppointment: { selectedDate: admin.firestore.Timestamp; })=> {
+//           return !bookedAppointment.selectedDate.isEqual(appointmentDate);
+//         });
+
+//     const doctorId = user.assignedDoctor;
+//     const appointmentRef = db.doc(`appointments/${doctorId}`);
+//     const appointmentData = await (await appointmentRef.get()).data();
+//     const updatedDoctorAppointments = appointmentData && appointmentData.appointments
+//         .filter((bookedAppointment: { selectedDate: admin.firestore.Timestamp; })=> !bookedAppointment.selectedDate.isEqual(appointmentDate));
+
+//     return patientRef.update({assignedDoctor: updatedPatientAppointments}).then(()=>{
+//       appointmentRef.update({appointments: updatedDoctorAppointments});
+//     });
+//   } else {
+//     return null;
+//   }
+// });
