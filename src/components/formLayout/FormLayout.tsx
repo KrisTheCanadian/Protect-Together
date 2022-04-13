@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { arrayUnion } from 'firebase/firestore';
 import Question1 from './QuestionsDesign/Question1Layout';
 import Question2 from './QuestionsDesign/Question2Layout';
 import Question3 from './QuestionsDesign/Question3Layout';
@@ -65,7 +66,7 @@ export default function FormLayout({ changeState }: any) {
         basePoints: points - symptomsPoints,
         assignedDoctor: 'requestedDoctor',
         initialPatientHelpFormData: userAnswers,
-        patientSymptoms: [{ date, userSymptoms }],
+        patientSymptoms: arrayUnion({ date, userSymptoms }),
       })
       .then(() => {
         const getDoctor = Firebase.functions().httpsCallable('requestDoctor');

@@ -15,6 +15,7 @@ import {
 import SideBar from '../../layout/SideBar';
 import MedicalDashboard from './MedicalDashboard';
 import PatientInfo from './PatientInfo/PatientInfo';
+import ClosePatientFile from './PatientInfo/ClosePatientFile';
 import AppointmentView from './appointmentView';
 
 function MedicalView() {
@@ -112,7 +113,13 @@ function MedicalView() {
       >
         <Box sx={modalStyle}>
           {modalContent === 0 && <AppointmentView />}
-          {modalContent === 1 && 'delete patient'}
+          {modalContent === 1 && (
+          <ClosePatientFile
+            PID={patientId}
+            handleClose={handleClose}
+            goDashboard={setContentId}
+          />
+          )}
         </Box>
       </Modal>
     </Box>

@@ -3,8 +3,8 @@ admin.initializeApp();
 
 export {getDoctorAvailabilities, bookAppointment, enablePatientAppointment, cancelAppointment} from "./booking";
 export {sendNotification, sendNotificationForConversation} from "./notifications";
-export {requestDoctor, dispatchDoctor} from "./triage";
 export {getThirdPartyInfo} from "./thirdPartyData";
+export {requestDoctor, dispatchDoctor, closePatientFile} from "./triage";
 
 
 // // Start writing Firebase Functions
