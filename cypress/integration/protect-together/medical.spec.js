@@ -84,7 +84,7 @@ describe('Sprint 4 Medical Suite', () => {
         cy.visit('/')
         cy.contains('Patient 2').click()
         cy.contains('Close Patient\'s File').click()
-        cy.contains('delete patient')
+        cy.contains('Keep Patient\'s File')
     })
     it('View Appointments', () => {
         cy.visit('/')
