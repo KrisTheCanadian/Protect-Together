@@ -15,6 +15,7 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
+import SexChart from './SexChart';
 
 const style = {
   position: 'absolute' as const,
@@ -51,6 +52,9 @@ function ThirdPartyDashboard() {
       </SideBar>
       <MainContent>
         <Typography paragraph>{state.firstName}</Typography>
+        <Box sx={{ width: '300px', display: 'flex' }}>
+          <SexChart />
+        </Box>
       </MainContent>
 
       <Modal
