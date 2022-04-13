@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import {
   Box,
@@ -16,6 +16,7 @@ import MainContent from '../../layout/MainContent';
 import SideBar from '../../layout/SideBar';
 import { UserContext } from '../../../context/UserContext';
 import SexChart from './SexChart';
+import Firebase, { firestore } from '../../../config/firebase_config';
 
 const style = {
   position: 'absolute' as const,
@@ -34,6 +35,14 @@ function ThirdPartyDashboard() {
   const handleClose = () => setModalOpen(false);
 
   const { state, update } = React.useContext(UserContext);
+
+  useEffect(() => {
+    const getThirdPartyInfo = Firebase.functions().httpsCallable('getThirdPartyInfo');
+    getThirdPartyInfo().then((data) => {
+      console.log(data);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
