@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
-import { Chart, ArcElement } from 'chart.js';
+import { ArcElement } from 'chart.js';
+import Chart from 'chart.js/auto';
 
 import {
   Typography,
@@ -8,7 +9,7 @@ import {
 
 Chart.register(ArcElement);
 
-const SexChart = () => {
+const SexChart = ({ maleSex, femaleSex, thirdSex } : any) => {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -58,10 +59,10 @@ const SexChart = () => {
   };
 
   const data = {
-    labels: ['male', 'female', 'not diclosed'],
+    labels: ['Male', 'Female', 'not Disclosed'],
     datasets: [{
       label: 'Patient Sex',
-      data: [12, 23, 2],
+      data: [maleSex, femaleSex, thirdSex],
       backgroundColor: [
         'rgb(54, 162, 235)',
         'rgb(255, 99, 132)',
@@ -78,10 +79,10 @@ const SexChart = () => {
   return (
     <div className="App">
       <div>
-        {/* <Typography variant="h6">Patient Sex</Typography> */}
+        <Typography variant="h6">Patient Sex</Typography>
         <Pie
           data={data}
-          options={chartOptions}
+        //   options={chartOptions}
         />
       </div>
     </div>

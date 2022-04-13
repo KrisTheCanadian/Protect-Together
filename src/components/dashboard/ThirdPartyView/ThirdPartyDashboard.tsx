@@ -10,6 +10,7 @@ import {
   ListItemText,
   Typography,
   Modal,
+  Container,
 } from '@mui/material';
 import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
@@ -33,13 +34,39 @@ function ThirdPartyDashboard() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const [males, setMales] = React.useState(0);
+  const [females, setFemales] = React.useState(0);
+  const [thirds, setThirds] = React.useState(0);
+  let maleSex = 0;
+  let femaleSex = 0;
+  let thirdSex = 0;
 
   const { state, update } = React.useContext(UserContext);
+
+  const patientSexPopulate = (sex: any) => {
+    if (sex === 'Male') {
+      maleSex += 1;
+    } else if (sex === 'Female') {
+      femaleSex += 1;
+    } else {
+      thirdSex += 1;
+    }
+  };
+
+  const getData = ({ data }:any) => {
+    data.forEach((dataObj: any) => {
+      patientSexPopulate(dataObj.sex);
+    });
+    setMales(maleSex);
+    setFemales(femaleSex);
+    setThirds(thirdSex);
+  };
 
   useEffect(() => {
     const getThirdPartyInfo = Firebase.functions().httpsCallable('getThirdPartyInfo');
     getThirdPartyInfo().then((data) => {
       console.log(data);
+      getData(data);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,8 +88,8 @@ function ThirdPartyDashboard() {
       </SideBar>
       <MainContent>
         <Typography paragraph>{state.firstName}</Typography>
-        <Box sx={{ width: '300px', display: 'flex' }}>
-          <SexChart />
+        <Box sx={{ width: '500px' }}>
+          <SexChart maleSex={males} femaleSex={females} thirdSex={thirds} />
         </Box>
       </MainContent>
 
