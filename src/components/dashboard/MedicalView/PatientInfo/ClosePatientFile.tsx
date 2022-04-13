@@ -50,25 +50,24 @@ export default function ClosePatientFile({ PID, handleClose, goDashboard }: any)
   };
 
   const canDoctorDelete = () => {
-    const unsubscribe = onSnapshot(doc(firestore, 'users', `${PID}`), (docu) => {
-      const data = docu.data();
-      if (data) {
-        if (data.appointments && data.appointments.length) {
-          const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
-          const appointmentTime = appointmentData?.toDate();
-          const currentDate = new Date();
-          if (appointmentTime > currentDate) {
-            setError(true);
-            hasNextAppointment = true;
+    users
+      .doc(PID).get()
+      .then(async (snapshot) => {
+        const data = snapshot.data();
+        if (data) {
+          if (data.appointments && data.appointments.length) {
+            const appointmentData = data?.appointments[data.appointments.length - 1]?.selectedDate;
+            const appointmentTime = appointmentData?.toDate();
+            const currentDate = new Date();
+            if (appointmentTime > currentDate) {
+              setError(true);
+              hasNextAppointment = true;
+            }
           }
         }
-      }
-      // calls Update Patient after going through validation checks
-      updatePatient();
-    });
-    return () => {
-      unsubscribe();
-    };
+        // calls Update Patient after going through validation checks
+        updatePatient();
+      });
   };
 
   const closePatient = async () => {
