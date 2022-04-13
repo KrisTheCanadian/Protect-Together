@@ -14,7 +14,7 @@ function MedicalDashboard({ handlePatientClick }: Props) {
   const { state, update } = React.useContext(UserContext);
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
+    <Box sx={{ display: 'flex', width: '100%', overflowX: 'auto' }}>
       <Header title={`Welcome Dr. ${state.lastName}`} subtitle="Track and manage your patients">
         <NotificationsButton />
       </Header>
