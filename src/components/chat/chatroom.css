@@ -4,9 +4,9 @@
 }
 
 .message{
-    display: inline-block;
     word-break: break-word;
 }
+
 .message p{
     margin-right: 5px;
     margin-left: 5px;
