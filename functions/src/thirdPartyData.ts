@@ -18,7 +18,7 @@ export const getThirdPartyInfo = functions.https.onCall(async (_data, context) =
       // filter out privacy info
       const filteredPatientData = patientsSnap.docs.map((patient)=>{
         const patientData = patient.data();
-        return pick(patientData, ["dateOfBirth", "sex", "weight", "initialPatientHelpFormData", "doctorName"]);
+        return pick(patientData, ["dateOfBirth", "sex", "weight", "testsResults", "doctorName"]);
       });
       return filteredPatientData;
     } else {
