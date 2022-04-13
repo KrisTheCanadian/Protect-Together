@@ -10,56 +10,8 @@ import {
 Chart.register(ArcElement);
 
 const SexChart = ({ maleSex, femaleSex, thirdSex } : any) => {
-  const [chartData, setChartData] = useState({});
-  const [chartOptions, setChartOptions] = useState({});
-
-  useEffect(() => {
-    setChartOptions({
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-        },
-        title: {
-          display: true,
-          text: 'Patient Sex',
-        },
-      },
-    });
-  }, []);
-
-  const chart = () => {
-    const sex = ['male', 'female'];
-    const sexData = [12, 23];
-    setChartData({
-      labels: sex,
-      datasets: [
-        {
-          label: 'Patient Sex',
-          data: sexData,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-          ],
-        },
-      ],
-    });
-    setChartOptions({
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-        },
-        title: {
-          display: true,
-          text: 'Patient Sex',
-        },
-      },
-    });
-  };
-
   const data = {
-    labels: ['Male', 'Female', 'not Disclosed'],
+    labels: ['Male', 'Female', 'Not Disclosed'],
     datasets: [{
       label: 'Patient Sex',
       data: [maleSex, femaleSex, thirdSex],
@@ -72,17 +24,12 @@ const SexChart = ({ maleSex, femaleSex, thirdSex } : any) => {
     }],
   };
 
-  useEffect(() => {
-    chart();
-  }, []);
-
   return (
     <div className="App">
       <div>
         <Typography variant="h6">Patient Sex</Typography>
         <Pie
           data={data}
-        //   options={chartOptions}
         />
       </div>
     </div>
