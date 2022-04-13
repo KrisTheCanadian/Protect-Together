@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Paper, Button, useTheme, useMediaQuery, Modal } from '@mui/material';
-import { doc, DocumentData, onSnapshot, deleteField } from 'firebase/firestore';
-import { UserContext } from '../../../../context/UserContext';
+import { Typography, Box, Button } from '@mui/material';
+import { doc, onSnapshot } from 'firebase/firestore';
 import Firebase, { firestore } from '../../../../config/firebase_config';
 
 const style = {
@@ -22,10 +21,11 @@ const style = {
 
 export default function PatientAppointments({ PID, handleClose, goDashboard }: any) {
   const [patientName, setPatientName] = useState('');
+  const [error, setError] = useState(false);
+  let hasNextAppointment = false;
   const users = firestore.collection('users');
 
   useEffect(() => {
-    console.log(PID);
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${PID}`), (docu) => {
       const data = docu.data();
       if (data) {
@@ -39,8 +39,17 @@ export default function PatientAppointments({ PID, handleClose, goDashboard }: a
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const deleteUpcomingAppointment = () => {
-    console.log('here');
+  const updatePatient = async () => {
+    if (!hasNextAppointment) {
+      const closePatientFile = Firebase.functions().httpsCallable('closePatientFile ');
+      const userId = PID;
+      closePatientFile({ userId });
+      handleClose();
+      goDashboard(0);
+    };
+  };
+
+  const canDoctorDelete = () => {
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${PID}`), (docu) => {
       const data = docu.data();
       if (data) {
@@ -49,42 +58,25 @@ export default function PatientAppointments({ PID, handleClose, goDashboard }: a
           const appointmentTime = appointmentData?.toDate();
           const currentDate = new Date();
           if (appointmentTime > currentDate) {
-            const userId = PID;
-            const appointmentDate = appointmentTime;
-            const cancelAppointment = Firebase.functions().httpsCallable('cancelAppointment');
-            cancelAppointment({ appointmentDate, userId }).catch((saveError) => {
-              console.error(saveError);
-            });
+            setError(true);
+            hasNextAppointment = true;
           }
         }
       }
+      // calls Update Patient after going through validation checks
+      updatePatient();
     });
     return () => {
       unsubscribe();
     };
   };
 
-  const updatePatient = async () => {
-    console.log('here');
-    await users
-      .doc(PID)
-      .update({
-        score: deleteField(),
-        basePoints: deleteField(),
-        assignedDoctor: deleteField(),
-        doctorName: deleteField(),
-      });
-  };
-
-  const closePatient = () => {
-    deleteUpcomingAppointment();
-    handleClose();
-    goDashboard();
-    // updatePatient();
+  const closePatient = async () => {
+    canDoctorDelete();
   };
 
   return (
-    <Box sx={{ ...style, width: '500px' }}>
+    <Box sx={{ ...style }}>
       <Typography variant="h6" sx={{ alignItems: 'center', textAlign: 'center' }}>
         Are you sure you to discharge
         {' '}
@@ -115,6 +107,14 @@ export default function PatientAppointments({ PID, handleClose, goDashboard }: a
             Close Patient&apos;s File
           </Button>
         </Box>
+        {error && (
+          <p className="validationError" style={{ marginTop: '1rem', alignItems: 'center', textAlign: 'center' }}>
+            {patientName}
+            {' '}
+            has upcoming appointment scheduled with you.
+            Unable to close this patient&apos;s file until appointment is completed.
+          </p>
+        )}
       </div>
     </Box>
   );

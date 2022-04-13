@@ -39,12 +39,10 @@ export default function PatientAppointments({ handleAppointmentsViewClose } : an
   const users = firestore.collection('users');
 
   const deleteAppointment = () => {
-    console.log(appointmentDate);
     const cancelAppointment = Firebase.functions().httpsCallable('cancelAppointment');
     handleClose();
     handleAppointmentsViewClose();
-    const userId = state.id;
-    cancelAppointment({ appointmentDate, userId }).then(async () => {
+    cancelAppointment({ appointmentDate }).then(async () => {
       await users
         .doc(state.id)
         .update({

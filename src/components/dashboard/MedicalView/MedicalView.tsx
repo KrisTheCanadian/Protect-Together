@@ -117,7 +117,7 @@ function MedicalView() {
           <ClosePatientFile
             PID={patientId}
             handleClose={handleClose}
-            goDashboard={setContentId(0)}
+            goDashboard={setContentId}
           />
           )}
         </Box>

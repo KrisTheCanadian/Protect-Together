@@ -69,3 +69,18 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
     return null;
   }
 });
+
+export const closePatientFile = functions.https.onCall(async (_data) => {
+  const userId = _data.userId;
+  const userRef = db.doc(`users/${userId}`);
+  const userSnap = await userRef.get();
+  const FieldValue = admin.firestore.FieldValue;
+
+  return userSnap.ref.update({
+    disableBook: true,
+    score: FieldValue.delete(),
+    basePoints: FieldValue.delete(),
+    assignedDoctor: FieldValue.delete(),
+    doctorName: FieldValue.delete(),
+  });
+});
