@@ -19,7 +19,7 @@ const style = {
   borderRadius: 4,
 };
 
-export default function PatientAppointments({ PID, handleClose, goDashboard }: any) {
+export default function ClosePatientFile({ PID, handleClose, goDashboard }: any) {
   const [patientName, setPatientName] = useState('');
   const [error, setError] = useState(false);
   let hasNextAppointment = false;
