@@ -79,6 +79,18 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
           };
           sendNotificationHelper(availableDoc.UID, message);
 
+          // send notification to doctor
+          const patientMessage: UserNotification = {
+            title: "New Doctor",
+            message: `Dr. ${availableDoc.lastName} has been assigned to you`,
+            date: admin.firestore.Timestamp.now(),
+            read: false,
+            conversationID: null,
+          };
+          if (userId) {
+            sendNotificationHelper(userId, patientMessage);
+          }
+
           // decrement available Slots
           const newfilledSlots = availableDoctorRef.data().filledSlots +1;
           const newAvailableSlots = availableDoctorRef.data().patientSlots - newfilledSlots;
