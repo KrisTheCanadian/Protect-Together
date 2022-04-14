@@ -21,6 +21,7 @@ import {
   Table,
   TableRow,
   TableCell,
+  TableBody,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
@@ -207,7 +208,7 @@ function PatientDashboard(props: { setContentId: any }) {
                 title="Covid World Data"
                 src="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
                 width="100%"
-                height="600px"
+                height="550px"
                 style={{ borderStyle: 'none' }}
               />
             </Paper>
@@ -249,17 +250,19 @@ function PatientDashboard(props: { setContentId: any }) {
                 {country !== '' && (
                 <div className="covidData__country__info">
                   <Table sx={{ minWidth: '210px' }}>
-                    {rows.map((row) => (
-                      <TableRow
-                        key={row.label}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
-                          {row.label}
-                        </TableCell>
-                        <TableCell align="left" sx={{ color: '#434ce7' }}>{row.result}</TableCell>
-                      </TableRow>
-                    ))}
+                    <TableBody>
+                      {rows.map((row) => (
+                        <TableRow
+                          key={row.label}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            {row.label}
+                          </TableCell>
+                          <TableCell align="left" sx={{ color: '#434ce7' }}>{row.result}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 </div>
                 )}
