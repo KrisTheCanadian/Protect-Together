@@ -256,7 +256,8 @@ export default function MedicalTable({ handlePatientClick }: Props) {
   const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
     if (patientsWithUpdates.includes(UID)) {
       const resetHasUpdates = Firebase.functions().httpsCallable('resetHasUpdates');
-      resetHasUpdates(UID);
+      resetHasUpdates({ userId: UID });
+      console.log('hasUpdates should be reset');
       setPatientsWithUpdates(patientsWithUpdates.filter((ID) => ID !== UID));
     }
     handlePatientClick(UID);
