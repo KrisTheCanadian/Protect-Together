@@ -116,7 +116,6 @@ function AdminDashboard() {
             </ListItemIcon>
             <ListItemText primary="Add Account" />
           </ListItem>
-          <NotificationsMenuItem />
         </List>
         <Divider />
       </SideBar>
