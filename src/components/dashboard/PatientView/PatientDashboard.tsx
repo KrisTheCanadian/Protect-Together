@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import '../../../static/style/CovidData.css';
 import {
@@ -33,7 +33,6 @@ import { firestore } from '../../../config/firebase_config';
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
-  const matcheSm = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
