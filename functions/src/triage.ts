@@ -81,7 +81,7 @@ export const requestDoctor = functions.https.onCall(async (_data, context)=>{
 
           // send notification to doctor
           const patientMessage: UserNotification = {
-            title: "New Doctor",
+            title: "Doctor Assigned",
             message: `Dr. ${availableDoc.lastName} has been assigned to you`,
             date: admin.firestore.Timestamp.now(),
             read: false,
