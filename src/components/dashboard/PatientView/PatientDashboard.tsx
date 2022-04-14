@@ -171,7 +171,7 @@ function PatientDashboard(props: { setContentId: any }) {
           <Grid item xs={12} md={8} lg={9}>
             <Paper
               sx={{
-                p: 0,
+                p: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 height: 390,
@@ -182,7 +182,6 @@ function PatientDashboard(props: { setContentId: any }) {
                 // eslint-disable-next-line max-len
                 url="https://covid19canada.maps.arcgis.com/apps/Minimalist/index.html?appid=b3baccb0f30e4516b8e64009b3383f55"
                 height="100%"
-                frameBorder={0}
               />
             </Paper>
           </Grid>
