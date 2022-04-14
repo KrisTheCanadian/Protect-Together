@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { DatePicker } from '@mui/lab';
-import { Alert, Button, Grid, Paper, Typography, Stack } from '@mui/material';
+import { Alert, Button, Grid, Paper, Typography, Stack, Popper, useMediaQuery, useTheme } from '@mui/material';
 import { arrayUnion, doc, DocumentData, DocumentReference, onSnapshot, Timestamp } from 'firebase/firestore';
 import Firebase, { firestore } from '../../config/firebase_config';
 import { UserContext } from '../../context/UserContext';
@@ -29,6 +29,8 @@ function bookingSystem({ handleBookingClose } : Props) {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const bookedTimes: string[] = [];
   const [updatedTimes, setUpdatedTimes] = useState<string[]>(setTimes);
+  const theme = useTheme();
+  const midSize = useMediaQuery(theme.breakpoints.down(1000));
 
   const disabledDays = [0, 1, 2, 3, 4, 5, 6];
   schedule.forEach((day: any) => {
@@ -189,7 +191,12 @@ function bookingSystem({ handleBookingClose } : Props) {
     && date.getMonth() === todayDate.getMonth() && date.getFullYear() === todayDate.getFullYear());
 
   return (
-    <div style={{ overflowY: 'auto', minWidth: '400px' }}>
+    <div
+      style={{ overflow: 'auto',
+        minWidth: '200px',
+        paddingRight: '4px',
+        maxHeight: '80vh' }}
+    >
       <Grid
         container
         item
@@ -246,6 +253,9 @@ function bookingSystem({ handleBookingClose } : Props) {
                   renderInput={(params) => <TextField {...params} />}
                   minDate={new Date()}
                   shouldDisableDate={disabledDay}
+                  PopperProps={{
+                    placement: midSize ? 'auto' : 'bottom-start',
+                  }}
                 />
               </LocalizationProvider>
               <Stack
@@ -257,6 +267,7 @@ function bookingSystem({ handleBookingClose } : Props) {
                 style={{
                   overflow: 'hidden',
                   overflowY: 'scroll',
+                  paddingRight: '4px',
                 }}
               >
                 {updatedTimes.map((d) => (
