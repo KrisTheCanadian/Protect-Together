@@ -65,6 +65,11 @@ function PatientDashboard(props: { setContentId: any }) {
   };
 
   useEffect(() => {
+    fetch('https://disease.sh/v3/covid-19/countries/Canada')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
