@@ -9,7 +9,7 @@ import {
 
 Chart.register(ArcElement);
 
-const SexChart = ({ maleSex, femaleSex, thirdSex } : any) => {
+const SexChart = ({ maleSex, femaleSex, thirdSex }: any) => {
   const data = {
     labels: ['Male', 'Female', 'Not Disclosed'],
     datasets: [{
@@ -27,7 +27,7 @@ const SexChart = ({ maleSex, femaleSex, thirdSex } : any) => {
   return (
     <div className="App">
       <div>
-        <Typography variant="h6">Patient Sex</Typography>
+        <Typography variant="body1">Patient Sex Distribution</Typography>
         <Pie
           data={data}
         />
