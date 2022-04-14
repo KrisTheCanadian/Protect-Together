@@ -88,3 +88,15 @@ const delay = (time:number) => {
     }, time);
   });
 };
+
+// reset user's hasUpdates
+export const resetHasUpdates = functions.https.onCall(async (_data) => {
+  console.log('in resetHasUpdates');
+  const userId = _data;
+  const userRef = db.doc(`users/${userId}`);
+  const userSnap = await userRef.get();
+
+  return userSnap.ref.update({
+    hasUpdates: false,
+  });
+});

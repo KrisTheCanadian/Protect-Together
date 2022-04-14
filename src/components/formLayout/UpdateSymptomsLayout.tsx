@@ -30,6 +30,7 @@ export default function UpdateSymptomsLayout({ changeState }: any) {
             .update({
               score: (((data.basePoints + points) / 66) * 10),
               patientSymptoms: arrayUnion({ date, userSymptoms }),
+              hasUpdates: true,
             });
         }
       });
