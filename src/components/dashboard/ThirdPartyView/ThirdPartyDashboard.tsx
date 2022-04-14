@@ -137,7 +137,6 @@ function ThirdPartyDashboard() {
   useEffect(() => {
     const getThirdPartyInfo = Firebase.functions().httpsCallable('getThirdPartyInfo');
     getThirdPartyInfo().then((data) => {
-      console.log(data);
       populateData(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

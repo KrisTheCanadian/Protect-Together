@@ -5,6 +5,7 @@ export {getDoctorAvailabilities, bookAppointment, enablePatientAppointment, canc
 export {sendNotification, sendNotificationForConversation} from "./notifications";
 export {getThirdPartyInfo} from "./thirdPartyData";
 export {requestDoctor, dispatchDoctor, closePatientFile} from "./triage";
+export {getThirdPartyInfo} from "./thirdPartyData";
 
 
 // // Start writing Firebase Functions
