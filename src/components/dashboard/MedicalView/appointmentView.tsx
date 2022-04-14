@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, FormControl, Grid, InputLabel, List, ListItem, ListItemText, MenuItem,
-  OutlinedInput, Select, SelectChangeEvent, Stack, Typography,
+  OutlinedInput, Select, SelectChangeEvent, Stack, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import { format } from 'date-fns';
 import { UserContext } from '../../../context/UserContext';
@@ -23,6 +23,8 @@ function AppointmentView() {
   const [patientData, setPatientData] = useState<Data[]>([]);
   const [patientNames, setPatientNames] = useState<string[]>([]);
   const [selectedName, setSelectedName] = useState<string>();
+  const theme = useTheme();
+  const smallSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   function createTableData(
     UID: string,
@@ -91,10 +93,14 @@ function AppointmentView() {
   };
 
   return (
-    <div style={{ overflowY: 'auto', minWidth: '35em', minHeight: '15em' }}>
+    <div style={{ overflow: 'auto',
+      minWidth: smallSize ? '0' : '35em',
+      minHeight: '15em',
+      paddingRight: '4px',
+      maxHeight: '80vh' }}
+    >
       <Typography
         variant="h5"
-        mt={3}
       >
         View Appointments
       </Typography>
@@ -102,7 +108,7 @@ function AppointmentView() {
         Please choose a patient to see their upcoming and past appointments
       </Typography>
       <Grid sx={{ textAlign: 'center' }} mt={2}>
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl sx={{ m: 1, minWidth: smallSize ? '45vw' : 300 }}>
           <InputLabel>Patient</InputLabel>
           <Select
             value={selectedName || ''}
@@ -129,6 +135,8 @@ function AppointmentView() {
               key={index}
               sx={{
                 display: 'flex',
+                alignItems: 'center',
+                flexDirection: smallSize ? 'column-reverse' : 'row',
                 justifyContent: 'space-around',
               }}
             >

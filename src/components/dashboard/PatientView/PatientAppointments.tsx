@@ -26,6 +26,7 @@ const style = {
 export default function PatientAppointments({ handleAppointmentsViewClose } : any) {
   const theme = useTheme();
   const midSize = useMediaQuery(theme.breakpoints.down(1190));
+  const smallSize = useMediaQuery(theme.breakpoints.down(550));
   const [appointmentDate, setAppointmentDate] = React.useState<Date | null>(new Date());
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
@@ -75,18 +76,21 @@ export default function PatientAppointments({ handleAppointmentsViewClose } : an
   }, []);
 
   return (
-    <div style={{ overflowY: 'auto', minWidth: '365px' }}>
+    <div style={{ overflow: 'auto',
+      paddingRight: '4px',
+      maxHeight: '80vh' }}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="h5" mt={3} ml={3}>
+        <Typography variant="h5">
           See Your Upcoming Appointment
         </Typography>
-        <Typography variant="subtitle1" mt={1} ml={3}>
+        <Typography variant="subtitle1" mt={1}>
           Our appointments are being done by telephone!
         </Typography>
         <Box sx={{
           display: 'flex',
           alignItems: 'center',
-          flexDirection: midSize ? 'column-reverse' : 'row',
+          flexDirection: smallSize ? 'column-reverse' : 'row',
           marginTop: midSize ? '1rem' : '0' }}
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
