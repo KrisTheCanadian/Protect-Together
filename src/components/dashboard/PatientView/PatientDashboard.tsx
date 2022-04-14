@@ -17,9 +17,12 @@ import {
   Avatar,
   useMediaQuery,
   useTheme,
-  Modal,
+  TextField,
+  Table,
+  TableRow,
+  TableCell,
 } from '@mui/material';
-import Iframe from 'react-iframe';
+import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import Header from '../../layout/Header';
@@ -30,6 +33,7 @@ import { firestore } from '../../../config/firebase_config';
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.down('lg'));
+  const matcheSm = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
   const { state, update } = React.useContext(UserContext);
   const [user, setUser] = useState<DocumentData>();
@@ -86,6 +90,23 @@ function PatientDashboard(props: { setContentId: any }) {
         setData(data);
       });
   };
+
+  function createData(
+    label: string,
+    result: any,
+  ) {
+    return { label, result };
+  }
+
+  const rows = [
+    createData('Country Name', country),
+    createData('Cases', cases),
+    createData('Deaths', deaths),
+    createData('Recovered', recovered),
+    createData('Cases Today', todayCases),
+    createData('Deaths Today', deathCases),
+    createData('Recovered Today', recoveredCases),
+  ];
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -178,10 +199,12 @@ function PatientDashboard(props: { setContentId: any }) {
               }}
             >
               {/* <Chart /> */}
-              <Iframe
-                url="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
+              <iframe
+                title="Covid World Data"
+                src="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
                 width="100%"
                 height="600px"
+                style={{ borderStyle: 'none' }}
               />
             </Paper>
           </Grid>
@@ -192,7 +215,7 @@ function PatientDashboard(props: { setContentId: any }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                maxWidth: '275px',
               }}
             >
 
@@ -201,57 +224,41 @@ function PatientDashboard(props: { setContentId: any }) {
                 <div className="covidData__input">
                   <form onSubmit={handleSubmit}>
                     {/* input county name */}
-                    <input onChange={handleSearch} placeholder="Enter Country Name" />
-                    <br />
-                    <button color="secondary" type="submit">Search</button>
+                    <Box sx={{ display: 'flex', marginBottom: '7px' }}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Enter Country"
+                        variant="outlined"
+                        onChange={handleSearch}
+                        sx={{ marginRight: '5px' }}
+                      />
+
+                      <Button color="secondary" type="submit">
+                        {' '}
+                        <SearchIcon />
+                      </Button>
+                    </Box>
                   </form>
                 </div>
 
                 {/* Showing the details of the country */}
+                {country !== '' && (
                 <div className="covidData__country__info">
-                  <p>
-                    Country Name :
-                    {' '}
-                    {country}
-                    {' '}
-                  </p>
-
-                  <p>
-                    Cases :
-                    {' '}
-                    {cases}
-                  </p>
-
-                  <p>
-                    Deaths :
-                    {' '}
-                    {deaths}
-                  </p>
-
-                  <p>
-                    Recovered :
-                    {' '}
-                    {recovered}
-                  </p>
-
-                  <p>
-                    Cases Today :
-                    {' '}
-                    {todayCases}
-                  </p>
-
-                  <p>
-                    Deaths Today :
-                    {' '}
-                    {deathCases}
-                  </p>
-
-                  <p>
-                    Recovered Today :
-                    {' '}
-                    {recoveredCases}
-                  </p>
+                  <Table sx={{ minWidth: '210px' }}>
+                    {rows.map((row) => (
+                      <TableRow
+                        key={row.label}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                          {row.label}
+                        </TableCell>
+                        <TableCell align="left" sx={{ color: '#434ce7' }}>{row.result}</TableCell>
+                      </TableRow>
+                    ))}
+                  </Table>
                 </div>
+                )}
               </div>
               {/* <box 2 /> */}
             </Paper>
