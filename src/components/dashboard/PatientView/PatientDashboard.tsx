@@ -92,9 +92,9 @@ function PatientDashboard(props: { setContentId: any }) {
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
         <div>
           {!user?.assignedDoctor && (
-          <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
-            Ask for Help
-          </Button>
+            <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
+              Ask for Help
+            </Button>
           )}
         </div>
       </Header>
@@ -174,14 +174,14 @@ function PatientDashboard(props: { setContentId: any }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                height: 550,
               }}
             >
               {/* <Chart /> */}
               <Iframe
-                // eslint-disable-next-line max-len
-                url="https://covid19canada.maps.arcgis.com/apps/Minimalist/index.html?appid=b3baccb0f30e4516b8e64009b3383f55"
-                height="100%"
+                url="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
+                width="100%"
+                height="600px"
               />
             </Paper>
           </Grid>
