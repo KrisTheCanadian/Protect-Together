@@ -108,6 +108,17 @@ describe('Sprint 4 Patient Suite', () => {
         cy.patientLogin()
     })
 
+    it('COVID-19 Statistics Per Country', () => {
+        cy.visit('/')
+        cy.get('[id="outlined-basic"]').click().type('usa{enter}')
+        cy.get('td').should("contain", 'USA')
+    });
+
+    it('Covid-19 Statistics iframe API', () => {
+        cy.visit('/')
+        cy.get('iframe').its('0.contentDocument.body').should('not.be.empty').then(cy.wrap).find('.ChoroplethMap').should('be.visible')
+        cy.contains('Do not forget to follow the safety policies and stay safe!')
+    })
 
     it('Test Results', () => {
         cy.visit('/')
