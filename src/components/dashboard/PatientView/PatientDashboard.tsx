@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import '../../../static/style/CovidData.css';
 import {
@@ -17,9 +17,13 @@ import {
   Avatar,
   useMediaQuery,
   useTheme,
-  Modal,
+  TextField,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
 } from '@mui/material';
-import Iframe from 'react-iframe';
+import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import Header from '../../layout/Header';
@@ -63,6 +67,11 @@ function PatientDashboard(props: { setContentId: any }) {
   };
 
   useEffect(() => {
+    fetch('https://disease.sh/v3/covid-19/countries/Canada')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
     const unsubscribe = onSnapshot(doc(firestore, 'users', `${state.id}`), (docu) => {
       const data = docu.data();
       if (data) {
@@ -88,14 +97,31 @@ function PatientDashboard(props: { setContentId: any }) {
       });
   };
 
+  function createData(
+    label: string,
+    result: any,
+  ) {
+    return { label, result };
+  }
+
+  const rows = [
+    createData('Country Name', country),
+    createData('Cases', cases),
+    createData('Deaths', deaths),
+    createData('Recovered', recovered),
+    createData('Cases Today', todayCases),
+    createData('Deaths Today', deathCases),
+    createData('Recovered Today', recoveredCases),
+  ];
+
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header title={`Welcome ${state.firstName}`} subtitle="Stay safe">
         <div>
           {!user?.assignedDoctor && (
-          <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
-            Ask for Help
-          </Button>
+            <Button variant="contained" color="primary" sx={{ mr: 1 }} onClick={() => { navigate('/symptomsForm'); }}>
+              Ask for Help
+            </Button>
           )}
           {user?.assignedDoctor && (
           <NotificationsButton />
@@ -177,14 +203,16 @@ function PatientDashboard(props: { setContentId: any }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                height: 554,
               }}
             >
               {/* <Chart /> */}
-              <Iframe
-                // eslint-disable-next-line max-len
-                url="https://covid19canada.maps.arcgis.com/apps/Minimalist/index.html?appid=b3baccb0f30e4516b8e64009b3383f55"
-                height="100%"
+              <iframe
+                title="Covid World Data"
+                src="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
+                width="100%"
+                height="554px"
+                style={{ borderStyle: 'none' }}
               />
             </Paper>
           </Grid>
@@ -195,7 +223,7 @@ function PatientDashboard(props: { setContentId: any }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 390,
+                maxWidth: '275px',
               }}
             >
 
@@ -204,57 +232,43 @@ function PatientDashboard(props: { setContentId: any }) {
                 <div className="covidData__input">
                   <form onSubmit={handleSubmit}>
                     {/* input county name */}
-                    <input onChange={handleSearch} placeholder="Enter Country Name" />
-                    <br />
-                    <button color="secondary" type="submit">Search</button>
+                    <Box sx={{ display: 'flex', marginBottom: '7px' }}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Enter Country"
+                        variant="outlined"
+                        onChange={handleSearch}
+                        sx={{ marginRight: '5px' }}
+                      />
+
+                      <Button color="secondary" type="submit">
+                        {' '}
+                        <SearchIcon />
+                      </Button>
+                    </Box>
                   </form>
                 </div>
 
                 {/* Showing the details of the country */}
+                {country !== '' && (
                 <div className="covidData__country__info">
-                  <p>
-                    Country Name :
-                    {' '}
-                    {country}
-                    {' '}
-                  </p>
-
-                  <p>
-                    Cases :
-                    {' '}
-                    {cases}
-                  </p>
-
-                  <p>
-                    Deaths :
-                    {' '}
-                    {deaths}
-                  </p>
-
-                  <p>
-                    Recovered :
-                    {' '}
-                    {recovered}
-                  </p>
-
-                  <p>
-                    Cases Today :
-                    {' '}
-                    {todayCases}
-                  </p>
-
-                  <p>
-                    Deaths Today :
-                    {' '}
-                    {deathCases}
-                  </p>
-
-                  <p>
-                    Recovered Today :
-                    {' '}
-                    {recoveredCases}
-                  </p>
+                  <Table sx={{ minWidth: '210px' }}>
+                    <TableBody>
+                      {rows.map((row) => (
+                        <TableRow
+                          key={row.label}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            {row.label}
+                          </TableCell>
+                          <TableCell align="left" sx={{ color: '#434ce7' }}>{row.result}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
+                )}
               </div>
               {/* <box 2 /> */}
             </Paper>
