@@ -65,10 +65,6 @@ test('Admin Dashboard is rendering', () => {
   render(<BrowserRouter><AdminDashboard /></BrowserRouter>);
 });
 
-test('Thirdparty Dashboard is rendering', () => {
-  render(<BrowserRouter><ThirdPartyDashboard /></BrowserRouter>);
-});
-
 test('Medical Dashboard is rendering', () => {
   render(<BrowserRouter><MedicalView /></BrowserRouter>);
 });

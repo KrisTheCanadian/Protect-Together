@@ -57,6 +57,7 @@ function AdminCreateAccount({ handleClose }: Props) {
   const [formData, setFormData] = useState<FormData>(formDataDefaultValues);
   const [formError, setFormError] = useState<FormError>(formErrorDefaultValues);
   const [error, setError] = useState<string>('');
+  const [validForm, setValidForm] = useState<boolean>(false);
 
   // save user to database
   const addUserInfo = async (userCreds: any) => {
@@ -129,6 +130,16 @@ function AdminCreateAccount({ handleClose }: Props) {
       setError('');
     }
   }, [formError.errorEmail, formError.errorPhoneNumber, formError.errorSignup]);
+
+  useEffect(() => {
+    if (formError.errorEmail !== '' || formError.errorPhoneNumber !== '' || formError.errorSignup !== ''
+      || formData.role === '' || formData.firstName === '' || formData.lastName === ''
+      || formData.email === '' || formData.phoneNumber === '') {
+      setValidForm(false);
+    } else {
+      setValidForm(true);
+    }
+  }, [formError.errorEmail, formError.errorPhoneNumber, formError.errorSignup, formData]);
 
   return (
     <Grid
@@ -264,6 +275,7 @@ function AdminCreateAccount({ handleClose }: Props) {
         <Button
           type="submit"
           fullWidth
+          disabled={!validForm}
           variant="contained"
           onClick={handleSubmit}
           sx={{ mt: 3, mb: 2 }}

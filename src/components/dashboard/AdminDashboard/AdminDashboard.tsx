@@ -68,11 +68,6 @@ function AdminDashboard() {
 
   const { state, update } = React.useContext(UserContext);
 
-  const handleNotifyTest = () => {
-    const sendNotification = Firebase.functions().httpsCallable('sendNotification');
-    sendNotification({ title: 'Title Test', message: 'testing', userId: state.id });
-  };
-
   useEffect(() => {
     const unsubscribe = usersRef.onSnapshot(async (snapshot) => {
       let tableData = new Array<UnassignedPatientTableData>();
@@ -120,13 +115,6 @@ function AdminDashboard() {
               <PersonAddIcon />
             </ListItemIcon>
             <ListItemText primary="Add Account" />
-          </ListItem>
-          <NotificationsMenuItem />
-          <ListItem button onClick={handleNotifyTest}>
-            <ListItemIcon>
-              <DashboardOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Notify Test" />
           </ListItem>
         </List>
         <Divider />

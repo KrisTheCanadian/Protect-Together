@@ -43,6 +43,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
           testType,
           testDate,
         }),
+        hasUpdates: true,
       });
     };
     updatePatient().then(() => {
@@ -108,6 +109,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
                 <DatePicker
                   label="Select Date"
                   value={testDate}
+                  maxDate={new Date()}
                   onChange={(newValue) => {
                     setTestDate(newValue);
                   }}
