@@ -16,24 +16,13 @@ export const sendNotification = functions.https.onCall(async (_data) => {
     conversationID: null,
   };
   const userId = _data.userId;
-  const userRef = db.doc(`users/${userId}`);
-
-  return userRef.update({
-    notifications: admin.firestore.FieldValue.arrayUnion(message),
-  });
+  return sendNotificationHelper(userId, message);
 });
 
-interface UserNotification {
-  title: string;
-  message: string;
-  date: admin.firestore.Timestamp;
-  read: boolean;
-}
 
-
-// send notification if user is marked as unread in conversation
+// send notification for unread messages
 export const sendNotificationForConversation = functions.https.onCall(async (_data) => {
-  // get doctor with available slots
+  // create message
   const message: UserNotification = {
     conversationID: _data.conversationID,
     title: _data.title,
@@ -78,14 +67,6 @@ export const sendNotificationForConversation = functions.https.onCall(async (_da
   return null;
 });
 
-interface UserNotification {
-  title: string;
-  message: string;
-  date: admin.firestore.Timestamp;
-  read: boolean;
-  conversationID: string | null;
-}
-
 // time is in milliseconds
 const delay = (time:number) => {
   return new Promise((res) => {
@@ -103,3 +84,22 @@ export const resetHasUpdates = functions.https.onCall(async (_data) => {
     hasUpdates: false,
   });
 });
+
+// helper function to send notification to user
+export const sendNotificationHelper = async (recipientID: string, notification: UserNotification) => {
+  const userRef = db.doc(`users/${recipientID}`);
+  const userSnap = await userRef.get();
+  return userSnap.ref.update({
+    notifications: admin.firestore.FieldValue.arrayUnion(notification),
+  });
+};
+
+// format for notification
+export interface UserNotification {
+  title: string;
+  message: string;
+  date: admin.firestore.Timestamp;
+  read: boolean;
+  conversationID: string | null;
+}
+
