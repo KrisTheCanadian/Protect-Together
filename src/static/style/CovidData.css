@@ -16,10 +16,10 @@
     }
     .covidData__input button {
     width: 80px;
-    margin-top: 5px;
     background-color: #ebeefd;
     font-family: Roboto,sans-serif;
     color: #434ce7;
+    height: 54.56px;
     font-size: 12px;
     border-radius: 10px;
     border: none;

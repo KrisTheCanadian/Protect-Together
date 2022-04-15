@@ -9,8 +9,6 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  Modal,
-  Container,
   Grid,
 } from '@mui/material';
 import Header from '../../layout/Header';
