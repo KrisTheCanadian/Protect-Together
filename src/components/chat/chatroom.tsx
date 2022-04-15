@@ -164,7 +164,7 @@ function ChatRoom(props: ChatInfo) {
               style={{ overflowY: 'auto', fontFamily: 'Roboto', resize: 'none' }}
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} borderTop="1px solid #e7e7e7">
             <button
               type="submit"
               disabled={!formValue}
