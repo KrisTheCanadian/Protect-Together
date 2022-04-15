@@ -3,6 +3,7 @@ import {
   Grid, Typography, useTheme, useMediaQuery,
 } from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import LogoImage from '../../static/style/images/logo_inversed.svg';
 
 const LoginPanel = (props: any) => {
   const theme = useTheme();
@@ -44,18 +45,10 @@ const LoginPanel = (props: any) => {
           alignItems="center"
           justifyContent="center"
         >
-          <SentimentSatisfiedAltIcon
-            sx={{
-              color: '#FFFFFF',
-              marginRight: '5px',
-              fontSize: '40px',
-              [theme.breakpoints.between('xs', 'sm')]: {
-                fontSize: '30px',
-              },
-              [theme.breakpoints.between('sm', 'md')]: {
-                fontSize: '35px',
-              },
-            }}
+          <img
+            alt="logo"
+            src={LogoImage}
+            style={{ marginRight: '5px', width: phoneSize ? '40px' : '50px' }}
           />
         </Grid>
         <Grid

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase_config';
 import { useLayoutContext } from '../../context/LayoutContext';
 import { UserContext } from '../../context/UserContext';
+import LogoImage from '../../static/style/images/logo.svg';
 
 const drawerWidth = 240;
 type Props = {
@@ -27,13 +28,15 @@ export default function SideBar({ children }: Props) {
         style={{
           minHeight: '88px',
           display: 'flex',
+          paddingLeft: '10px',
         }}
       >
-        <SentimentSatisfiedAltIcon
-          color="primary"
-          style={{ marginRight: '5px', fontSize: '30px' }}
+        <img
+          alt="logo"
+          src={LogoImage}
+          style={{ marginRight: '5px', width: '40px' }}
         />
-        <Typography variant="h6" noWrap component="div">
+        <Typography variant="h6" noWrap component="div" color="primary.main">
           Protect Together
         </Typography>
       </Toolbar>
