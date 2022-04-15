@@ -26,6 +26,7 @@ import Header from '../../layout/Header';
 import MainContent from '../../layout/MainContent';
 import { UserContext } from '../../../context/UserContext';
 import { firestore } from '../../../config/firebase_config';
+import NotificationsButton from '../../layout/NotificationsButton';
 
 function PatientDashboard(props: { setContentId: any }) {
   const theme = useTheme();
@@ -96,6 +97,9 @@ function PatientDashboard(props: { setContentId: any }) {
             Ask for Help
           </Button>
           )}
+          {user?.assignedDoctor && (
+          <NotificationsButton />
+          )}
         </div>
       </Header>
       <MainContent>
@@ -150,7 +154,6 @@ function PatientDashboard(props: { setContentId: any }) {
             </Paper>
           </Container>
         )}
-
         <Typography
           variant="h5"
           sx={{
