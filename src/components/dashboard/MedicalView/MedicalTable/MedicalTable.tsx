@@ -13,7 +13,7 @@ import { IconButton, Modal } from '@mui/material';
 import OpenInNewOutlined from '@mui/icons-material/OpenInNewOutlined';
 import { caseSeverity } from '../PatientInfo/PatientInfo';
 import { UserContext } from '../../../../context/UserContext';
-import { firestore } from '../../../../config/firebase_config';
+import Firebase, { firestore } from '../../../../config/firebase_config';
 import { TableHeader } from './TableHeader';
 import { TableToolbar } from './TableToolbar';
 import PatientInfoList from '../PatientInfo/PatientInfoList';
@@ -161,7 +161,7 @@ export default function MedicalTable({ handlePatientClick }: Props) {
   // rowData represents the unfiltered query data
   const [rowData, setRowData] = React.useState<Data[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<Data[]>([]);
-  const [hasUpdates, sethasUpdates] = React.useState<string[]>([]);
+  const [patientsWithUpdates, setPatientsWithUpdates] = React.useState<string[]>([]);
   const [ptSymptoms, SetPtSymptoms] = React.useState<Symptoms>();
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleOpen = () => setModalOpen(true);
@@ -221,14 +221,14 @@ export default function MedicalTable({ handlePatientClick }: Props) {
         const status = user.testsResults !== undefined
           ? (user.testsResults[user.testsResults.length - 1]).testResult : '';
         const severity = caseSeverity(user.score);
-        const userHasUpdates = Math.round(Math.random()) === 1;
+        const userHasUpdates = user.hasUpdates;
         if (userHasUpdates) hasUpdatesData.push(user.UID);
         const tableEntry = createTableData(UID, name, age, appointmentDate, status, severity, 0);
         tableData = [tableEntry, ...tableData];
         setRowData(tableData);
         setFilteredRows(tableData);
       });
-      sethasUpdates(hasUpdatesData);
+      setPatientsWithUpdates(hasUpdatesData);
     });
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,8 +254,11 @@ export default function MedicalTable({ handlePatientClick }: Props) {
 
   // this handles the click to select a row
   const handleClick = (event: React.MouseEvent<unknown>, UID: string) => {
-    if (hasUpdates.includes(UID)) {
-      sethasUpdates(hasUpdates.filter((ID) => ID !== UID));
+    if (patientsWithUpdates.includes(UID)) {
+      const resetHasUpdates = Firebase.functions().httpsCallable('resetHasUpdates');
+      resetHasUpdates({ userId: UID });
+      console.log('hasUpdates should be reset');
+      setPatientsWithUpdates(patientsWithUpdates.filter((ID) => ID !== UID));
     }
     handlePatientClick(UID);
   };
@@ -334,7 +337,7 @@ export default function MedicalTable({ handlePatientClick }: Props) {
                       tabIndex={-1}
                       key={row.UID}
                       sx={
-                        hasUpdates.includes(row.UID)
+                        patientsWithUpdates.includes(row.UID)
                           ? rowNewInfoStyle : { backgroundColor: 'inherited', cursor: 'pointer' }
                       }
                     >

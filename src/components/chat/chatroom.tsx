@@ -178,6 +178,12 @@ function Chat(props: ChatInfo) {
     enablePatientAppointment({
       userId: props.patientID,
     });
+    const sendNotification = Firebase.functions().httpsCallable('sendNotification');
+    sendNotification({
+      title: 'Book an Appointment',
+      message: `Dr. ${state.lastName} has invited you to book a new appointment.`,
+      userId: props.patientID,
+    });
   };
   const { state } = React.useContext(UserContext);
   const { role } = state;
