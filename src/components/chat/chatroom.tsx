@@ -154,19 +154,27 @@ function ChatRoom(props: ChatInfo) {
       </Box>
 
       <form onSubmit={sendMessage} style={{ position: 'relative' }}>
-        <input
-          className="message-input"
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-          placeholder="Type a message"
-        />
-        <button
-          type="submit"
-          disabled={!formValue}
-          className="send-message-button"
-        >
-          <SendIcon />
-        </button>
+        <Grid container flexDirection="row">
+          <Grid item xs={11}>
+            <textarea
+              className="message-input"
+              value={formValue}
+              onChange={(e) => setFormValue(e.target.value)}
+              placeholder="Type a message"
+              style={{ overflowY: 'auto', fontFamily: 'Roboto', resize: 'none' }}
+            />
+          </Grid>
+          <Grid item xs={1} borderTop="1px solid #e7e7e7">
+            <button
+              type="submit"
+              disabled={!formValue}
+              className="send-message-button"
+              style={{ float: 'right', position: 'absolute' }}
+            >
+              <SendIcon />
+            </button>
+          </Grid>
+        </Grid>
       </form>
     </>
   );
@@ -257,7 +265,7 @@ function ChatMessage(props: any) {
   const messageClass = ownerID === user.state.id ? 'sent' : 'received';
 
   return (
-    <div className={`message ${messageClass}`}>
+    <div className={`message ${messageClass}`} style={{ alignItems: 'flex-start' }}>
       {showAvatar && (
       <Avatar
         sx={{ bgcolor: 'grey' }}
@@ -269,12 +277,17 @@ function ChatMessage(props: any) {
       </Avatar>
       )}
       {!showAvatar && (
-      <Box
-        sx={{ width: '42px' }}
-      />
+      <Avatar
+        sx={{ bgcolor: 'grey', visibility: 'hidden' }}
+        alt="Avatar-Icon"
+      >
+        {messageClass === 'sent' && user.state.firstName[0] + user.state.lastName[0]}
+        {messageClass === 'received' && chatInfo.recipientFirstName[0] + chatInfo.recipientLastName[0]}
+
+      </Avatar>
       )}
-      {showAvatar && <p>{message}</p>}
-      {!showAvatar && <p className="no-avatar-spacing">{message}</p>}
+      {showAvatar && <p style={{ maxWidth: '70%' }}>{message}</p>}
+      {!showAvatar && <p className="no-avatar-spacing" style={{ maxWidth: '70%' }}>{message}</p>}
     </div>
   );
 }
