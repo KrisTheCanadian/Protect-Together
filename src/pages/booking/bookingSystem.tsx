@@ -184,7 +184,7 @@ function bookingSystem({ handleBookingClose } : Props) {
     && date.getMonth() === todayDate.getMonth() && date.getFullYear() === todayDate.getFullYear());
 
   return (
-    <div style={{ overflowY: 'auto', minWidth: '400px' }}>
+    <div data-testid="booking" style={{ overflowY: 'auto', minWidth: '400px' }}>
       <Grid
         container
         item
