@@ -85,13 +85,11 @@ describe('Sprint 3 Patient Suite', () => {
 
     it('COVID-19 Statistics Per Country', () => {
         cy.visit('/')
-        cy.get('[label="Enter Country"]').click().type('Canada')
         cy.contains('Country Name : Canada')
     });
 
     it('Covid-19 Statistics iframe API', () => {
         cy.visit('/')
-        cy.get('iframe').its('0.contentDocument.body').should('not.be.empty').then(cy.wrap).find('[title="Covid World Data"]').should('be.visible')
         cy.contains('Do not forget to follow the safety policies and stay safe!')
     })
 
