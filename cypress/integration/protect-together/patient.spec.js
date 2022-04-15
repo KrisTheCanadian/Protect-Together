@@ -85,8 +85,8 @@ describe('Sprint 3 Patient Suite', () => {
 
     it('COVID-19 Statistics Per Country', () => {
         cy.visit('/')
-        cy.get('[placeholder="Enter Country Name"]').click().type('Canada')
-        cy.get('[placeholder="Enter Country Name"]').parents('form').find('button').should("contain", 'Search').click()
+        cy.get('[label="Enter Country"]').click().type('Canada')
+        cy.get('[label="Enter Country"]').parents('form').find('button').should("contain", 'Search').click()
         cy.contains('Country Name : Canada')
     });
 
