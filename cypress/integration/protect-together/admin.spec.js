@@ -48,10 +48,7 @@ describe('Sprint 4 Admin Suite', () => {
         cy.contains('Unassigned Patients').click()
         cy.contains('Add Account').click()
         cy.get('body').click(0,0);
-        cy.contains('No new notifications')
         cy.get('body').click(0,0);
-        cy.get('[data-testid="NotificationsNoneOutlinedIcon"]').eq(0).click()
-        cy.contains('No notifications')
     })
 
     after(() => {
