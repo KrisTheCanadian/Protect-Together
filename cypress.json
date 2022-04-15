@@ -11,5 +11,7 @@
   },
   "experimentalStudio": true,
   "defaultCommandTimeout": 6000,
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "video": false,
+  "screenshotOnRunFailure": false
 }
