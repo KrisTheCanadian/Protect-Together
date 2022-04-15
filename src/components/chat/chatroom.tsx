@@ -154,19 +154,27 @@ function ChatRoom(props: ChatInfo) {
       </Box>
 
       <form onSubmit={sendMessage} style={{ position: 'relative' }}>
-        <input
-          className="message-input"
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-          placeholder="Type a message"
-        />
-        <button
-          type="submit"
-          disabled={!formValue}
-          className="send-message-button"
-        >
-          <SendIcon />
-        </button>
+        <Grid container flexDirection="row">
+          <Grid item xs={11}>
+            <textarea
+              className="message-input"
+              value={formValue}
+              onChange={(e) => setFormValue(e.target.value)}
+              placeholder="Type a message"
+              style={{ overflowY: 'auto', fontFamily: 'Roboto', resize: 'none' }}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <button
+              type="submit"
+              disabled={!formValue}
+              className="send-message-button"
+              style={{ float: 'right', position: 'absolute' }}
+            >
+              <SendIcon />
+            </button>
+          </Grid>
+        </Grid>
       </form>
     </>
   );
