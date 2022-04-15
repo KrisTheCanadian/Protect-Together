@@ -203,7 +203,7 @@ function PatientDashboard(props: { setContentId: any }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 550,
+                height: 554,
               }}
             >
               {/* <Chart /> */}
@@ -211,7 +211,7 @@ function PatientDashboard(props: { setContentId: any }) {
                 title="Covid World Data"
                 src="https://ourworldindata.org/grapher/total-cases-covid-19?tab=map&region=NorthAmerica"
                 width="100%"
-                height="550px"
+                height="554px"
                 style={{ borderStyle: 'none' }}
               />
             </Paper>
