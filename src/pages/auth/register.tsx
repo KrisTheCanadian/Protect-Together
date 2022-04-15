@@ -112,6 +112,7 @@ export default function RegisterPage() {
       notes: formData.additionalNotes,
       sex: formData.sex,
       weight: formData.weight,
+      disableBook: formData.disableBook,
     });
   };
 
