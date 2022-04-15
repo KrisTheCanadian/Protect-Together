@@ -43,6 +43,7 @@ function UpdateTestResult({ handleTestClose }: Props) {
           testType,
           testDate,
         }),
+        hasUpdates: true,
       });
     };
     updatePatient().then(() => {

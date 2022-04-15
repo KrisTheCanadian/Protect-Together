@@ -45,6 +45,14 @@ export const sendNotificationForConversation = functions.https.onCall(async (_da
     const userRef = db.doc(`users/${recipientID}`);
     const recipientDoc = await userRef.get();
     const recipient = recipientDoc.data();
+
+    const batch = db.batch();
+    // mark patient as unread if recipient is a doctor
+    if (recipient && recipient.role == "medical") {
+      const patient = db.doc(`users/${conversationID}`);
+      batch.update(patient, {hasUpdates: true});
+    }
+
     let notifications: UserNotification[] = [];
     if (recipient && recipient.notifications) {
       // remove notifications for same conversationID
@@ -52,9 +60,8 @@ export const sendNotificationForConversation = functions.https.onCall(async (_da
     }
 
     // send notification
-    return userRef.update({
-      notifications: [...notifications, message],
-    });
+    batch.update(userRef, {notifications: [...notifications, message]});
+    return batch.commit();
   }
   // or do nothing if not unread
   return null;
@@ -69,6 +76,14 @@ const delay = (time:number) => {
   });
 };
 
+// reset user's hasUpdates
+export const resetHasUpdates = functions.https.onCall(async (_data) => {
+  const userId = _data.userId;
+  const userRef = db.doc(`users/${userId}`);
+  return userRef.update({
+    hasUpdates: false,
+  });
+});
 
 // helper function to send notification to user
 export const sendNotificationHelper = async (recipientID: string, notification: UserNotification) => {
@@ -87,3 +102,4 @@ export interface UserNotification {
   read: boolean;
   conversationID: string | null;
 }
+
