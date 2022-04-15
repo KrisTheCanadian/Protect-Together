@@ -83,11 +83,6 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('You have been added to our waitlist.')
         })
 
-    it('COVID-19 Statistics Per Country', () => {
-        cy.visit('/')
-        cy.contains('Country Name : Canada')
-    });
-
     it('Covid-19 Statistics iframe API', () => {
         cy.visit('/')
         cy.contains('Do not forget to follow the safety policies and stay safe!')
