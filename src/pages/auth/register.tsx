@@ -360,7 +360,16 @@ export default function RegisterPage() {
                       onChange={(newValue) => {
                         setFormData({ ...formData, dob: newValue });
                       }}
-                      renderInput={(params) => <TextField id="dob" fullWidth {...params} sx={{ mr: 0 }} required />}
+                      renderInput={(params) => (
+                        <TextField
+                          data-testid="cy-date"
+                          id="dob"
+                          fullWidth
+                          {...params}
+                          sx={{ mr: 0 }}
+                          required
+                        />
+                      )}
                     />
                   </LocalizationProvider>
                 </Grid>

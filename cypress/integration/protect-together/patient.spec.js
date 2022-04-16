@@ -1,7 +1,36 @@
 describe('Patient Authentication', () => {
 
+    it('Register', () => {
+        indexedDB.deleteDatabase('firebaseLocalStorageDb')
+        cy.visit('/')
+        cy.contains('Dont have an account? Sign Up').click()
+        cy.contains('Already have an account? Sign in').click()
+        cy.contains('Dont have an account? Sign Up').click()
+        cy.get('[data-testid="first-name"]').click().type('First')
+        cy.get('[data-testid="last-name"]').click().type('Last')
+        cy.get('[data-testid="email"]').click().type('tbd@systemtests.com')
+        cy.get('[data-testid="phone-number"]').click().type('(514) 848-2424')
+        cy.get('[data-testid="password"]').click().type('qsG12*5')
+        cy.get('[data-testid="confirm-password"]').click().type('qsG12*5')
+        cy.contains('Next').click()
+        cy.contains('Back').click()
+        cy.contains('Next').click()
+        cy.get('[data-testid="height"]').type("err").clear().type("150")
+        cy.get('[data-testid="weight"]').type("err").clear().type("120")
+        cy.get('[data-testid="healthcare-number"]').click().type("MAID14561457")
+        cy.get('[data-testid="medical-conditions"]').click().type("N/A")
+        cy.get('[data-testid="additional-notes"]').click().type("N/A")
+        cy.get('.PrivateSwitchBase-input').click()
+        cy.get('.MuiOutlinedInput-root > #sex').click()
+        cy.get('[data-value="Female"]').click()
+        cy.get('#dob').type('04/01/2000')
+        cy.contains('Register').click()
+        cy.location('pathname').should('eq', '/dashboard')
+    });
+
     it('Login and Logout', () => {
-        cy.logout()
+        indexedDB.deleteDatabase('firebaseLocalStorageDb')
+        cy.visit('/')
         cy.get('body').then(body => {
             if (body.find('nav').length === 0) {
                 cy.get('[name="email"]').type(Cypress.env('CYPRESS_PATIENT_EMAIL'), {log: false})
@@ -51,7 +80,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('Back to Home').click()
     })
 
-        it('Ask for help - You will be contacted by a doctor', () => {
+    it('Ask for help - You will be contacted by a doctor', () => {
         cy.visit('/');
         cy.contains('Ask for Help').click()
         cy.contains('Yes')
@@ -81,7 +110,7 @@ describe('Sprint 3 Patient Suite', () => {
         cy.contains('You will be contacted by one of our doctors shortly.')
         cy.contains('Yes').click()
         cy.contains('You have been added to our waitlist.')
-        })
+    })
 
     it('Covid-19 Statistics iframe API', () => {
         cy.visit('/')
@@ -123,7 +152,7 @@ describe('Sprint 4 Patient Suite', () => {
     it('Test Results', () => {
         cy.visit('/')
         cy.contains('Add Covid-19 Test').click()
-        cy.get('body').click(0,0);
+        cy.get('body').click(0, 0);
         cy.contains('Test Results').click()
         cy.contains('PCRTest: positive')
     })
@@ -137,14 +166,18 @@ describe('Sprint 4 Patient Suite', () => {
         cy.contains('Continue').click()
         cy.contains('Your symptoms have been updated.')
         cy.get('button').contains('Back to Home').click()
+        cy.contains('Symptoms Update').click()
+        cy.contains('None of the above').click()
+        cy.contains('Continue').click()
+        cy.get('button').contains('Back to Home').click()
     })
 
     it('Main Settings', () => {
         cy.visit('/')
         cy.contains('Main Settings').click()
         cy.get('[id="phoneNumber"]').click().clear().type("5145125478")
-        cy.get('[id="height"]').click().clear().type("120")
-        cy.get('[id="weight"]').click().clear().type("100")
+        cy.get('[id="height"]').click().type("err").clear().type("120")
+        cy.get('[id="weight"]').click().type("err").clear().type("100")
         cy.get('[id="healthCardNumber"]').click().clear().type("sprint4444")
         cy.get('[id="medicalConditions"]').click().clear().type("Alzheimer")
         cy.get('[id="additionalNotes"]').click().clear().type("Cannot Remember")
@@ -157,23 +190,44 @@ describe('Sprint 4 Patient Suite', () => {
         cy.visit('/')
         cy.contains('Book Appointment').click()
         cy.get('button').contains('Cancel').click()
-
     })
+
     it('Add Covid-19 Test', () => {
         cy.visit('/')
         cy.contains('Add Covid-19 Test').click()
+        cy.get('[data-testid="cy-date"]').click({force: true}).type('04/01/2022')
         cy.contains('Test Date')
-        cy.contains('Test Type').parent().find('[type="radio"]').then(radioButtons => {
-                    cy.wrap(radioButtons).first().check().should('be.checked')
-        })
+        cy.contains('PCR Test').click({force: true})
         cy.contains('Test Result')
-        cy.get('button').contains('Cancel').click()
+        cy.contains('Covid-19 Positive').click({force: true})
+        cy.get('button').contains('Submit').click({force: true})
     })
 
     after(() => {
         cy.logout()
     })
 
+})
+
+
+describe('Sprint 5 Patient Suite', () => {
+    //
+    // before(() => {
+    //     cy.patient1Login()
+    // })
+    //
+    // it('Connect with your Doctor', () => {
+    //     cy.visit('/')
+    //     cy.contains('Connect with your Doctor').click()
+    //     cy.get('.message-input').type("Hi there I am a new patient")
+    //     cy.get('[data-testid="SendIcon"] > path').click()
+    // });
+    //
+    //
+
+    after(() => {
+        // cy.logout()
+    })
 })
 
 

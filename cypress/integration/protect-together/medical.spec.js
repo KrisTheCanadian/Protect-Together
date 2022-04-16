@@ -1,7 +1,8 @@
 describe('Medical Authentication', () => {
 
     it('Login and Logout', () => {
-        cy.logout()
+        indexedDB.deleteDatabase('firebaseLocalStorageDb')
+        cy.visit('/')
         cy.get('body').then(body => {
             if (body.find('nav').length === 0) {
                 cy.get('[name="email"]').type(Cypress.env('CYPRESS_MEDICAL_EMAIL'), {log: false})

@@ -250,7 +250,12 @@ function bookingSystem({ handleBookingClose } : Props) {
                     }
                     updateTimes();
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => (
+                    <TextField
+                      data-testid="cy-date"
+                      {...params}
+                    />
+                  )}
                   minDate={new Date()}
                   shouldDisableDate={disabledDay}
                   PopperProps={{

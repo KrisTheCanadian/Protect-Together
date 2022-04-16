@@ -1,7 +1,8 @@
 describe('Admin Authentication', () => {
 
     it('Login and Logout', () => {
-        cy.logout()
+        indexedDB.deleteDatabase('firebaseLocalStorageDb')
+        cy.visit('/')
         cy.get('body').then(body => {
             if (body.find('nav').length === 0) {
                 cy.get('[name="email"]').type(Cypress.env('CYPRESS_ADMIN_EMAIL'), {log: false})
