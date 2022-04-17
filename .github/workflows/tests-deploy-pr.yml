@@ -167,10 +167,10 @@ jobs:
           CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
           CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
           CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
-          CYPRESS_PATIENT2_EMAIL: 'patient2@demo.com'
+          CYPRESS_PATIENT2_EMAIL: patient2@demo.com
           CYPRESS_PATIENT2_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
-          CYPRESS_THIRDPARTY_EMAIL: 'gkillick@gmail.com'
-          "CYPRESS_THIRDPARTY_PASSWORD": ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
+          CYPRESS_THIRDPARTY_EMAIL: gkillick@gmail.com
+          CYPRESS_THIRDPARTY_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
 
       - name: Upload coverage results to Codecov.io
         uses: codecov/codecov-action@v2
@@ -180,7 +180,7 @@ jobs:
   deploy-to-firebase-hosting-on-pr:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
-    needs: install
+    needs: [cypress-tests, jest-tests]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
