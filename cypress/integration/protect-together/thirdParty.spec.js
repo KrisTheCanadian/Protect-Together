@@ -1,4 +1,4 @@
-describe('Third Party Authentication', () => {
+describe.skip('Third Party Authentication', () => {
 
     it.skip('Login and Logout', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
@@ -9,14 +9,14 @@ describe('Third Party Authentication', () => {
                 cy.get('[name="password"]').type(Cypress.env('CYPRESS_THIRDPARTY_PASSWORD'), {log: false})
                 cy.get('button').click();
                 cy.url().should("contain", '/dashboard')
-                cy.contains('Welcome Admin')
+                cy.contains('Welcome Party1')
                 cy.get('nav').find('button').should("contain", 'Logout').click()
             }
         })
     })
 })
 
-describe('Third Party Suite', () => {
+describe.skip('Third Party Suite', () => {
 
     before(() => {
         cy.thirdPartyLogin()

@@ -50,7 +50,7 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "build": "react-scripts build",
-    "start:emulator": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./firestore_production 'npm start'",
+    "start:emulator": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore_production 'npm start'",
     "dev:emulator": "firebase emulators:exec 'npm run dev'",
     "build:emulator": "firebase emulators:exec 'npm run build'",
     "test-emulate-firestore": "firebase emulators:exec --only firestore 'mocha src/test/firebase_rules.test.mocha.js'",
