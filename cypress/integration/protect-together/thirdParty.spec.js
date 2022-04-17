@@ -1,12 +1,12 @@
-describe('Admin Authentication', () => {
+describe('Third Party Authentication', () => {
 
     it.skip('Login and Logout', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
         cy.visit('/')
         cy.get('body').then(body => {
             if (body.find('nav').length === 0) {
-                cy.get('[name="email"]').type(Cypress.env('CYPRESS_ADMIN_EMAIL'), {log: false})
-                cy.get('[name="password"]').type(Cypress.env('CYPRESS_ADMIN_PASSWORD'), {log: false})
+                cy.get('[name="email"]').type(Cypress.env('CYPRESS_THIRDPARTY_EMAIL'), {log: false})
+                cy.get('[name="password"]').type(Cypress.env('CYPRESS_THIRDPARTY_PASSWORD'), {log: false})
                 cy.get('button').click();
                 cy.url().should("contain", '/dashboard')
                 cy.contains('Welcome Admin')
@@ -16,10 +16,10 @@ describe('Admin Authentication', () => {
     })
 })
 
-describe('Admin Suite', () => {
+describe('Third Party Suite', () => {
 
     before(() => {
-        cy.adminLogin()
+        cy.thirdPartyLogin()
     })
 
 

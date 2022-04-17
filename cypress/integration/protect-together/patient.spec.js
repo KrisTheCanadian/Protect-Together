@@ -6,14 +6,12 @@ describe('Patient Authentication', () => {
         cy.contains('Dont have an account? Sign Up').click()
         cy.contains('Already have an account? Sign in').click()
         cy.contains('Dont have an account? Sign Up').click()
-        cy.get('[data-testid="first-name"]').click().type('First')
-        cy.get('[data-testid="last-name"]').click().type('Last')
-        cy.get('[data-testid="email"]').click().type('tbd@systemtests.com')
+        cy.get('[data-testid="first-name"]').click().type('Patient')
+        cy.get('[data-testid="last-name"]').click().type('Test')
+        cy.get('[data-testid="email"]').click().type('cypresspatient@systemtests.com')
         cy.get('[data-testid="phone-number"]').click().type('(514) 848-2424')
-        cy.get('[data-testid="password"]').click().type('qsG12*5')
-        cy.get('[data-testid="confirm-password"]').click().type('qsG12*5')
-        cy.contains('Next').click()
-        cy.contains('Back').click()
+        cy.get('[data-testid="password"]').click().type('1')
+        cy.get('[data-testid="confirm-password"]').click().type('1')
         cy.contains('Next').click()
         cy.get('[data-testid="height"]').type("err").clear().type("150")
         cy.get('[data-testid="weight"]').type("err").clear().type("120")
@@ -24,11 +22,23 @@ describe('Patient Authentication', () => {
         cy.get('.MuiOutlinedInput-root > #sex').click()
         cy.get('[data-value="Female"]').click()
         cy.get('#dob').type('04/01/2000')
+        cy.get('[data-testid="cy-date"]').click({force: true}).type('04/01/2000')
+        cy.contains('Register').click()
+        cy.contains('Back').click()
+        cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
+        cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
+        cy.get('[data-testid="password"]').clear().click().type('I\'m_str0ng')
+        cy.get('[data-testid="confirm-password"]').clear().click().type('I\'m_str0ng')
+        cy.contains('Next').click()
+        cy.contains('Register').click()
+        cy.contains('Back').click()
+        cy.get('[data-testid="email"]').clear().click().type('tbd@systemtests.com')
+        cy.contains('Next').click()
         cy.contains('Register').click()
         cy.location('pathname').should('eq', '/dashboard')
     });
 
-    it('Login and Logout', () => {
+    it.skip('Login and Logout', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
         cy.visit('/')
         cy.get('body').then(body => {
@@ -37,7 +47,7 @@ describe('Patient Authentication', () => {
                 cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT_PASSWORD'), {log: false})
                 cy.get('button').click();
                 cy.url().should("contain", '/dashboard')
-                cy.contains('Welcome Patient')
+                cy.contains('Welcome Cypress')
                 cy.get('nav').find('button').should("contain", 'Logout').click()
             }
         })

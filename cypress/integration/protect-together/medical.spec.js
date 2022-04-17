@@ -1,6 +1,6 @@
 describe('Medical Authentication', () => {
 
-    it('Login and Logout', () => {
+    it.skip('Login and Logout', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
         cy.visit('/')
         cy.get('body').then(body => {
@@ -57,15 +57,15 @@ describe('Sprint 4 Medical Suite', () => {
         cy.contains('View Appointments').click()
         cy.get('body').click(0,0);
         cy.get('[data-testid="NotificationsNoneOutlinedIcon"]').eq(0).click()
-        cy.contains('No notifications')
+        cy.contains('Patient1 Demo has updated their test results')
         cy.get('body').click(0,0);
     })
 
     it('Patient Profile', () => {
         cy.visit('/')
-        cy.contains('Patient 2').click()
-        cy.contains('Patient 2')
-        cy.contains('RAMQ MANSOKS0002')
+        cy.contains('alex test').click()
+        cy.contains('alex test')
+        cy.contains('RAMQ 4dcfgvhbn6')
         cy.contains('Patient\'s Info')
         cy.contains('Latest Symptoms')
         cy.contains('Messages')
@@ -75,7 +75,7 @@ describe('Sprint 4 Medical Suite', () => {
 
     it('Medical Chat', () => {
         cy.visit('/')
-        cy.contains('Patient 2').click()
+        cy.contains('alex test').click()
         cy.get('[class="message-input"]').click().type("Hi Patient")
         cy.get('[data-testid="SendIcon"]').click()
         cy.get('.message.sent').should('contain','Hi Patient')
@@ -83,19 +83,19 @@ describe('Sprint 4 Medical Suite', () => {
 
     it('Close Patient\'s File', () => {
         cy.visit('/')
-        cy.contains('Patient 2').click()
+        cy.contains('alex test').click()
         cy.contains('Close Patient\'s File').click()
         cy.contains('Keep Patient\'s File')
         cy.contains('Close Patient\'s File')
     })
     it('View Appointments', () => {
         cy.visit('/')
-        cy.contains('Patient 2').click()
+        cy.contains('alex test').click()
         cy.contains('View Appointments').click()
         cy.get('[aria-haspopup="listbox"]').click()
-        cy.get('[data-value="Patient 2 Demo"]').click()
-        cy.contains('No Upcoming Appointments')
-        cy.contains('No Previous Appointments')
+        cy.get('[data-value="alex test"]').click()
+        cy.contains('Upcoming Appointments')
+        cy.contains('Previous Appointments')
     })
 
     after(() => {
