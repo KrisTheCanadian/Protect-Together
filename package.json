@@ -57,8 +57,8 @@
     "test-firestore": "mocha src/test/firebase_rules.test.mocha.js",
     "eject": "react-scripts eject",
     "cy:open": "cypress open",
-    "cy:run": "cypress run --record false",
-    "cy:ci": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore 'npm run cy:start'",
+    "cy:run": "cypress run",
+    "cy:ci": "cross-var firebase emulators:exec --token '$FIREBASE_TOKEN' --import=./cypress/firestore_production 'npm run cy:start'",
     "cy:start": "cross-env PORT=5050 react-scripts -r @cypress/instrument-cra start",
     "coverage": "npm run jest:run && npm run cy:fire && npm run merge-coverage && npm run cov-report",
     "merge-coverage": "node ./scripts/mergeCoverage.js",
@@ -66,8 +66,7 @@
     "cy:fire": "firebase emulators:exec --import=./cypress/firestore_production \"npm run cy:test\"",
     "cy:test": "start-test cy:start 5050 cy:run",
     "cov-report": "start coverage/lcov-report/index.html",
-    "cy:local": " firebase emulators:exec --import=./cypress/firestore \"cypress open --config baseUrl=http://localhost:5000\"",
-    "cy:prod": " firebase emulators:exec --import=./cypress/firestore_production \"cypress open --config baseUrl=http://localhost:5000\""
+    "cy:local": " firebase emulators:exec --import=./cypress/firestore_production \"cypress open --config baseUrl=http://localhost:5000\""
   },
   "browserslist": {
     "production": [
@@ -125,7 +124,7 @@
     "exclude": [
       "src/test/**",
       "src/context/LayoutContext.tsx",
-      "src/components/dashboard/AdminDashboard PatientTable.tsx"
+      "src/components/dashboard/AdminDashboard/PatientTable.tsx"
     ]
   }
 }

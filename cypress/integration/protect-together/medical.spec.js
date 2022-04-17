@@ -16,7 +16,7 @@ describe('Medical Authentication', () => {
     })
 })
 
-describe('Sprint 3 Medical Suite', () => {
+describe('Medical Suite', () => {
 
     before(() => {
         cy.medicalLogin()
@@ -29,19 +29,6 @@ describe('Sprint 3 Medical Suite', () => {
         cy.get('[type="text"]').click().type('Cypress')
         // cy.contains('Cypress System Tests')
     })
-
-    after(() => {
-        cy.logout()
-    })
-
-})
-
-describe('Sprint 4 Medical Suite', () => {
-
-    before(() => {
-        cy.medicalLogin()
-    })
-
 
     it('Medical dashboard', () => {
         cy.visit('/')

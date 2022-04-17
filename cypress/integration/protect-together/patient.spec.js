@@ -3,6 +3,9 @@ describe('Patient Authentication', () => {
     it('Register', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
         cy.visit('/')
+        // cy.wait(5000)
+        // indexedDB.deleteDatabase('firebaseLocalStorageDb')
+        // cy.visit('/')
         cy.contains('Dont have an account? Sign Up').click()
         cy.contains('Already have an account? Sign in').click()
         cy.contains('Dont have an account? Sign Up').click()
@@ -21,21 +24,22 @@ describe('Patient Authentication', () => {
         cy.get('.PrivateSwitchBase-input').click()
         cy.get('.MuiOutlinedInput-root > #sex').click()
         cy.get('[data-value="Female"]').click()
-        cy.get('#dob').type('04/01/2000')
-        cy.get('[data-testid="cy-date"]').click({force: true}).type('04/01/2000')
-        cy.contains('Register').click()
-        cy.contains('Back').click()
-        cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
-        cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
-        cy.get('[data-testid="password"]').clear().click().type('I\'m_str0ng')
-        cy.get('[data-testid="confirm-password"]').clear().click().type('I\'m_str0ng')
-        cy.contains('Next').click()
-        cy.contains('Register').click()
-        cy.contains('Back').click()
-        cy.get('[data-testid="email"]').clear().click().type('tbd@systemtests.com')
-        cy.contains('Next').click()
-        cy.contains('Register').click()
-        cy.location('pathname').should('eq', '/dashboard')
+        // cy.get('[data-testid="cy-date"]').click({force: true}).type('04/01/2000')
+        // cy.contains('Register').click()
+        // // cy.wait(5000)
+        // cy.contains('Back').click()
+        // cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
+        // cy.get('[data-testid="VisibilityOffIcon"]').eq(0).click()
+        // cy.get('[data-testid="password"]').clear().click().type('I\'m_str0ng')
+        // cy.get('[data-testid="confirm-password"]').clear().click().type('I\'m_str0ng')
+        // cy.contains('Next').click()
+        // cy.contains('Register').click()
+        // // cy.wait(5000)
+        // cy.contains('Back').click()
+        // cy.get('[data-testid="email"]').clear().click().type('tbd@systemtests.com')
+        // cy.contains('Next').click()
+        // cy.contains('Register').click()
+        // cy.location('pathname').should('eq', '/dashboard')
     });
 
     it.skip('Login and Logout', () => {
@@ -54,7 +58,7 @@ describe('Patient Authentication', () => {
     })
 })
 
-describe('Sprint 3 Patient Suite', () => {
+describe('Patient Suite', () => {
 
     before(() => {
         cy.patientLogin()
@@ -135,18 +139,6 @@ describe('Sprint 3 Patient Suite', () => {
 
     })
 
-    after(() => {
-        cy.logout()
-    })
-
-})
-
-describe('Sprint 4 Patient Suite', () => {
-
-    before(() => {
-        cy.patientLogin()
-    })
-
     it('COVID-19 Statistics Per Country', () => {
         cy.visit('/')
         cy.get('[id="outlined-basic"]').click().type('usa{enter}')
@@ -196,6 +188,10 @@ describe('Sprint 4 Patient Suite', () => {
         cy.contains('Main Settings').click()
         cy.contains('Alzheimer')
     })
+
+    it('Book Appointment', () => {
+        cy.visit('/')
+    })
     it('Book Appointment', () => {
         cy.visit('/')
         cy.contains('Book Appointment').click()
@@ -220,24 +216,35 @@ describe('Sprint 4 Patient Suite', () => {
 })
 
 
-describe('Sprint 5 Patient Suite', () => {
-    //
-    // before(() => {
-    //     cy.patient1Login()
-    // })
-    //
-    // it('Connect with your Doctor', () => {
-    //     cy.visit('/')
-    //     cy.contains('Connect with your Doctor').click()
-    //     cy.get('.message-input').type("Hi there I am a new patient")
-    //     cy.get('[data-testid="SendIcon"] > path').click()
-    // });
-    //
-    //
+describe('Patient 2 Suite', () => {
+
+    before(() => {
+        cy.patient2Login()
+    })
+
+    it('Book Appointment', () => {
+        cy.visit('/')
+        cy.contains('Book Appointment').click()
+        cy.get('[data-testid="cy-date"]').click({force: true}).type('04/20/2022')
+        cy.contains('9:00').click({force: true})
+        cy.get('button').contains('Submit').click({force: true})
+    })
+
+    it('Next Appointment', () => {
+        cy.wait(20000)
+        cy.visit('/')
+        cy.contains('Next Appointment').click()
+        cy.get('button').contains('Cancel').click()
+        cy.get('button').contains('Keep').click()
+        cy.get('button').contains('Cancel').click()
+        cy.get('[style="display: flex; flex-direction: column; align-items: center;"] > :nth-child(2) > .MuiButton-root').click()
+        cy.get('button').contains('Cancel').click()
+    })
+
 
     after(() => {
-        // cy.logout()
+        cy.logout()
     })
-})
 
+})
 

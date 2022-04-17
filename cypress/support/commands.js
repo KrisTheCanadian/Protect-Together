@@ -11,13 +11,13 @@ Cypress.Commands.add('patientLogin', () => {
     })
 })
 
-Cypress.Commands.add('patient1Login', () => {
+Cypress.Commands.add('patient2Login', () => {
     indexedDB.deleteDatabase('firebaseLocalStorageDb')
     cy.visit('/')
     cy.get('body').then(body => {
         if (body.find('nav').length === 0) {
-            cy.get('[name="email"]').type(Cypress.env('CYPRESS_PATIENT1_EMAIL'), {log: false})
-            cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT1_PASSWORD'), {log: false})
+            cy.get('[name="email"]').type(Cypress.env('CYPRESS_PATIENT2_EMAIL'), {log: false})
+            cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT2_PASSWORD'), {log: false})
             cy.get('button').click();
             cy.location('pathname').should('eq', '/dashboard')
         }

@@ -16,30 +16,24 @@ describe.skip('Third Party Authentication', () => {
     })
 })
 
-describe.skip('Third Party Suite', () => {
+describe('Third Party Suite', () => {
 
     before(() => {
         cy.thirdPartyLogin()
     })
 
 
-    it('Admin dashboard', () => {
-        cy.visit('/')
-        cy.contains('Welcome Admin')
-        cy.get('[type="text"]').click().type('Cypress')
-        cy.contains('Cypress Admin')
-        cy.contains('Cypress Medical')
+    it('Third Party', () => {
+        cy.visit('/dashboard')
+        cy.wait(6000)
+        cy.contains('Welcome Party1')
+        cy.contains('Patient Test Results Distribution').parent().find('canvas').click()
+        cy.contains('Assignment of Patients Distribution').parent().find('canvas').click()
+        cy.contains('Patient Sex Distribution').parent().find('canvas').click()
+        cy.contains('Patients Age Distribution').parent().find('canvas').click()
+
     })
 
-    it('Admin dashboard', () => {
-        cy.visit('/')
-        cy.contains('Dashboard').click()
-        cy.contains('Unassigned Patients').click()
-        cy.contains('Add Account').click()
-        cy.get('body').click(0,0);
-        cy.get('[data-testid="NotificationsNoneOutlinedIcon"]').eq(0).click()
-        cy.contains('Title Test')
-    })
 
     after(() => {
         cy.logout()
