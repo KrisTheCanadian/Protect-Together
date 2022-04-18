@@ -108,19 +108,34 @@ Agile development is a cycle of gathering requirements, design, development, tes
 
 # Application Look 👀
 ## Login Screen
-<img src="https://i.imgur.com/xWgKruO.png" alt="Login Screen" title="Login" />
+<img src="https://i.imgur.com/9iA10As.png" alt="Login Screen" title="Login" />
 
 ## Register Screen
-<img src="https://i.imgur.com/8imphAQ.png" alt="Register Screen" title="Register" />
+<img src="https://i.imgur.com/RsEZByD.png" alt="Register Screen" title="Register" />
 
 ## Patient Dashboard
-<img src="https://i.imgur.com/B1aaVtx.png" alt="Dashboard" title="Dashboard" />
+<img src="https://imgur.com/DfvvxxQ.png" alt="Dashboard" title="Dashboard" />
 
-## Patient Symptoms
-<img src="https://i.imgur.com/smCNq5K.png" alt="Symptoms" title="Symptoms" />
+## Medical Staff Dashboard
+<img src="https://i.imgur.com/PuGf3ed.png" title="Medical Staff Dashboard" />
 
 ## Admin Dashboard
-<img src="https://i.imgur.com/Q1gWKJW.png" alt="Admin Dashboard" title="Admin Dashboard" />
+<img src="https://i.imgur.com/PuGf3ed.png" title="Admin Dashboard" />
+
+## Third Party Dashboard
+<img src="https://i.imgur.com/H2k9qac.png" title="Third Party Dashboard" />
+
+## Patient Symptoms
+<img src="https://i.imgur.com/W92QmWF.png" alt="Symptoms" title="Symptoms" />
+
+## Patient Appointments
+<img src="https://i.imgur.com/poumwWi.png" alt="Appointments" title="Appointments" />
+
+## Medical Staff & Patient Chat
+<img src="https://i.imgur.com/4pejgiN.png" title="Medical & Patient Chat" />
+
+## Notifications
+<img src="https://i.imgur.com/8YeEc45.png" title="Notifications" />
 
 
 # Diagram 📊
