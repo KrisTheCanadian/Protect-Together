@@ -168,10 +168,6 @@ jobs:
           CYPRESS_MEDICAL_PASSWORD: ${{ secrets.CYPRESS_MEDICAL_PASSWORD }}
           CYPRESS_PATIENT_EMAIL: ${{ secrets.CYPRESS_PATIENT_EMAIL }}
           CYPRESS_PATIENT_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
-          CYPRESS_PATIENT2_EMAIL: "patient2@demo.com"
-          CYPRESS_PATIENT2_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
-          CYPRESS_THIRDPARTY_EMAIL: "gkillick@gmail.com"
-          CYPRESS_THIRDPARTY_PASSWORD: ${{ secrets.CYPRESS_PATIENT_PASSWORD }}
 
       - name: Upload coverage results to Codecov.io
         uses: codecov/codecov-action@v2

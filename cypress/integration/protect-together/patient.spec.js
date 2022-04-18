@@ -1,6 +1,6 @@
 describe('Patient Authentication', () => {
 
-    it('Register', () => {
+    it.skip('Register', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
         cy.visit('/')
         cy.wait(5000)
@@ -222,7 +222,7 @@ describe('Patient 2 Suite', () => {
         cy.patient2Login()
     })
 
-    it('Book Appointment', () => {
+    it.skip('Book Appointment', () => {
         cy.visit('/')
         cy.contains('Book Appointment').click()
         cy.get('[data-testid="cy-date"]').click({force: true}).type('04/20/2022')

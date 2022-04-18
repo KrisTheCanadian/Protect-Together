@@ -79,7 +79,7 @@ describe('Admin Suite', () => {
         cy.contains('Save').click()
     })
 
-    it('Add Medical Availabilities', () => {
+    it.skip('Add Medical Availabilities', () => {
         cy.visit('/')
         cy.get('[data-testid="InsertInvitationIcon"]').eq(1).click()
         cy.contains('Sun').click()
