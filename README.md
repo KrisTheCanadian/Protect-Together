@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/KrisTheCanadian/soen-390">
-  <img src="./public/health.svg" height="128">
+  <img src="./src/static/style/images/logo.svg" height="128">
     <h1 align="center">Protect Together</h1>
   </a>
 </p>
