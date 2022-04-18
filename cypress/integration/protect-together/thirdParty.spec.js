@@ -1,4 +1,4 @@
-describe.skip('Third Party Authentication', () => {
+describe('Third Party Authentication', () => {
 
     it.skip('Login and Logout', () => {
         indexedDB.deleteDatabase('firebaseLocalStorageDb')
@@ -31,7 +31,6 @@ describe('Third Party Suite', () => {
         cy.contains('Assignment of Patients Distribution').parent().find('canvas').click()
         cy.contains('Patient Sex Distribution').parent().find('canvas').click()
         cy.contains('Patients Age Distribution').parent().find('canvas').click()
-
     })
 
 

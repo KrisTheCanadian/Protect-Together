@@ -22,14 +22,14 @@ describe('Medical Suite', () => {
         cy.medicalLogin()
     })
 
-    it('Medical dashboard', () => {
+    it.skip('Medical dashboard', () => {
         cy.visit('/')
         cy.contains('Welcome Dr. Demo')
         cy.get('span').contains('View Appointments')
-        cy.get('[type="text"]').click().type('Cypress')
+        cy.get('[type="text"]').click().type('alex')
         cy.contains('Dashboard').click()
         cy.contains('5').click()
-        // cy.contains('10').click()
+        cy.contains('10').click()
         cy.contains('Name').click()
         cy.contains('Age').click()
         cy.contains('Appointment Dates').click()

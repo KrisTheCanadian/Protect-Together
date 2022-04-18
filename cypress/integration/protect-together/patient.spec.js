@@ -39,6 +39,7 @@ describe('Patient Authentication', () => {
         cy.get('[data-testid="email"]').clear().click().type('taabd@systemtests.com')
         cy.contains('Next').click()
         cy.contains('Register').click()
+        cy.wait(5000)
         cy.location('pathname').should('eq', '/dashboard')
     });
 
@@ -216,29 +217,29 @@ describe('Patient Suite', () => {
 })
 
 
-describe('Patient 2 Suite', () => {
+describe.skip('Patient 2 Suite', () => {
 
     before(() => {
         cy.patient2Login()
     })
 
-    it.skip('Book Appointment', () => {
+    it('Book Appointment', () => {
         cy.visit('/')
         cy.contains('Book Appointment').click()
-        cy.get('[data-testid="cy-date"]').click({force: true}).type('04/20/2022')
-        cy.contains('9:00').click({force: true})
-        cy.get('button').contains('Submit').click({force: true})
+        cy.wait(500)
+        cy.get('[data-testid="cy-date"]').click().type('04/22/2022')
+        cy.contains('9:00').click()
+        cy.get('button').contains('Submit').click()
+        cy.wait(500)
     })
 
-    it.skip('Next Appointment', () => {
-        cy.wait(20000)
-        cy.visit('/')
+    it('Next Appointment', () => {
+        // cy.visit('/')
         cy.contains('Next Appointment').click()
         cy.get('button').contains('Cancel').click()
         cy.get('button').contains('Keep').click()
         cy.get('button').contains('Cancel').click()
         cy.get('[style="display: flex; flex-direction: column; align-items: center;"] > :nth-child(2) > .MuiButton-root').click()
-        cy.get('button').contains('Cancel').click()
     })
 
 
