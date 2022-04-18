@@ -1,25 +1,39 @@
 Cypress.Commands.add('patientLogin', () => {
-    cy.logout()
+    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+    cy.visit('/')
     cy.get('body').then(body => {
         if (body.find('nav').length === 0) {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_PATIENT_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(2000)
+            cy.location('pathname').should('eq', '/dashboard')
         }
     })
+})
 
+Cypress.Commands.add('patient2Login', () => {
+    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+    cy.visit('/')
+    cy.get('body').then(body => {
+        if (body.find('nav').length === 0) {
+            cy.get('[name="email"]').type("patient2@demo.com", {log: false})
+            cy.get('[name="password"]').type(Cypress.env('CYPRESS_PATIENT_PASSWORD'), {log: false})
+            cy.get('button').click();
+            cy.location('pathname').should('eq', '/dashboard')
+        }
+    })
 })
 
 
 Cypress.Commands.add('adminLogin', () => {
-    cy.logout()
+    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+    cy.visit('/')
     cy.get('body').then(body => {
         if (body.find('nav').length === 0) {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_ADMIN_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_ADMIN_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(2000)
+            cy.location('pathname').should('eq', '/dashboard')
         }
     })
 
@@ -27,13 +41,29 @@ Cypress.Commands.add('adminLogin', () => {
 
 
 Cypress.Commands.add('medicalLogin', () => {
-    cy.logout()
+    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+    cy.visit('/')
     cy.get('body').then(body => {
         if (body.find('nav').length === 0) {
             cy.get('[name="email"]').type(Cypress.env('CYPRESS_MEDICAL_EMAIL'), {log: false})
             cy.get('[name="password"]').type(Cypress.env('CYPRESS_MEDICAL_PASSWORD'), {log: false})
             cy.get('button').click();
-            cy.wait(2000)
+            cy.location('pathname').should('eq', '/dashboard')
+        }
+    })
+
+})
+
+
+Cypress.Commands.add('thirdPartyLogin', () => {
+    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+    cy.visit('/')
+    cy.get('body').then(body => {
+        if (body.find('nav').length === 0) {
+            cy.get('[name="email"]').type("gkillick@gmail.com", {log: false})
+            cy.get('[name="password"]').type(Cypress.env('CYPRESS_MEDICAL_PASSWORD'), {log: false})
+            cy.get('button').click();
+            cy.location('pathname').should('eq', '/dashboard')
         }
     })
 

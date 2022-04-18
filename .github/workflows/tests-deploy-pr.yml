@@ -153,6 +153,7 @@ jobs:
           wait-on-timeout: 150
           wait-on: 'http://localhost:5050'
           start: npm run cy:ci
+        continue-on-error: true
         env:
           # Authorization for running the firebase CLI (emulator)
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SOEN_390_BA781 }}

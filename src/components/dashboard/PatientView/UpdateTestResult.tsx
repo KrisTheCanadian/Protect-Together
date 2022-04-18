@@ -113,7 +113,14 @@ function UpdateTestResult({ handleTestClose }: Props) {
                   onChange={(newValue) => {
                     setTestDate(newValue);
                   }}
-                  renderInput={(params) => <TextField {...params} sx={{ mr: 2, mt: 1, width: '100%' }} required />}
+                  renderInput={(params) => (
+                    <TextField
+                      data-testid="cy-date"
+                      {...params}
+                      sx={{ mr: 2, mt: 1, width: '100%' }}
+                      required
+                    />
+                  )}
                 />
               </LocalizationProvider>
             </FormControl>

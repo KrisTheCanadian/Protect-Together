@@ -26,6 +26,3 @@ run([
     `nyc merge ${FINAL_OUTPUT_FOLDER} && mv coverage.json .nyc_output/out.json`,
     `nyc report --reporter lcov --report-dir coverage`,
 ]);
-fs.remove(FINAL_OUTPUT_FOLDER);
-fs.remove('coverage/jest-coverage/');
-fs.remove('coverage/cypress-coverage');
